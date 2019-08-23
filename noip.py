@@ -65,7 +65,7 @@ try:
         if confirmation_button.text == "Confirm":
             confirmation_button.click()
             confirmed_host = host.find_element_by_tag_name("a").text
-            print("Host: " + confirmed_host + " confirmed")
+            print("Host \"" + confirmed_host + "\" confirmed")
             sleep(0.25)
 
 except Exception as e:

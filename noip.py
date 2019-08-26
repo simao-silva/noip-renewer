@@ -47,12 +47,9 @@ browser = webdriver.Firefox(options=browserOptions, executable_path=r"./geckodri
 # LOGIN
 print("Login page")
 browser.get(LOGIN_URL)
-username_input = browser.find_element_by_name("username")
-password_input = browser.find_element_by_name("password")
-username_input.send_keys(email)
-password_input.send_keys(password)
-login_button = browser.find_element_by_name("Login")
-login_button.click()
+browser.find_element_by_name("username").send_keys(email)
+browser.find_element_by_name("password").send_keys(password)
+browser.find_element_by_name("Login").click()
 
 # RENEW HOSTS
 try:

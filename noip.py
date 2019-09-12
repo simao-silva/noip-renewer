@@ -2,8 +2,8 @@ from selenium import webdriver
 from getpass import getpass
 from time import sleep
 from sys import argv
-import platform
-import os
+from os import system
+from platform import machine
 
 
 def method1():
@@ -35,12 +35,12 @@ print("Opening browser")
 browserOptions = webdriver.FirefoxOptions()
 browserOptions.add_argument("--headless")
 
-if platform.machine().find("arm") >= 0:
-    os.system("tar zxvf drivers/geckodriver-v0.23.0-arm7hf.tar.gz >/dev/null 2>&1")
-elif platform.machine().find("x86_64") >= 0:
-    os.system("tar zxvf drivers/geckodriver-v0.24.0-linux64.tar.gz >/dev/null 2>&1")
-elif platform.machine().find("i386") >= -1:
-    os.system("tar zxvf drivers/geckodriver-v0.24.0-linux32.tar.gz >/dev/null 2>&1")
+if machine().find("arm") >= 0:
+    system("tar zxvf drivers/geckodriver-v0.23.0-arm7hf.tar.gz >/dev/null 2>&1")
+elif machine().find("x86_64") >= 0:
+    system("tar zxvf drivers/geckodriver-v0.24.0-linux64.tar.gz >/dev/null 2>&1")
+elif machine().find("i386") >= -1:
+    system("tar zxvf drivers/geckodriver-v0.24.0-linux32.tar.gz >/dev/null 2>&1")
 
 browser = webdriver.Firefox(options=browserOptions, executable_path=r"./geckodriver")
 

@@ -2,8 +2,6 @@ from selenium import webdriver
 from getpass import getpass
 from time import sleep
 from sys import argv
-from os import system
-from platform import machine
 
 
 def method1():
@@ -32,17 +30,12 @@ else:
 
 # OPEN BROWSER
 print("Opening browser")
-browserOptions = webdriver.FirefoxOptions()
+browserOptions = webdriver.ChromeOptions()
 browserOptions.add_argument("--headless")
+browserOptions.add_argument("--no-sandbox")
+browserOptions.add_argument("disable-gpu")
 
-if machine().find("arm") >= 0:
-    system("tar zxvf drivers/geckodriver-v0.23.0-arm7hf.tar.gz >/dev/null 2>&1")
-elif machine().find("x86_64") >= 0:
-    system("tar zxvf drivers/geckodriver-v0.24.0-linux64.tar.gz >/dev/null 2>&1")
-elif machine().find("i386") >= -1:
-    system("tar zxvf drivers/geckodriver-v0.24.0-linux32.tar.gz >/dev/null 2>&1")
-
-browser = webdriver.Firefox(options=browserOptions, executable_path=r"./geckodriver")
+browser = webdriver.Chrome(options=browserOptions)
 
 # LOGIN
 print("Login page")
@@ -54,13 +47,14 @@ browser.find_element_by_name("Login").click()
 # RENEW HOSTS
 try:
     browser.get(HOST_URL)
+    print("Opened HOST URL")
     hosts = method2()
 
     for host in hosts:
         # print("Host: " + host.text)
-        confirmation_button = host.find_element_by_tag_name("button")
-        if confirmation_button.text == "Confirm":
-            confirmation_button.click()
+        button = host.find_element_by_tag_name("button")
+        if button.text == "Confirm":
+            button.click()
             confirmed_host = host.find_element_by_tag_name("a").text
             print("Host \"" + confirmed_host + "\" confirmed")
             sleep(0.25)

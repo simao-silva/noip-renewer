@@ -5,15 +5,17 @@ from sys import argv
 
 
 def method1():
-    table = browser.find_element_by_xpath("//*[@id=\"host-panel\"]/table/tbody")
-    return table.find_elements_by_tag_name("tr")
+    return browser \
+        .find_element_by_xpath("//*[@id=\"host-panel\"]/table/tbody") \
+        .find_elements_by_tag_name("tr")
 
 
 def method2():
-    div = browser.find_element_by_id("host-panel")
-    table = div.find_element_by_tag_name("table")
-    body = table.find_element_by_tag_name("tbody")
-    return body.find_elements_by_tag_name("tr")
+    return browser \
+        .find_element_by_id("host-panel") \
+        .find_element_by_tag_name("table") \
+        .find_element_by_tag_name("tbody") \
+        .find_elements_by_tag_name("tr")
 
 
 LOGIN_URL = "https://www.noip.com/login"
@@ -46,6 +48,8 @@ if browser.title == "Log In - No-IP":
     browser.find_element_by_name("Login").click()
 
     browser.get(HOST_URL)
+    sleep(1)
+
     if browser.title == "My No-IP :: Hostnames":
 
         # RENEW HOSTS
@@ -53,7 +57,6 @@ if browser.title == "Log In - No-IP":
             hosts = method2()
 
             for host in hosts:
-                # print("Host: " + host.text)
                 button = host.find_element_by_tag_name("button")
                 if button.text == "Confirm":
                     button.click()

@@ -21,3 +21,9 @@ docker build -t simaofsilva/noip-renewer .
 ```shell script
 docker run --rm -it simaofsilva/noip-renewer
 ```
+
+or 
+
+```shell script
+docker run --rm -it simaofsilva/noip-renewer <EMAIL> <PASSWORD>
+```

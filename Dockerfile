@@ -2,7 +2,7 @@ FROM debian:10-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-ARG OPTIONS="--assume-yes --no-install-recommends --no-install-suggests"
+ARG OPTIONS="--assume-yes --no-install-recommends"
 
 RUN apt-get update && \
     apt-get install ${OPTIONS} chromium chromium-driver python3-pip && \
@@ -11,4 +11,4 @@ RUN apt-get update && \
 
 ADD renew.py .
 
-ENTRYPOINT /usr/bin/python3 renew.py
+ENTRYPOINT ["/usr/bin/python3", "renew.py"]

@@ -1,14 +1,9 @@
-FROM debian:10-slim
+FROM python:3-alpine
 
-ARG DEBIAN_FRONTEND=noninteractive
-
-ARG OPTIONS="--assume-yes --no-install-recommends"
-
-RUN apt-get update && \
-    apt-get install ${OPTIONS} chromium chromium-driver python3-pip && \
-    pip3 install selenium && \
-    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+RUN apk add --no-cache chromium chromium-chromedriver && \
+    pip3 install --no-cache-dir selenium && \
+    rm -rf /var/cache/*
 
 ADD renew.py .
 
-ENTRYPOINT ["/usr/bin/python3", "renew.py"]
+ENTRYPOINT ["python3", "renew.py"]

@@ -5,11 +5,15 @@
 #### Requirements
 - [Docker](https://www.docker.com/)
 
-## Obtain image
+## Obtaining image
 
-#### Pulling image from [Docker Hub](https://hub.docker.com/r/simaofsilva/noip-renewer) 
+#### Pulling image from [Docker Hub](https://hub.docker.com/r/simaofsilva/noip-renewer/tags) 
 ```shell script
-docker pull simaofsilva/noip-renewer
+# x86 or armhf
+docker pull simaofsilva/noip-renewer:3.9.1-slim-buster
+
+# x86_64 or aarch64
+docker pull simaofsilva/noip-renewer:latest
 ```
 
 #### Building image locally
@@ -21,9 +25,7 @@ docker build -t simaofsilva/noip-renewer .
 ```shell script
 docker run --rm -it simaofsilva/noip-renewer
 ```
-
 or
-
 ```shell script
 docker run --rm -it simaofsilva/noip-renewer <EMAIL> <PASSWORD>
 ```

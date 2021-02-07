@@ -108,5 +108,4 @@ geckodriver.log
 *.png
 
 renew.bak
-manifest-tool
-manifest.yaml
+deprecated/

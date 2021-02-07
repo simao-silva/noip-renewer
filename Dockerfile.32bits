@@ -1,0 +1,13 @@
+FROM python:3.9.1-slim-buster
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends chromium chromium-driver && \
+    apt-get clean && \
+    pip3 install --no-cache-dir selenium && \
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+
+ADD renew.py .
+
+ENTRYPOINT ["python3", "renew.py"]

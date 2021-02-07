@@ -1,4 +1,4 @@
-FROM python:3-alpine
+FROM python:3.9.1-alpine3.13
 
 RUN apk add --no-cache chromium chromium-chromedriver && \
     pip3 install --no-cache-dir selenium && \

@@ -110,3 +110,4 @@ geckodriver.log
 renew.bak
 manifest-tool
 manifest.yaml
+deprecated/

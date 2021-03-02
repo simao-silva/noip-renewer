@@ -46,11 +46,20 @@ if browser.title == "Log In - No-IP":
     browser.find_element_by_name("username").send_keys(email)
     browser.find_element_by_name("password").send_keys(password)
     browser.find_element_by_name("Login").click()
+    sleep(2)
 
     browser.get(HOST_URL)
+    # browser.save_screenshot("/home/photo0.png")
     sleep(1)
 
-    if browser.title == "My No-IP :: Hostnames":
+    aux = 1
+    while browser.title != "My No-IP :: Hostnames" and aux < 3:
+        browser.get(HOST_URL)
+        browser.save_screenshot("/home/photo0-" + str(aux) + ".png")
+        sleep(3)
+        aux += 1
+
+    if browser.title.startswith("My No-IP :: Hostnames") and aux < 4:
 
         # RENEW HOSTS
         try:
@@ -75,3 +84,4 @@ if browser.title == "Log In - No-IP":
         print("Error: cannot login. Check if account is not blocked.")
         browser.get(LOGOUT_URL)
 browser.quit()
+

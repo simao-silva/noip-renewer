@@ -1,4 +1,7 @@
-FROM python:3.9.1-alpine3.13
+ARG PYTHON_VERSION=
+ARG ALPINE_VERSION=
+
+FROM python:${PYTHON_VERSION}-alpine${ALPINE_VERSION}
 
 RUN apk add --no-cache chromium chromium-chromedriver && \
     pip3 install --no-cache-dir selenium && \
@@ -7,3 +10,4 @@ RUN apk add --no-cache chromium chromium-chromedriver && \
 ADD renew.py .
 
 ENTRYPOINT ["python3", "renew.py"]
+

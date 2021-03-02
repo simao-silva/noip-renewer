@@ -1,4 +1,6 @@
-FROM python:3.9.1-slim-buster
+ARG PYTHON_VERSION=
+
+FROM python:${PYTHON_VERSION}-slim-buster
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -11,3 +13,4 @@ RUN apt-get update && \
 ADD renew.py .
 
 ENTRYPOINT ["python3", "renew.py"]
+

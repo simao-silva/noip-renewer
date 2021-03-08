@@ -40,48 +40,62 @@ browserOptions.add_argument("disable-gpu")
 browser = webdriver.Chrome(options=browserOptions)
 
 # LOGIN
-print("Login page")
 browser.get(LOGIN_URL)
-if browser.title == "Log In - No-IP":
+if browser.current_url == LOGIN_URL and browser.title == "Log In - No-IP":
     browser.find_element_by_name("username").send_keys(email)
     browser.find_element_by_name("password").send_keys(password)
     browser.find_element_by_name("Login").click()
     sleep(2)
 
-    browser.get(HOST_URL)
-    # browser.save_screenshot("/home/photo0.png")
-    sleep(1)
+    if str(browser.current_url).startswith("https://my.noip.com/"):
 
-    aux = 1
-    while browser.title != "My No-IP :: Hostnames" and aux < 3:
+        print("Login successful")
+
         browser.get(HOST_URL)
-        browser.save_screenshot("/home/photo0-" + str(aux) + ".png")
-        sleep(3)
-        aux += 1
+        # browser.save_screenshot("/home/photo0.png")
+        sleep(1)
 
-    if browser.title.startswith("My No-IP :: Hostnames") and aux < 4:
+        aux = 1
+        while browser.title != "My No-IP :: Hostnames" and aux < 3:
+            browser.get(HOST_URL)
+            # browser.save_screenshot("/home/photo0-" + str(aux) + ".png")
+            sleep(3)
+            aux += 1
 
-        # RENEW HOSTS
-        try:
-            hosts = method2()
+        if browser.title.startswith("My No-IP :: Hostnames") and aux < 4:
+            confirmed_hosts = 0
 
-            for host in hosts:
-                button = host.find_element_by_tag_name("button")
-                if button.text == "Confirm":
-                    button.click()
-                    confirmed_host = host.find_element_by_tag_name("a").text
-                    print("Host \"" + confirmed_host + "\" confirmed")
-                    sleep(0.25)
+            # RENEW HOSTS
+            try:
+                hosts = method2()
+                print("Confirming hosts phase")
 
-            print("Finished")
+                for host in hosts:
+                    button = host.find_element_by_tag_name("button")
+                    if button.text == "Confirm":
+                        button.click()
+                        confirmed_host = host.find_element_by_tag_name("a").text
+                        confirmed_hosts += 1
+                        print("Host \"" + confirmed_host + "\" confirmed")
+                        sleep(0.25)
 
-        except Exception as e:
-            print("Error: ", e)
+                if confirmed_hosts == 1:
+                    print("1 host confirmed")
+                else:
+                    print(str(confirmed_hosts) + " hosts confirmed")
 
-        finally:
-            browser.get(LOGOUT_URL)
+                print("Finished")
+
+            except Exception as e:
+                print("Error: ", e)
+
+            finally:
+                print("Logging off\n\n")
+                browser.get(LOGOUT_URL)
     else:
         print("Error: cannot login. Check if account is not blocked.")
+        print("Logging off\n\n")
         browser.get(LOGOUT_URL)
+else:
+    print("Cannot access login page:\t" + LOGIN_URL)
 browser.quit()
-

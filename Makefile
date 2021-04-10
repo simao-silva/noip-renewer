@@ -1,5 +1,5 @@
 IMAGE_NAME=simaofsilva/noip-renewer
-PYTHON_VERSION=3.9.2
+PYTHON_VERSION=3.9.4
 ALPINE_VERSION=3.13
 
 build: build-32 build-64

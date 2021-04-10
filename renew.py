@@ -41,24 +41,34 @@ browser = webdriver.Chrome(options=browserOptions)
 
 # LOGIN
 browser.get(LOGIN_URL)
+
 if browser.current_url == LOGIN_URL and browser.title == "Log In - No-IP":
+
     browser.find_element_by_name("username").send_keys(email)
     browser.find_element_by_name("password").send_keys(password)
-    browser.find_element_by_name("Login").click()
+
+    login_button = False
+    for i in browser.find_elements_by_tag_name("button"):
+        if i.text == "Log In":
+            i.click()
+            login_button = True
+            break
+
+    if not login_button:
+        print("Login button has changed. Please contact support. ")
+        exit(1)
+
     sleep(2)
 
     if str(browser.current_url).startswith("https://my.noip.com/"):
 
         print("Login successful")
-
         browser.get(HOST_URL)
-        # browser.save_screenshot("/home/photo0.png")
         sleep(1)
 
         aux = 1
         while browser.title != "My No-IP :: Hostnames" and aux < 3:
             browser.get(HOST_URL)
-            # browser.save_screenshot("/home/photo0-" + str(aux) + ".png")
             sleep(3)
             aux += 1
 

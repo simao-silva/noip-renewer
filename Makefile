@@ -1,5 +1,5 @@
 IMAGE_NAME=simaofsilva/noip-renewer
-PYTHON_VERSION=3.9.4
+PYTHON_VERSION=3.9.5
 ALPINE_VERSION=3.13
 
 build: build-32 build-64
@@ -11,6 +11,8 @@ build-32:
 			--push \
 			--platform=linux/i386,linux/arm/v7,linux/amd64,linux/arm64/v8 \
 			--tag ${IMAGE_NAME}:${PYTHON_VERSION}-slim-buster \
+			--tag ${IMAGE_NAME}:slim-buster-latest \
+			--tag ${IMAGE_NAME}:latest-buster \
 			--file Dockerfile.32bits \
 			.
 

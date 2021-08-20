@@ -6,7 +6,7 @@ from sys import argv
 
 def method1():
     return browser \
-        .find_element_by_xpath("//*[@id=\"host-panel\"]/table/tbody") \
+        .find_element_by_xpath("/html/body/div[1]/div/div/div[3]/div[1]/div[2]/div/div/div[1]/div[1]/table/tbody") \
         .find_elements_by_tag_name("tr")
 
 
@@ -19,7 +19,7 @@ def method2():
 
 
 LOGIN_URL = "https://www.noip.com/login"
-HOST_URL = "https://my.noip.com/#!/dynamic-dns"
+HOST_URL = "https://my.noip.com/dynamic-dns"
 LOGOUT_URL = "https://my.noip.com/logout"
 
 # ASK CREDENTIALS
@@ -67,12 +67,12 @@ if browser.current_url == LOGIN_URL and browser.title == "Log In - No-IP":
         sleep(1)
 
         aux = 1
-        while browser.title != "My No-IP :: Hostnames" and aux < 3:
+        while not browser.title.startswith("My No-IP") and aux < 3:
             browser.get(HOST_URL)
             sleep(3)
             aux += 1
 
-        if browser.title.startswith("My No-IP :: Hostnames") and aux < 4:
+        if browser.title.startswith("My No-IP") and aux < 4:
             confirmed_hosts = 0
 
             # RENEW HOSTS

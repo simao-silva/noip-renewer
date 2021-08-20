@@ -8,9 +8,8 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends chromium chromium-driver && \
     apt-get clean && \
     pip3 install --no-cache-dir selenium && \
-    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* /usr/share/doc /usr/share/man
 
 ADD renew.py .
 
 ENTRYPOINT ["python3", "renew.py"]
-

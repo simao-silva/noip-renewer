@@ -111,3 +111,5 @@ renew.bak
 manifest-tool
 manifest.yaml
 deprecated/
+README.md
+Makefile

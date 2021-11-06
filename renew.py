@@ -2,20 +2,21 @@ from selenium import webdriver
 from getpass import getpass
 from time import sleep
 from sys import argv
+from selenium.webdriver.common.by import By
 
 
 def method1():
     return browser \
-        .find_element_by_xpath("/html/body/div[1]/div/div/div[3]/div[1]/div[2]/div/div/div[1]/div[1]/table/tbody") \
-        .find_elements_by_tag_name("tr")
+        .find_element(by=By.XPATH, value="/html/body/div[1]/div/div/div[3]/div[1]/div[2]/div/div/div[1]/div[1]/table/tbody") \
+        .find_elements(by=By.TAG_NAME, value="tr")
 
 
 def method2():
     return browser \
-        .find_element_by_id("host-panel") \
-        .find_element_by_tag_name("table") \
-        .find_element_by_tag_name("tbody") \
-        .find_elements_by_tag_name("tr")
+        .find_element(by=By.ID, value="host-panel") \
+        .find_element(by=By.TAG_NAME, value="table") \
+        .find_element(by=By.TAG_NAME, value="tbody") \
+        .find_elements(by=By.TAG_NAME, value="tr")
 
 
 LOGIN_URL = "https://www.noip.com/login"
@@ -44,11 +45,12 @@ browser.get(LOGIN_URL)
 
 if browser.current_url == LOGIN_URL and browser.title == "Log In - No-IP":
 
-    browser.find_element_by_name("username").send_keys(email)
-    browser.find_element_by_name("password").send_keys(password)
+    browser.find_element(by=By.NAME, value="username").send_keys(email)
+    browser.find_element(by=By.NAME, value="password").send_keys(password)
 
     login_button = False
-    for i in browser.find_elements_by_tag_name("button"):
+
+    for i in browser.find_elements(by=By.TAG_NAME, value="button"):
         if i.text == "Log In":
             i.click()
             login_button = True
@@ -81,10 +83,10 @@ if browser.current_url == LOGIN_URL and browser.title == "Log In - No-IP":
                 print("Confirming hosts phase")
 
                 for host in hosts:
-                    button = host.find_element_by_tag_name("button")
+                    button = host.find_element(by=By.TAG_NAME, value="button")
                     if button.text == "Confirm":
                         button.click()
-                        confirmed_host = host.find_element_by_tag_name("a").text
+                        confirmed_host = host.find_element(by=By.TAG_NAME, value="a").text
                         confirmed_hosts += 1
                         print("Host \"" + confirmed_host + "\" confirmed")
                         sleep(0.25)

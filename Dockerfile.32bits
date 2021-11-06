@@ -1,5 +1,16 @@
 ARG PYTHON_VERSION
 
+FROM python:${PYTHON_VERSION}-slim-buster AS compile-image
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+COPY detect-arch.sh /
+
+RUN VERSION="$(sh /detect-arch.sh)" && \
+    pip3 install --no-cache-dir --user selenium=="$VERSION"
+
+
+
 FROM python:${PYTHON_VERSION}-slim-buster
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -7,9 +18,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends chromium chromium-driver && \
     apt-get clean && \
-    pip3 install --no-cache-dir selenium && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* /usr/share/doc /usr/share/man
 
-ADD renew.py .
+COPY --from=compile-image /root/.local /root/.local
+
+ENV PATH=/root/.local/bin:$PATH
+
+COPY renew.py .
 
 ENTRYPOINT ["python3", "renew.py"]

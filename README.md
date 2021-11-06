@@ -10,7 +10,7 @@
 #### Pulling image from [Docker Hub](https://hub.docker.com/r/simaofsilva/noip-renewer/tags) 
 ```shell script
 # x86 or armhf
-docker pull simaofsilva/noip-renewer:slim-buster
+docker pull simaofsilva/noip-renewer:slim
 
 # x86_64 or aarch64
 docker pull simaofsilva/noip-renewer:latest
@@ -23,9 +23,9 @@ docker build -t simaofsilva/noip-renewer .
 
 ## Using image
 ```shell script
-docker run --rm -it simaofsilva/noip-renewer
+docker run --rm -it simaofsilva/noip-renewer:<TAG>
 ```
 or
 ```shell script
-docker run --rm -it simaofsilva/noip-renewer <EMAIL> <PASSWORD>
+docker run --rm -it simaofsilva/noip-renewer:<TAG> <EMAIL> <PASSWORD>
 ```

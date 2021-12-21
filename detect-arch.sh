@@ -1,6 +1,6 @@
 #!/bin/sh
 
-MAJOR_VERSION=4.0.0
+MAJOR_VERSION="$SELENIUM_VERSION"
 LEGACY_VERSION=3.141.0
 
 if [ "$(uname --m)" = "x86_64" ]; then

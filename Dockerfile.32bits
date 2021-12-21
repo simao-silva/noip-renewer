@@ -1,6 +1,9 @@
 ARG PYTHON_VERSION
+ARG SELENIUM_VERSION
 
 FROM python:${PYTHON_VERSION}-slim-buster AS compile-image
+
+ARG SELENIUM_VERSION
 
 ENV DEBIAN_FRONTEND=noninteractive
 

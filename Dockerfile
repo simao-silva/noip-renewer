@@ -1,7 +1,6 @@
 ARG PYTHON_VERSION
-ARG ALPINE_VERSION
 
-FROM python:${PYTHON_VERSION}-alpine${ALPINE_VERSION} AS compile-image
+FROM python:${PYTHON_VERSION}-alpine AS compile-image
 
 ARG SELENIUM_VERSION
 
@@ -10,7 +9,7 @@ RUN apk add --no-cache gcc libc-dev libffi-dev && \
 
 
 
-FROM python:${PYTHON_VERSION}-alpine${ALPINE_VERSION}
+FROM python:${PYTHON_VERSION}-alpine
 
 RUN apk add --no-cache chromium chromium-chromedriver && \
     rm -rf /var/cache/apk/* /tmp/* /usr/share/doc

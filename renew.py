@@ -3,6 +3,7 @@ from getpass import getpass
 from time import sleep
 from sys import argv
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
 
 
 def method1():
@@ -83,7 +84,11 @@ if browser.current_url == LOGIN_URL and browser.title == "Log In - No-IP":
                 print("Confirming hosts phase")
 
                 for host in hosts:
-                    button = host.find_element(by=By.TAG_NAME, value="button")
+                    try:
+                        button = host.find_element(by=By.TAG_NAME, value="button")
+                    except NoSuchElementException as e:
+                        break
+
                     if button.text == "Confirm":
                         button.click()
                         confirmed_host = host.find_element(by=By.TAG_NAME, value="a").text

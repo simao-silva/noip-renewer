@@ -10,7 +10,7 @@ on:
 
 env:
   IMAGE_NAME: "simaofsilva/noip-renewer"
-  SELENIUM_VERSION: "4.1.0" # renovate: datasource=pypi depName=selenium
+  SELENIUM_VERSION: "4.1.2" # renovate: datasource=pypi depName=selenium
   PIP_VERSION: "21.2.4" # renovate: datasource=pypi depName=pip
 
 jobs:

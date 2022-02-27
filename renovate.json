@@ -7,24 +7,6 @@
   "prHourlyLimit": 0,
   "packageRules": [
     {
-      "matchFiles": [
-        "Dockerfile"
-      ],
-      "automerge": true,
-      "automergeType": "branch",
-      "ignoreTests": true
-    },
-    {
-      "matchFiles": [
-        "Dockerfile.32bits"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "major"
-      ],
-      "enabled": false
-    },
-    {
       "matchUpdateTypes": [
         "major",
         "minor",
@@ -38,6 +20,7 @@
   ],
   "regexManagers": [
     {
+      "description": "Selenium version",
       "fileMatch": [
         "^\\.github\\/workflows\\/[^/]+\\.ya?ml$"
       ],

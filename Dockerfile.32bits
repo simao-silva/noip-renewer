@@ -1,17 +1,17 @@
-FROM --platform=$BUILDPLATFORM python:3.9.10-slim-bullseye@sha256:4049cc5ca4661f7d493889d2252de5207fc6aa6c3df51f663d72c43eff1d9779
+FROM python:3.9.10-slim-bullseye@sha256:4049cc5ca4661f7d493889d2252de5207fc6aa6c3df51f663d72c43eff1d9779
 
 ARG PIP_VERSION
-ARG SELENIUM_VERSION
+ARG SELENIUM_VERSION="3.141.0"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends rustc cargo libffi-dev libssl-dev && \
-    pip install --no-cache-dir --user pip=="$PIP_VERSION" selenium=="$SELENIUM_VERSION"
+    pip install --no-cache-dir pip=="$PIP_VERSION" && \
+    pip install --no-cache-dir --user selenium=="$SELENIUM_VERSION"
 
 
 
-FROM --platform=$BUILDPLATFORM python:3.9.10-slim-bullseye@sha256:4049cc5ca4661f7d493889d2252de5207fc6aa6c3df51f663d72c43eff1d9779
+FROM python:3.9.10-slim-bullseye@sha256:4049cc5ca4661f7d493889d2252de5207fc6aa6c3df51f663d72c43eff1d9779
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -24,6 +24,6 @@ COPY --from=0 /root/.local /root/.local
 
 ENV PATH=/root/.local/bin:$PATH
 
-COPY renew.py .
+COPY renew-legacy.py renew.py
 
 ENTRYPOINT ["python3", "renew.py"]

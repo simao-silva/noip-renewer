@@ -12,7 +12,7 @@
 # x86 or armhf
 docker pull simaofsilva/noip-renewer:debian
 
-# x86_64 or aarch64
+# x86_64 or aarch64/arm64
 docker pull simaofsilva/noip-renewer:latest
 ```
 

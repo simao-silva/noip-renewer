@@ -10,8 +10,8 @@ on:
 
 env:
   IMAGE_NAME: "simaofsilva/noip-renewer"
-  SELENIUM_VERSION: "4.1.2" # renovate: datasource=pypi depName=selenium
-  PIP_VERSION: "22.0.3" # renovate: datasource=pypi depName=pip
+  SELENIUM_VERSION: "4.1.0" # renovate: datasource=pypi depName=selenium
+  PIP_VERSION: "21.2.4" # renovate: datasource=pypi depName=pip
 
 jobs:
 
@@ -42,14 +42,13 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          platforms: linux/386,linux/arm/v7,linux/amd64,linux/arm64/v8
+          platforms: linux/386,linux/arm/v7
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:${{ steps.shortsha.outputs.shortsha }}-debian
             ${{ env.IMAGE_NAME }}:debian
           file: Dockerfile.32bits
           build-args: |
-            SELENIUM_VERSION=${{ env.SELENIUM_VERSION }}
             PIP_VERSION=${{ env.PIP_VERSION }}
   
 

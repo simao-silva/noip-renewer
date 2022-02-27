@@ -10,7 +10,7 @@
 #### Pulling image from [Docker Hub](https://hub.docker.com/r/simaofsilva/noip-renewer/tags) 
 ```shell script
 # x86 or armhf
-docker pull simaofsilva/noip-renewer:slim
+docker pull simaofsilva/noip-renewer:debian
 
 # x86_64 or aarch64
 docker pull simaofsilva/noip-renewer:latest

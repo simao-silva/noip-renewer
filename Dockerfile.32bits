@@ -1,20 +1,17 @@
-ARG PYTHON_VERSION
-ARG SELENIUM_VERSION
+FROM --platform=$BUILDPLATFORM python:3.9.10-slim-bullseye@sha256:4049cc5ca4661f7d493889d2252de5207fc6aa6c3df51f663d72c43eff1d9779
 
-FROM python:${PYTHON_VERSION}-slim-buster AS compile-image
-
+ARG PIP_VERSION
 ARG SELENIUM_VERSION
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-COPY detect-arch.sh /
-
-RUN VERSION="$(sh /detect-arch.sh)" && \
-    pip3 install --no-cache-dir --user selenium=="$VERSION"
-
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends rustc cargo libffi-dev libssl-dev && \
+    pip install --no-cache-dir --user pip=="$PIP_VERSION" selenium=="$SELENIUM_VERSION"
 
 
-FROM python:${PYTHON_VERSION}-slim-buster
+
+FROM --platform=$BUILDPLATFORM python:3.9.10-slim-bullseye@sha256:4049cc5ca4661f7d493889d2252de5207fc6aa6c3df51f663d72c43eff1d9779
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -23,7 +20,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* /usr/share/doc /usr/share/man
 
-COPY --from=compile-image /root/.local /root/.local
+COPY --from=0 /root/.local /root/.local
 
 ENV PATH=/root/.local/bin:$PATH
 

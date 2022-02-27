@@ -4,13 +4,17 @@ on:
   push:
     branches:
       - 'master'
+    paths:
+      - Dockerfile*
+      - .github/workflows/*.yml
 
 env:
   IMAGE_NAME: "simaofsilva/noip-renewer"
-  PYTHON_VERSION: "3.10.1"
-  SELENIUM_VERSION: "4.1.0"
+  SELENIUM_VERSION: "4.1.0" # renovate: datasource=pypi depName=selenium
+  PIP_VERSION: "21.2.4" # renovate: datasource=pypi depName=pip
 
 jobs:
+
   build-32:
     runs-on: ubuntu-latest
     steps:
@@ -29,20 +33,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Get commit short hash
+        id: shortsha
+        run: echo "::set-output name=shortsha::$(git rev-parse --short HEAD)"
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           context: .
-          platforms: linux/i386,linux/arm/v7,linux/amd64,linux/arm64/v8
+          platforms: linux/386,linux/arm/v7,linux/amd64,linux/arm64/v8
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:${{ env.PYTHON_VERSION }}-slim
-            ${{ env.IMAGE_NAME }}:slim
+            ${{ env.IMAGE_NAME }}:${{ steps.shortsha.outputs.shortsha }}-debian
+            ${{ env.IMAGE_NAME }}:debian
           file: Dockerfile.32bits
           build-args: |
-            PYTHON_VERSION=${{ env.PYTHON_VERSION }}
             SELENIUM_VERSION=${{ env.SELENIUM_VERSION }}
+            PIP_VERSION=${{ env.PIP_VERSION }}
   
 
   build-64:
@@ -64,6 +72,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Get commit short hash
+        id: shortsha
+        run: echo "::set-output name=shortsha::$(git rev-parse --short HEAD)"
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
@@ -72,10 +84,10 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:${{ env.PYTHON_VERSION }}-alpine
+            ${{ env.IMAGE_NAME }}:${{ steps.shortsha.outputs.shortsha }}-alpine
             ${{ env.IMAGE_NAME }}:alpine
             ${{ env.IMAGE_NAME }}:latest
           file: Dockerfile
           build-args: |
-            PYTHON_VERSION=${{ env.PYTHON_VERSION }}
             SELENIUM_VERSION=${{ env.SELENIUM_VERSION }}
+            PIP_VERSION=${{ env.PIP_VERSION }}

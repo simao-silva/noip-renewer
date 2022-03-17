@@ -1,4 +1,4 @@
-FROM python:3.10.2-slim-bullseye@sha256:6faf002f0bce2ce81bec4a2253edddf0326dad23fe4e95e90d7790eaee653da5
+FROM python:3.10.3-slim-bullseye@sha256:a8409dff6597f2ef5f7ecd3c672671bb2af9a390073efd74f95c54aa41cba22a
 
 ARG PIP_VERSION
 ARG SELENIUM_VERSION="3.141.0"
@@ -11,7 +11,7 @@ RUN apt-get update && \
 
 
 
-FROM python:3.10.2-slim-bullseye@sha256:6faf002f0bce2ce81bec4a2253edddf0326dad23fe4e95e90d7790eaee653da5
+FROM python:3.10.3-slim-bullseye@sha256:a8409dff6597f2ef5f7ecd3c672671bb2af9a390073efd74f95c54aa41cba22a
 
 ENV DEBIAN_FRONTEND=noninteractive
 

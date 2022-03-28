@@ -20,7 +20,7 @@ def method2():
         .find_elements(by=By.TAG_NAME, value="tr")
 
 
-LOGIN_URL = "https://www.noip.com/login"
+LOGIN_URL = "https://www.noip.com/login?ref_url=console"
 HOST_URL = "https://my.noip.com/dynamic-dns"
 LOGOUT_URL = "https://my.noip.com/logout"
 
@@ -63,7 +63,7 @@ if browser.current_url == LOGIN_URL and browser.title == "Log In - No-IP":
 
     sleep(2)
 
-    if str(browser.current_url).startswith("https://my.noip.com/"):
+    if str(browser.current_url).endswith("noip.com/"):
 
         print("Login successful")
         browser.get(HOST_URL)

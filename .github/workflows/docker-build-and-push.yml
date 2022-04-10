@@ -52,7 +52,7 @@ jobs:
           build-args: |
             PIP_VERSION=${{ env.PIP_VERSION }}
   
-
+  
   build-64:
     runs-on: ubuntu-latest
     steps:
@@ -91,3 +91,14 @@ jobs:
           build-args: |
             SELENIUM_VERSION=${{ env.SELENIUM_VERSION }}
             PIP_VERSION=${{ env.PIP_VERSION }}
+
+  delete_old_runs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@v2.0.1
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 15
+          keep_minimum_runs: 5

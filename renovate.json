@@ -20,7 +20,7 @@
   ],
   "regexManagers": [
     {
-      "description": "Selenium version",
+      "description": "Get versions for PyPI",
       "fileMatch": [
         "^\\.github\\/workflows\\/[^/]+\\.ya?ml$"
       ],

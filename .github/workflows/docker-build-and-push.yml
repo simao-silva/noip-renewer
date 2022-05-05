@@ -23,7 +23,7 @@ jobs:
         uses: docker/setup-qemu-action@v1.2.0
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1.7.0
+        uses: docker/setup-buildx-action@v2.0.0
 
       - name: Checkout
         uses: actions/checkout@v3.0.2
@@ -58,7 +58,7 @@ jobs:
         uses: docker/setup-qemu-action@v1.2.0
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1.7.0
+        uses: docker/setup-buildx-action@v2.0.0
 
       - name: Checkout
         uses: actions/checkout@v3.0.2

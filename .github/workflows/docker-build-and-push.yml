@@ -15,8 +15,7 @@ env:
   PIP_VERSION: "22.0.4" # renovate: datasource=pypi depName=pip
 
 jobs:
-
-  build-32:
+  build_debian:
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
@@ -43,15 +42,17 @@ jobs:
         uses: docker/build-push-action@v3.0.0
         with:
           context: .
-          platforms: linux/386,linux/arm/v7
+          platforms: linux/arm,linux/amd64,linux/arm64/v8
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:${{ steps.short_sha.outputs.shortsha }}-debian
             ${{ env.IMAGE_NAME }}:debian
-          file: Dockerfile.32bits
-          build-args: PIP_VERSION=${{ env.PIP_VERSION }}
+          file: Dockerfile.debian
+          build-args: |
+            SELENIUM_VERSION=${{ env.SELENIUM_VERSION }}
+            PIP_VERSION=${{ env.PIP_VERSION }}
 
-  build-64:
+  build_alpine:
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
@@ -78,7 +79,7 @@ jobs:
         uses: docker/build-push-action@v3.0.0
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64/v8
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:${{ steps.short_sha.outputs.shortsha }}-alpine

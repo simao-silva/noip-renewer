@@ -44,7 +44,7 @@ browser = webdriver.Chrome(options=browserOptions)
 # LOGIN
 browser.get(LOGIN_URL)
 
-if browser.current_url == LOGIN_URL and browser.title == "Log In - No-IP":
+if browser.current_url == LOGIN_URL:
 
     browser.find_element(by=By.NAME, value="username").send_keys(email)
     browser.find_element(by=By.NAME, value="password").send_keys(password)

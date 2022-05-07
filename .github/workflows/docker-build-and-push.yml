@@ -37,12 +37,24 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push for ARM v7
+        uses: docker/build-push-action@v3.0.0
+        with:
+          context: .
+          platforms: linux/arm/v7
+          load: true
+          tags: ${{ env.IMAGE_NAME }}:${{ steps.short_sha.outputs.shortsha }}-armv7
+          file: Dockerfile.debian
+          build-args: |
+            SELENIUM_VERSION=${{ env.SELENIUM_VERSION }}
+            PIP_VERSION=${{ env.PIP_VERSION }}
+
+      - name: Build and push for all
         id: docker_build
         uses: docker/build-push-action@v3.0.0
         with:
           context: .
-          platforms: linux/arm,linux/amd64,linux/arm64/v8
+          platforms: linux/arm/v7,linux/amd64,linux/arm64/v8
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}:${{ steps.short_sha.outputs.shortsha }}-debian

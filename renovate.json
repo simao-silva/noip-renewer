@@ -25,7 +25,7 @@
         "^\\.github\\/workflows\\/[^/]+\\.ya?ml$"
       ],
       "matchStrings": [
-        ".*VERSION: .(?<currentValue>.*). # renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>.*?))?"
+        ".*VERSION: .(?<currentValue>.*). # renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?"
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     }

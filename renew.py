@@ -86,15 +86,14 @@ if browser.current_url == LOGIN_URL:
                 for host in hosts:
                     try:
                         button = host.find_element(by=By.TAG_NAME, value="button")
-                    except NoSuchElementException as e:
-                        break
-
-                    if button.text == "Confirm":
                         button.click()
                         confirmed_host = host.find_element(by=By.TAG_NAME, value="a").text
                         confirmed_hosts += 1
-                        print("Host \"" + confirmed_host + "\" confirmed")
-                        sleep(0.25)
+                    except NoSuchElementException as e:
+                        break
+
+                    print("Host \"" + confirmed_host + "\" confirmed")
+                    sleep(0.25)
 
                 if confirmed_hosts == 1:
                     print("1 host confirmed")

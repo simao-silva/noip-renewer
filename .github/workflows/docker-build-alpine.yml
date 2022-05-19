@@ -13,6 +13,8 @@ env:
   IMAGE_NAME: "simaofsilva/noip-renewer"
   SELENIUM_VERSION: "4.1.5" # renovate: datasource=pypi depName=selenium versioning=pep440
   PIP_VERSION: "22.1" # renovate: datasource=pypi depName=pip versioning=pep440
+  GOOGLETRANS_VERSION: "3.1.0a0"
+  REQUESTS_VERSION: "2.27.1" # renovate: datasource=pypi depName=requests versioning=pep440
 
 jobs:
   build_alpine:
@@ -52,6 +54,8 @@ jobs:
           build-args: |
             SELENIUM_VERSION=${{ env.SELENIUM_VERSION }}
             PIP_VERSION=${{ env.PIP_VERSION }}
+            GOOGLETRANS_VERSION=${{ env.GOOGLETRANS_VERSION }}
+            REQUESTS_VERSION=${{ env.REQUESTS_VERSION }}
 
   delete_old_runs:
     runs-on: ubuntu-latest

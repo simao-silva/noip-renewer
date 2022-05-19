@@ -2,6 +2,8 @@ FROM python:3.10.4-slim-bullseye@sha256:54956d6c929405ff651516d5ebbc204203a6415c
 
 ARG PIP_VERSION
 ARG SELENIUM_VERSION
+ARG GOOGLETRANS_VERSION
+ARG REQUESTS_VERSION
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -11,7 +13,7 @@ RUN apt-get update && \
     if [ $(getconf LONG_BIT) -eq 32 ]; then apt-get install -y --no-install-recommends ${ARMV7_DEPS}; fi
 
 RUN pip install --no-cache-dir pip=="${PIP_VERSION}" && \
-    pip install --no-cache-dir --user selenium=="${SELENIUM_VERSION}"
+    pip install --no-cache-dir --user selenium=="${SELENIUM_VERSION}" googletrans=="$GOOGLETRANS_VERSION" requests=="$REQUESTS_VERSION"
 
 
 

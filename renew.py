@@ -4,6 +4,9 @@ from time import sleep
 from sys import argv
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from googletrans import Translator
+import requests
+import random
 
 
 def method1():
@@ -18,6 +21,21 @@ def method2():
         .find_element(by=By.TAG_NAME, value="table") \
         .find_element(by=By.TAG_NAME, value="tbody") \
         .find_elements(by=By.TAG_NAME, value="tr")
+
+
+def translate(text):
+    translator = Translator()
+    result = translator.translate(text, dest='en')
+    return result.text
+
+
+def get_user_agent():
+    r = requests.get(url="https://jnrbsn.github.io/user-agents/user-agents.json")
+    if r.status_code == 200:
+        agents = r.json()
+        return list(agents).pop(random.randint(0, len(agents)))
+    else:
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36"
 
 
 LOGIN_URL = "https://www.noip.com/login?ref_url=console"
@@ -38,6 +56,7 @@ browserOptions = webdriver.ChromeOptions()
 browserOptions.add_argument("--headless")
 browserOptions.add_argument("--no-sandbox")
 browserOptions.add_argument("disable-gpu")
+browserOptions.add_argument("user-agent=" + str(get_user_agent()))
 
 browser = webdriver.Chrome(options=browserOptions)
 
@@ -86,14 +105,15 @@ if browser.current_url == LOGIN_URL:
                 for host in hosts:
                     try:
                         button = host.find_element(by=By.TAG_NAME, value="button")
-                        button.click()
-                        confirmed_host = host.find_element(by=By.TAG_NAME, value="a").text
-                        confirmed_hosts += 1
                     except NoSuchElementException as e:
                         break
 
-                    print("Host \"" + confirmed_host + "\" confirmed")
-                    sleep(0.25)
+                    if button.text == "Confirm" or translate(button.text) == "Confirm":
+                        button.click()
+                        confirmed_host = host.find_element(by=By.TAG_NAME, value="a").text
+                        confirmed_hosts += 1
+                        print("Host \"" + confirmed_host + "\" confirmed")
+                        sleep(0.25)
 
                 if confirmed_hosts == 1:
                     print("1 host confirmed")

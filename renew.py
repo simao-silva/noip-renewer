@@ -31,11 +31,11 @@ def translate(text):
 
 def get_user_agent():
     r = requests.get(url="https://jnrbsn.github.io/user-agents/user-agents.json")
-    if r.status_code == 200:
+    if r.status_code == 200 and len(list(r.json())) > 0:
         agents = r.json()
         return list(agents).pop(random.randint(0, len(agents)))
     else:
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36"
+        return "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36"
 
 
 LOGIN_URL = "https://www.noip.com/login?ref_url=console"

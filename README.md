@@ -28,7 +28,7 @@ docker pull simaofsilva/noip-renewer:latest
 
 #### Building image locally
 ```shell script
-docker build -t simaofsilva/noip-renewer .
+docker build -t simaofsilva/noip-renewer -f Dockerfile.dev .
 ```
 
 ## Using image

@@ -40,7 +40,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build for ARM v7 (caching)
-        uses: docker/build-push-action@v3.0.0
+        uses: docker/build-push-action@v3.1.0
         with:
           context: .
           platforms: linux/arm/v7
@@ -55,7 +55,7 @@ jobs:
 
       - name: Build and push for all
         id: docker_build
-        uses: docker/build-push-action@v3.0.0
+        uses: docker/build-push-action@v3.1.0
         with:
           context: .
           platforms: linux/arm/v7,linux/amd64,linux/arm64/v8

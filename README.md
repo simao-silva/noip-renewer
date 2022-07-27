@@ -18,6 +18,7 @@
 ## Obtaining image
 
 #### Pulling image from [Docker Hub](https://hub.docker.com/r/simaofsilva/noip-renewer/tags) 
+
 ```shell script
 # armhf/armv7l
 docker pull simaofsilva/noip-renewer:debian
@@ -27,11 +28,13 @@ docker pull simaofsilva/noip-renewer:latest
 ```
 
 #### Building image locally
+
 ```shell script
 docker build -t simaofsilva/noip-renewer -f Dockerfile.dev .
 ```
 
 ## Using image
+
 ```shell script
 docker run --rm -it simaofsilva/noip-renewer:<TAG>
 ```
@@ -39,3 +42,8 @@ or
 ```shell script
 docker run --rm -it simaofsilva/noip-renewer:<TAG> <EMAIL> <PASSWORD>
 ```
+
+## Known issues / limitations
+* The script assumes that the No-IP account language is set to english. For other languages it depends on the translation provided by [googletrans](https://pypi.org/project/googletrans/) so it might not work in other languages ([#11](https://github.com/simao-silva/noip-renewer/issues/11));
+
+* In fresh accounts an extra pop up might appear that unable the script to proceed ([#14](https://github.com/simao-silva/noip-renewer/issues/14)). It appears to not show on following renovations.

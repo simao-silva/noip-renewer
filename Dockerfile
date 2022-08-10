@@ -1,4 +1,4 @@
-FROM python:3.10.6-alpine@sha256:42aa83599b62c068ebff6d4ce013008e4a059859916cc28c9b9b4e99b43f4961
+FROM python:3.10.6-alpine@sha256:db0f3888d0ef4293a6387462b87a75bcdd0c4bc4cfc798ec617a5923be780cf6
 
 ARG PIP_VERSION
 ARG SELENIUM_VERSION
@@ -11,7 +11,7 @@ RUN apk add --no-cache gcc libc-dev libffi-dev && \
 
 
 
-FROM python:3.10.6-alpine@sha256:42aa83599b62c068ebff6d4ce013008e4a059859916cc28c9b9b4e99b43f4961
+FROM python:3.10.6-alpine@sha256:db0f3888d0ef4293a6387462b87a75bcdd0c4bc4cfc798ec617a5923be780cf6
 
 RUN apk add --no-cache chromium chromium-chromedriver && \
     rm -rf /var/cache/apk/* /tmp/* /usr/share/doc

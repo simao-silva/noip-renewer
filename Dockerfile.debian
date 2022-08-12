@@ -1,4 +1,4 @@
-FROM python:3.10.6-slim-bullseye@sha256:08e62cce8df420d1a548f016f22446fb654ea393a29bf137be66ac8d4eebc4ff
+FROM python:3.10.6-slim-bullseye@sha256:dfd61b79212d5fa4b1f5dc121b0730422b35f217b4dc58aee640f84c0f67da52
 
 ARG PIP_VERSION
 ARG SELENIUM_VERSION
@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir pip=="${PIP_VERSION}" && \
 
 
 
-FROM python:3.10.6-slim-bullseye@sha256:08e62cce8df420d1a548f016f22446fb654ea393a29bf137be66ac8d4eebc4ff
+FROM python:3.10.6-slim-bullseye@sha256:dfd61b79212d5fa4b1f5dc121b0730422b35f217b4dc58aee640f84c0f67da52
 
 ENV DEBIAN_FRONTEND=noninteractive
 

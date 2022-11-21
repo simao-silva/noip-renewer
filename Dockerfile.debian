@@ -1,19 +1,35 @@
 FROM python:3.11.0-slim-bullseye@sha256:1cd45c5dad845af18d71745c017325725dc979571c1bbe625b67e6051533716c
 
+SHELL ["/bin/bash", "-c"]
+
 ARG PIP_VERSION
-ARG SELENIUM_VERSION
-ARG GOOGLETRANS_VERSION
-ARG REQUESTS_VERSION
-
 ENV DEBIAN_FRONTEND=noninteractive
-
 ARG ARMV7_DEPS="gcc libc6-dev libffi-dev rustc cargo libssl-dev"
 
 RUN apt-get update && \
     if [ $(getconf LONG_BIT) -eq 32 ]; then apt-get install -y --no-install-recommends ${ARMV7_DEPS}; fi
 
+COPY requirements.txt /requirements.txt
+
 RUN pip install --no-cache-dir pip=="${PIP_VERSION}" && \
-    pip install --no-cache-dir --user selenium=="${SELENIUM_VERSION}" googletrans=="$GOOGLETRANS_VERSION" requests=="$REQUESTS_VERSION"
+    pip install --no-cache-dir --user -r /requirements.txt
+
+
+
+FROM python:3.11.0-slim-bullseye@sha256:1cd45c5dad845af18d71745c017325725dc979571c1bbe625b67e6051533716c
+
+SHELL ["/bin/bash", "-c"]
+
+ARG GECKO_DRIVER_VERSION="0.32.0"
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl
+
+RUN set -x && \
+    if [ "$(uname --m)" == "x86_64" ]; then ARCH="linux64"; elif [ "$(uname --m)" == "aarch64" ]; then ARCH="linux-aarch64"; else ARCH="linux32"; fi && \
+    curl -sSL -O https://github.com/mozilla/geckodriver/releases/download/v${GECKO_DRIVER_VERSION}/geckodriver-v${GECKO_DRIVER_VERSION}-${ARCH}.tar.gz && \
+    tar zxf geckodriver-v${GECKO_DRIVER_VERSION}-${ARCH}.tar.gz
 
 
 
@@ -22,11 +38,12 @@ FROM python:3.11.0-slim-bullseye@sha256:1cd45c5dad845af18d71745c017325725dc97957
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends chromium chromium-driver && \
+    apt-get install -y --no-install-recommends firefox-esr && \
     apt-get clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* /usr/share/doc /usr/share/man
 
 COPY --from=0 /root/.local /root/.local
+COPY --from=1 /geckodriver /usr/local/bin/geckodriver
 
 ENV PATH=/root/.local/bin:$PATH
 

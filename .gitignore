@@ -110,5 +110,5 @@ geckodriver.log
 renew.bak
 deprecated/
 .idea
-*.txt
 debug
+test.sh

@@ -11,10 +11,7 @@ on:
 
 env:
   IMAGE_NAME: "simaofsilva/noip-renewer"
-  SELENIUM_VERSION: "4.6.0" # renovate: datasource=pypi depName=selenium versioning=pep440
   PIP_VERSION: "22.3.1" # renovate: datasource=pypi depName=pip versioning=pep440
-  GOOGLETRANS_VERSION: "3.1.0a0"
-  REQUESTS_VERSION: "2.28.1" # renovate: datasource=pypi depName=requests versioning=pep440
 
 jobs:
   build_debian:
@@ -48,10 +45,7 @@ jobs:
           tags: ${{ env.IMAGE_NAME }}:${{ steps.short_sha.outputs.shortsha }}-armv7
           file: Dockerfile.debian
           build-args: |
-            SELENIUM_VERSION=${{ env.SELENIUM_VERSION }}
             PIP_VERSION=${{ env.PIP_VERSION }}
-            GOOGLETRANS_VERSION=${{ env.GOOGLETRANS_VERSION }}
-            REQUESTS_VERSION=${{ env.REQUESTS_VERSION }}
 
       - name: Build and push for all
         id: docker_build
@@ -65,18 +59,15 @@ jobs:
             ${{ env.IMAGE_NAME }}:debian
           file: Dockerfile.debian
           build-args: |
-            SELENIUM_VERSION=${{ env.SELENIUM_VERSION }}
             PIP_VERSION=${{ env.PIP_VERSION }}
-            GOOGLETRANS_VERSION=${{ env.GOOGLETRANS_VERSION }}
-            REQUESTS_VERSION=${{ env.REQUESTS_VERSION }}
 
-  delete_old_runs:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Delete workflow runs
-        uses: Mattraks/delete-workflow-runs@v2.0.3
-        with:
-          token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          retain_days: 15
-          keep_minimum_runs: 5
+#  delete_old_runs:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Delete workflow runs
+#        uses: Mattraks/delete-workflow-runs@v2.0.3
+#        with:
+#          token: ${{ github.token }}
+#          repository: ${{ github.repository }}
+#          retain_days: 15
+#          keep_minimum_runs: 5

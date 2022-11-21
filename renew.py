@@ -52,13 +52,13 @@ else:
 
 # OPEN BROWSER
 print("Opening browser")
-browserOptions = webdriver.ChromeOptions()
+browserOptions = webdriver.FirefoxOptions()
 browserOptions.add_argument("--headless")
 browserOptions.add_argument("--no-sandbox")
 browserOptions.add_argument("disable-gpu")
 browserOptions.add_argument("user-agent=" + str(get_user_agent()))
 
-browser = webdriver.Chrome(options=browserOptions)
+browser = webdriver.Firefox(options=browserOptions)
 
 # LOGIN
 browser.get(LOGIN_URL)
@@ -67,12 +67,11 @@ if browser.current_url == LOGIN_URL:
 
     browser.find_element(by=By.NAME, value="username").send_keys(email)
     browser.find_element(by=By.NAME, value="password").send_keys(password)
-
     login_button = False
 
-    for i in browser.find_elements(by=By.TAG_NAME, value="button"):
-        if i.text == "Log In":
-            i.click()
+    for button in browser.find_elements(by=By.TAG_NAME, value="button"):
+        if button.text == "Log In":
+            button.click()
             login_button = True
             break
 

@@ -3,11 +3,12 @@ name: build and push image (Debian version)
 on:
   push:
     branches:
-      - 'master'
+      - "master"
     paths:
       - Dockerfile.debian
       - .github/workflows/docker-build-debian.yml
       - renew*.py
+      - requirements.txt
 
 env:
   IMAGE_NAME: "simaofsilva/noip-renewer"

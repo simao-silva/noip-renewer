@@ -31,13 +31,34 @@ jobs:
         id: short_sha
         run: echo "::set-output name=shortsha::$(git rev-parse --short HEAD)"
 
+      - name: Build image for tests
+        uses: docker/build-push-action@v3.2.0
+        with:
+          context: .
+          platforms: linux/amd64
+          load: true
+          tags: ${{ env.IMAGE_NAME }}:test-alpine
+          file: Dockerfile
+          build-args: |
+            PIP_VERSION=${{ env.PIP_VERSION }}
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.IMAGE_NAME }}:test-alpine
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: false
+          vuln-type: 'os,library'
+          severity: 'MEDIUM,CRITICAL,HIGH'
+
       - name: Login to DockerHub
         uses: docker/login-action@v2.1.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push for Docker Hub
         id: docker_build
         uses: docker/build-push-action@v3.2.0
         with:

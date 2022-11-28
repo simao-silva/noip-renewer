@@ -7,13 +7,6 @@
   "prHourlyLimit": 0,
   "packageRules": [
     {
-      "description": "Restrict upgrade of googletrans",
-      "matchPackageNames": [
-        "googletrans"
-      ],
-      "allowedVersions": "3.1.0a0"
-    },
-    {
       "matchUpdateTypes": [
         "major",
         "minor",

@@ -48,7 +48,7 @@ jobs:
           image-ref: ${{ env.IMAGE_NAME }}:test-debian
           format: 'table'
           exit-code: '1'
-          ignore-unfixed: false
+          ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'MEDIUM,CRITICAL,HIGH'
 

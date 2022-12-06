@@ -1,4 +1,4 @@
-FROM python:3.11.0-slim-bullseye@sha256:2d49cbc6900ee5e4801492b3b991e3c20b81ff5161ded93f93d691d179c119fa
+FROM python:3.11.0-slim-bullseye@sha256:ffd099b82333f4dc4727c54784be249470e60364825fb6ede05090b19440250c
 
 SHELL ["/bin/bash", "-c"]
 
@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir pip=="${PIP_VERSION}" && \
 
 
 
-FROM python:3.11.0-slim-bullseye@sha256:2d49cbc6900ee5e4801492b3b991e3c20b81ff5161ded93f93d691d179c119fa
+FROM python:3.11.0-slim-bullseye@sha256:ffd099b82333f4dc4727c54784be249470e60364825fb6ede05090b19440250c
 
 SHELL ["/bin/bash", "-c"]
 
@@ -33,7 +33,7 @@ RUN set -x && \
 
 
 
-FROM python:3.11.0-slim-bullseye@sha256:2d49cbc6900ee5e4801492b3b991e3c20b81ff5161ded93f93d691d179c119fa
+FROM python:3.11.0-slim-bullseye@sha256:ffd099b82333f4dc4727c54784be249470e60364825fb6ede05090b19440250c
 
 ENV DEBIAN_FRONTEND=noninteractive
 

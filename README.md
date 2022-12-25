@@ -2,8 +2,8 @@
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/simao-silva/noip-renewer?style=for-the-badge)
 ![GitHub issues](https://img.shields.io/github/issues/simao-silva/noip-renewer?style=for-the-badge)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/simao-silva/noip-renewer/build%20and%20push%20image%20(Alpine%20version)?label=Alpine%20build&style=for-the-badge)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/simao-silva/noip-renewer/build%20and%20push%20image%20(Debian%20version)?label=Debian%20build&style=for-the-badge)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/simao-silva/noip-renewer/docker-build-alpine.yml?label=Alpine%20build&style=for-the-badge)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/simao-silva/noip-renewer/docker-build-debian.yml?label=Debian%20build&style=for-the-badge)
 ![Docker Pulls](https://img.shields.io/docker/pulls/simaofsilva/noip-renewer?style=for-the-badge)
 ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/simaofsilva/noip-renewer/alpine?label=Alpine%20image%20size&style=for-the-badge)
 ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/simaofsilva/noip-renewer/debian?label=Debian%20image%20size&style=for-the-badge)

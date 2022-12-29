@@ -20,10 +20,12 @@
 #### Pulling image from [Docker Hub](https://hub.docker.com/r/simaofsilva/noip-renewer/tags) 
 
 ```shell script
-# armhf/armv7l
+# Debian
 docker pull simaofsilva/noip-renewer:debian
 
-# x86_64 or aarch64/arm64
+# Alpine
+docker pull simaofsilva/noip-renewer:alpine
+# or
 docker pull simaofsilva/noip-renewer:latest
 ```
 

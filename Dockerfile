@@ -14,7 +14,8 @@ FROM python:3.11.1-alpine@sha256:af8fef83397b3886ed93d2c81bf3b4e70d39c0789c1c6fe
 RUN apk add --no-cache firefox && \
     apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing geckodriver && \
     # Added patched versions from Trivy scan
-    apk upgrade krb5-libs && \
+    apk upgrade libcrypto3 libssl3 && \
+    pip install --no-cache-dir "setuptools>=65.5.1" && \
     rm -rf /var/cache/apk/* /tmp/*
 
 COPY --from=0 /root/.local /root/.local

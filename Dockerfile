@@ -1,4 +1,4 @@
-FROM python:3.11.1-alpine@sha256:e34691f27132b811ad833034d5f45917ec82f95c9f00ffdc1df232576ab8ea9b
+FROM python:3.11.1-alpine@sha256:2e23d6cd236ffccc88db47e7520f67cfb5cd9dd62b8d534d3249834930cc226e
 
 ARG PIP_VERSION
 
@@ -9,7 +9,7 @@ RUN apk add --no-cache gcc libc-dev libffi-dev && \
     pip install --no-cache-dir --user -r /requirements.txt
 
 
-FROM python:3.11.1-alpine@sha256:e34691f27132b811ad833034d5f45917ec82f95c9f00ffdc1df232576ab8ea9b
+FROM python:3.11.1-alpine@sha256:2e23d6cd236ffccc88db47e7520f67cfb5cd9dd62b8d534d3249834930cc226e
 
 RUN apk add --no-cache firefox && \
     apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing geckodriver && \

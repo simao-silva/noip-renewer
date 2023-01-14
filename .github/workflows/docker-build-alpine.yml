@@ -32,7 +32,7 @@ jobs:
         run: echo "::set-output name=shortsha::$(git rev-parse --short HEAD)"
 
       - name: Build image for tests
-        uses: docker/build-push-action@v3.2.0
+        uses: docker/build-push-action@v3.3.0
         with:
           context: .
           platforms: linux/amd64
@@ -60,7 +60,7 @@ jobs:
 
       - name: Build and push for Docker Hub
         id: docker_build
-        uses: docker/build-push-action@v3.2.0
+        uses: docker/build-push-action@v3.3.0
         with:
           context: .
           platforms: linux/amd64,linux/arm64/v8

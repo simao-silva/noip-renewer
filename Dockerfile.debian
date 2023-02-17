@@ -40,6 +40,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends firefox-esr && \
     # Added patched versions from Trivy scan
+    apt-get upgrade -y libgnutls30 && \
     pip install --no-cache-dir "setuptools>=65.5.1" && \
     apt-get clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* /usr/share/doc /usr/share/man

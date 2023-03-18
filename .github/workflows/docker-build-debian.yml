@@ -28,8 +28,8 @@ jobs:
         uses: actions/checkout@v3.4.0
 
       - name: Get commit short hash
-        id: short_sha
-        run: echo "::set-output name=shortsha::$(git rev-parse --short HEAD)"
+        id: short_digest
+        run: echo "shortsha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Build image for tests
         uses: docker/build-push-action@v4.0.0
@@ -64,7 +64,7 @@ jobs:
           context: .
           platforms: linux/arm/v7
           load: true
-          tags: ${{ env.IMAGE_NAME }}:${{ steps.short_sha.outputs.shortsha }}-armv7
+          tags: ${{ env.IMAGE_NAME }}:${{ steps.short_digest.outputs.shortsha }}-armv7
           file: Dockerfile.debian
           build-args: |
             PIP_VERSION=${{ env.PIP_VERSION }}
@@ -76,7 +76,7 @@ jobs:
           platforms: linux/arm/v7,linux/amd64,linux/arm64/v8
           push: true
           tags: |
-            ${{ env.IMAGE_NAME }}:${{ steps.short_sha.outputs.shortsha }}-debian
+            ${{ env.IMAGE_NAME }}:${{ steps.short_digest.outputs.shortsha }}-debian
             ${{ env.IMAGE_NAME }}:debian
           file: Dockerfile.debian
           build-args: |

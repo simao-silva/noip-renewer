@@ -20,7 +20,7 @@ FROM python:3.11.3-slim-bullseye@sha256:eaee5f73efa9ae962d2077756292bc4878c04fcb
 
 SHELL ["/bin/bash", "-c"]
 
-ARG GECKO_DRIVER_VERSION="0.32.0"
+ARG GECKO_DRIVER_VERSION="0.33.0"
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \

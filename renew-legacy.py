@@ -1,7 +1,8 @@
-from selenium import webdriver
 from getpass import getpass
-from time import sleep
 from sys import argv
+from time import sleep
+
+from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 
 
@@ -12,11 +13,12 @@ def method1():
 
 
 def method2():
-    return browser \
-        .find_element_by_id("host-panel") \
-        .find_element_by_tag_name("table") \
-        .find_element_by_tag_name("tbody") \
+    return (
+        browser.find_element_by_id("host-panel")
+        .find_element_by_tag_name("table")
+        .find_element_by_tag_name("tbody")
         .find_elements_by_tag_name("tr")
+    )
 
 
 LOGIN_URL = "https://www.noip.com/login?ref_url=console"
@@ -44,7 +46,6 @@ browser = webdriver.Chrome(options=browserOptions)
 browser.get(LOGIN_URL)
 
 if browser.current_url == LOGIN_URL and browser.title == "Log In - No-IP":
-
     browser.find_element_by_name("username").send_keys(email)
     browser.find_element_by_name("password").send_keys(password)
 
@@ -62,7 +63,6 @@ if browser.current_url == LOGIN_URL and browser.title == "Log In - No-IP":
     sleep(2)
 
     if str(browser.current_url).endswith("noip.com/"):
-
         print("Login successful")
         browser.get(HOST_URL)
         sleep(1)
@@ -91,7 +91,7 @@ if browser.current_url == LOGIN_URL and browser.title == "Log In - No-IP":
                         button.click()
                         confirmed_host = host.find_element_by_tag_name("a").text
                         confirmed_hosts += 1
-                        print("Host \"" + confirmed_host + "\" confirmed")
+                        print('Host "' + confirmed_host + '" confirmed')
                         sleep(0.25)
 
                 if confirmed_hosts == 1:

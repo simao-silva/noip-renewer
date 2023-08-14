@@ -1,12 +1,14 @@
-from selenium import webdriver
-from getpass import getpass
-from time import sleep
-from sys import argv
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
-import requests
 import random
+from getpass import getpass
+from sys import argv
+from time import sleep
+
+import requests
 from deep_translator import GoogleTranslator
+from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.service import Service
 
 
 def method1():
@@ -51,13 +53,13 @@ if __name__ == "__main__":
 
     # OPEN BROWSER
     print("Opening browser")
-    browserOptions = webdriver.FirefoxOptions()
-    browserOptions.add_argument("--headless")
-    browserOptions.add_argument("--no-sandbox")
-    browserOptions.add_argument("disable-gpu")
-    browserOptions.add_argument("user-agent=" + str(get_user_agent()))
+    browser_options = webdriver.FirefoxOptions()
+    browser_options.add_argument("--headless")
+    browser_options.add_argument("user-agent=" + str(get_user_agent()))
 
-    browser = webdriver.Firefox(options=browserOptions)
+    service = Service(executable_path="/usr/local/bin/geckodriver", log_output="/dev/null")
+
+    browser = webdriver.Firefox(options=browser_options, service=service)
 
     # LOGIN
     browser.get(LOGIN_URL)

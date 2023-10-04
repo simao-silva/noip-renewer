@@ -1,4 +1,5 @@
 from getpass import getpass
+import os
 from sys import argv
 from time import sleep
 
@@ -25,11 +26,20 @@ LOGIN_URL = "https://www.noip.com/login?ref_url=console"
 HOST_URL = "https://my.noip.com/dynamic-dns"
 LOGOUT_URL = "https://my.noip.com/logout"
 
-# ASK CREDENTIALS
-if len(argv) == 3:
-    email = argv[1]
-    password = argv[2]
-else:
+# GET CREDENTIALS
+email= os.environ["NO_IP_USERNAME"]
+password = os.environ["NO_IP_PASSWORD"]
+if((email == None or len(email) == 0) or (password == None or len(password) == 0)):
+    if(len(argv) == 3):
+        if(email == None):
+            email = argv[1]
+        if(password == None):
+            password = argv[2]
+    else:
+        if(email == None):
+            email = str(input("Email: ")).replace("\n", "")
+        if(password == None):
+            password = getpass("Password: ").replace("\n", "")
     email = str(input("Email: ")).replace("\n", "")
     password = getpass("Password: ").replace("\n", "")
 

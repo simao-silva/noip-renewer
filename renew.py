@@ -96,11 +96,8 @@ if __name__ == "__main__":
     browser.get(LOGIN_URL)
 
     if browser.current_url == LOGIN_URL:
-
-        try:
-            username_input = WebDriverWait(browser, 10).until(lambda browser: browser.find_element(by=By.ID, value="username"))
-        except TimeoutException:
-            exit_with_error(message="Username input not found within the specified timeout.")
+        browser.find_element(by=By.NAME, value="username").send_keys(email)
+        browser.find_element(by=By.NAME, value="password").send_keys(password)
 
         try:
             password_input = WebDriverWait(browser, 10).until(lambda browser: browser.find_element(by=By.ID, value="password"))

@@ -97,8 +97,6 @@ if __name__ == "__main__":
     browser.get(LOGIN_URL)
 
     if browser.current_url == LOGIN_URL:
-
-        print(browser.page_source)
         browser.find_element(by=By.NAME, value="username").send_keys(email)
         browser.find_element(by=By.NAME, value="password").send_keys(password)
 

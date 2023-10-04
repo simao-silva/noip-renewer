@@ -32,7 +32,8 @@ def translate(text):
 
 
 def get_user_agent():
-    r = requests.get(url="https://jnrbsn.github.io/user-agents/user-agents.json")
+    r = requests.get(
+        url="https://jnrbsn.github.io/user-agents/user-agents.json")
     if r.status_code == 200 and len(list(r.json())) > 0:
         agents = r.json()
         return list(agents).pop(random.randint(0, len(agents) - 1))
@@ -53,23 +54,26 @@ def get_credentials():
         - If the email or password is not set, it checks if the command line arguments were passed.
         - If the email or password is still not set, it prompts the user to enter the values interactively.
     """
-    email= os.environ["NO_IP_USERNAME"]
-    password = os.environ["NO_IP_PASSWORD"]
-    if((email == None or len(email) == 0) or (password == None or len(password) == 0)):
-        if(len(argv) == 3):
-            if(email == None):
+    email = None
+    password = None
+    if ('NO_IP_USERNAME' in os.environ and 'NO_IP_PASSWORD' in os.environ):
+        email = os.environ['NO_IP_USERNAME']
+        password = os.environ['NO_IP_PASSWORD']
+        if (email != None and len(email) > 0 and password != None and len(password) > 0):
+            return email, password
+    else:
+        if (len(argv) == 3):
+            if (email == None):
                 email = argv[1]
-            if(password == None):
+            if (password == None):
                 password = argv[2]
         else:
-            if(email == None):
+            if (email == None):
                 email = str(input("Email: ")).replace("\n", "")
-            if(password == None):
+            if (password == None):
                 password = getpass("Password: ").replace("\n", "")
-        email = str(input("Email: ")).replace("\n", "")
-        password = getpass("Password: ").replace("\n", "")
 
-    return email,password
+        return email, password
 
 
 if __name__ == "__main__":
@@ -78,14 +82,14 @@ if __name__ == "__main__":
     LOGOUT_URL = "https://my.noip.com/logout"
 
     email, password = get_credentials()
-
     # OPEN BROWSER
     print("Opening browser")
     browser_options = webdriver.FirefoxOptions()
     browser_options.add_argument("--headless")
     browser_options.add_argument("user-agent=" + str(get_user_agent()))
 
-    service = Service(executable_path="/usr/local/bin/geckodriver", log_output="/dev/null")
+    service = Service(
+        executable_path="/usr/local/bin/geckodriver", log_output="/dev/null")
 
     browser = webdriver.Firefox(options=browser_options, service=service)
 
@@ -94,6 +98,7 @@ if __name__ == "__main__":
 
     if browser.current_url == LOGIN_URL:
 
+        print(browser.page_source)
         browser.find_element(by=By.NAME, value="username").send_keys(email)
         browser.find_element(by=By.NAME, value="password").send_keys(password)
 
@@ -133,13 +138,15 @@ if __name__ == "__main__":
 
                     for host in hosts:
                         try:
-                            button = host.find_element(by=By.TAG_NAME, value="button")
+                            button = host.find_element(
+                                by=By.TAG_NAME, value="button")
                         except NoSuchElementException as e:
                             break
 
                         if button.text == "Confirm" or translate(button.text) == "Confirm":
                             button.click()
-                            confirmed_host = host.find_element(by=By.TAG_NAME, value="a").text
+                            confirmed_host = host.find_element(
+                                by=By.TAG_NAME, value="a").text
                             confirmed_hosts += 1
                             print("Host \"" + confirmed_host + "\" confirmed")
                             sleep(0.25)

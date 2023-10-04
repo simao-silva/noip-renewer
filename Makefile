@@ -28,4 +28,3 @@ build-64:
 		--tag ${IMAGE_NAME}:latest \
 		--file Dockerfile \
 		.
-

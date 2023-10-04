@@ -39,6 +39,14 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends firefox-esr && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* /usr/share/doc /usr/share/man
+
+# Fix for vulnerabilities reported by Trivy
+RUN apt-get update && \
+    apt-get upgrade -y libc-bin libc6 && \
+    apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* /usr/share/doc /usr/share/man
 

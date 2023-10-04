@@ -12,6 +12,8 @@ from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
 
+import os
+
 
 def get_hosts():
     return browser \
@@ -40,18 +42,44 @@ def exit_with_error(message):
     exit(1)
 
 
+def get_credentials():
+    """
+    Retrieves the credentials required for authentication.
+
+    Returns:
+        - email (str): The email address associated with the credentials.
+        - password (str): The password associated with the credentials.
+
+    Notes:
+        - The function first checks if the email and password are already set as environment variables.
+        - If the email or password is not set, it checks if the command line arguments were passed.
+        - If the email or password is still not set, it prompts the user to enter the values interactively.
+    """
+    email= os.environ["NO_IP_USERNAME"]
+    password = os.environ["NO_IP_PASSWORD"]
+    if((email == None or len(email) == 0) or (password == None or len(password) == 0)):
+        if(len(argv) == 3):
+            if(email == None):
+                email = argv[1]
+            if(password == None):
+                password = argv[2]
+        else:
+            if(email == None):
+                email = str(input("Email: ")).replace("\n", "")
+            if(password == None):
+                password = getpass("Password: ").replace("\n", "")
+        email = str(input("Email: ")).replace("\n", "")
+        password = getpass("Password: ").replace("\n", "")
+
+    return email,password
+
+
 if __name__ == "__main__":
     LOGIN_URL = "https://www.noip.com/login?ref_url=console"
     HOST_URL = "https://my.noip.com/dynamic-dns"
     LOGOUT_URL = "https://my.noip.com/logout"
 
-    # ASK CREDENTIALS
-    if len(argv) == 3:
-        email = argv[1]
-        password = argv[2]
-    else:
-        email = str(input("Email: ")).replace("\n", "")
-        password = getpass("Password: ").replace("\n", "")
+    email, password = get_credentials()
 
     # OPEN BROWSER
     print("Opening browser")

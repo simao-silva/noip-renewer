@@ -28,7 +28,8 @@ def translate(text):
 
 
 def get_user_agent():
-    r = requests.get(url="https://jnrbsn.github.io/user-agents/user-agents.json")
+    r = requests.get(
+        url="https://jnrbsn.github.io/user-agents/user-agents.json")
     if r.status_code == 200 and len(list(r.json())) > 0:
         agents = r.json()
         return list(agents).pop(random.randint(0, len(agents) - 1))
@@ -55,23 +56,26 @@ def get_credentials():
         - If the email or password is not set, it checks if the command line arguments were passed.
         - If the email or password is still not set, it prompts the user to enter the values interactively.
     """
-    email= os.environ["NO_IP_USERNAME"]
-    password = os.environ["NO_IP_PASSWORD"]
-    if((email == None or len(email) == 0) or (password == None or len(password) == 0)):
-        if(len(argv) == 3):
-            if(email == None):
+    email = None
+    password = None
+    if ('NO_IP_USERNAME' in os.environ and 'NO_IP_PASSWORD' in os.environ):
+        email = os.environ['NO_IP_USERNAME']
+        password = os.environ['NO_IP_PASSWORD']
+        if (email != None and len(email) > 0 and password != None and len(password) > 0):
+            return email, password
+    else:
+        if (len(argv) == 3):
+            if (email == None):
                 email = argv[1]
-            if(password == None):
+            if (password == None):
                 password = argv[2]
         else:
-            if(email == None):
+            if (email == None):
                 email = str(input("Email: ")).replace("\n", "")
-            if(password == None):
+            if (password == None):
                 password = getpass("Password: ").replace("\n", "")
-        email = str(input("Email: ")).replace("\n", "")
-        password = getpass("Password: ").replace("\n", "")
 
-    return email,password
+        return email, password
 
 
 if __name__ == "__main__":
@@ -80,7 +84,6 @@ if __name__ == "__main__":
     LOGOUT_URL = "https://my.noip.com/logout"
 
     email, password = get_credentials()
-
     # OPEN BROWSER
     print("Opening browser")
     browser_options = webdriver.FirefoxOptions()

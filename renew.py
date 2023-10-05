@@ -26,23 +26,6 @@ def get_hosts():
 def translate(text):
     return GoogleTranslator(source='auto', target='en').translate(text=text)
 
-
-def get_user_agent():
-    r = requests.get(
-        url="https://jnrbsn.github.io/user-agents/user-agents.json")
-    if r.status_code == 200 and len(list(r.json())) > 0:
-        agents = r.json()
-        return list(agents).pop(random.randint(0, len(agents) - 1))
-    else:
-        return "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36"
-
-
-def exit_with_error(message):
-    print(str(message))
-    browser.quit()
-    exit(1)
-
-
 def get_credentials():
     """
     Retrieves the credentials required for authentication.
@@ -76,7 +59,7 @@ def get_credentials():
                 password = getpass("Password: ").replace("\n", "")
 
         return email, password
-
+    
 
 if __name__ == "__main__":
     LOGIN_URL = "https://www.noip.com/login?ref_url=console"
@@ -84,11 +67,12 @@ if __name__ == "__main__":
     LOGOUT_URL = "https://my.noip.com/logout"
 
     email, password = get_credentials()
+
     # OPEN BROWSER
     print("Opening browser")
     browser_options = webdriver.FirefoxOptions()
-    browser_options.add_argument("--headless")
-    browser_options.add_argument("user-agent=" + get_user_agent())
+    # browser_options.add_argument("--headless")
+    browser_options.add_argument("user-agent=" + str("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"))
     service = Service(executable_path="/usr/local/bin/geckodriver", log_output="/dev/null")
     browser = webdriver.Firefox(options=browser_options, service=service)
 
@@ -96,38 +80,49 @@ if __name__ == "__main__":
     browser.get(LOGIN_URL)
 
     if browser.current_url == LOGIN_URL:
-        browser.find_element(by=By.NAME, value="username").send_keys(email)
-        browser.find_element(by=By.NAME, value="password").send_keys(password)
+
+        try:
+            username_input = WebDriverWait(browser, 10).until(lambda browser: browser.find_element(by=By.ID, value="username"))
+        except TimeoutException:
+            print("Username input not found within the specified timeout.")
+            browser.quit()
+            exit(1)
 
         try:
             password_input = WebDriverWait(browser, 10).until(lambda browser: browser.find_element(by=By.ID, value="password"))
         except TimeoutException:
-            exit_with_error(message="Password input not found within the specified timeout.")
+            print("Password input not found within the specified timeout.")
+            browser.quit()
+            exit(1)
 
         username_input.send_keys(email)
         password_input.send_keys(password)
 
         try:
-            WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.element_to_be_clickable((By.ID, "clogs-captcha-button")))
-            login_button = browser.find_element(By.ID, "clogs-captcha-button")
+            login_button = WebDriverWait(browser, 10).until(lambda browser: browser.find_element(by=By.ID, value="clogs-captcha-button"))
             login_button.click()
         except TimeoutException:
-            exit_with_error(message="Login button not found within the specified timeout.")
+            print("Login button not found within the specified timeout.")
+            browser.quit()
+            exit(1)
 
+        wait = WebDriverWait(driver=browser, timeout=20)
         try:
-            WebDriverWait(driver=browser, timeout=120, poll_frequency=3).until(expected_conditions.visibility_of_element_located((By.ID, "dashboard-nav")))
+            dashboard_nav = WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.visibility_of(browser.find_element(by=By.ID, value="dashboard-nav")))
             print("Login successful")
         except TimeoutException:
-            exit_with_error(message="Could not login. Check if account is blocked.")
-        except NoSuchElementException:
-            exit_with_error(message="Could not find element \"dashboard-nav\". Exiting.")
+            print("Could not login. Check if account is blocked.")
+            browser.quit()
+            exit(1)
 
         browser.get(HOST_URL)
 
         try:
-            WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.visibility_of(browser.find_element(by=By.ID, value="host-panel")))
+            create_hostname_button = WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.visibility_of(browser.find_element(by=By.ID, value="host-panel")))
         except TimeoutException:
-            exit_with_error(message="Could not load NO-IP hostnames page.")
+            print("Could not load NO-IP hostnames page.")
+            browser.quit()
+            exit(1)
 
         # CONFIRM HOSTS
         try:

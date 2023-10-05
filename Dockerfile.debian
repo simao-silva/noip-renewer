@@ -1,42 +1,64 @@
-FROM python:3.12.0-slim-bullseye@sha256:8c5ca5725a49e3ab3a1e76bd7e93fff1aeec2fdfd91288627f4510eea5a72e09
+FROM python:3.12.0-slim-bullseye@sha256:8c5ca5725a49e3ab3a1e76bd7e93fff1aeec2fdfd91288627f4510eea5a72e09 as builder
 
 SHELL ["/bin/bash", "-c"]
 
-ARG PIP_VERSION
+# Prevent Python from writing out pyc files
+ENV PYTHONDONTWRITEBYTECODE 1
+
+# Keep Python from buffering stdin/stdout
+ENV PYTHONUNBUFFERED 1
+
+# Disable any user interaction
 ENV DEBIAN_FRONTEND=noninteractive
+
+# Enable custom virtual environment
+ENV VIRTUAL_ENV=/opt/venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+ARG PIP_VERSION
 ARG ARMV7_DEPS="gcc libc6-dev libffi-dev rustc cargo libssl-dev"
 
+# Install required packages
 RUN apt-get update && \
     if [ $(getconf LONG_BIT) -eq 32 ]; then apt-get install -y --no-install-recommends ${ARMV7_DEPS}; fi
 
-COPY requirements.txt /requirements.txt
+# Add requirements file
+COPY requirements.txt .
 
-RUN pip install --no-cache-dir pip=="${PIP_VERSION}" && \
-    pip install --no-cache-dir --user -r /requirements.txt
+# Install requirements
+RUN python3 -m venv $VIRTUAL_ENV && \
+    pip install --upgrade pip=="${PIP_VERSION}" && \
+    pip install --no-cache-dir -r requirements.txt
 
 
 
-FROM python:3.12.0-slim-bullseye@sha256:8c5ca5725a49e3ab3a1e76bd7e93fff1aeec2fdfd91288627f4510eea5a72e09
+FROM python:3.12.0-slim-bullseye@sha256:8c5ca5725a49e3ab3a1e76bd7e93fff1aeec2fdfd91288627f4510eea5a72e09 as geckodriver
 
 SHELL ["/bin/bash", "-c"]
 
-ARG GECKO_DRIVER_VERSION
+ARG GECKODRIVER_VERSION
+
+# Disable any user interaction
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Install required packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends curl
 
+# Download geckodriver
 RUN set -x && \
     if [ "$(uname --m)" == "x86_64" ]; then ARCH="linux64"; elif [ "$(uname --m)" == "aarch64" ]; then ARCH="linux-aarch64"; else ARCH="linux32"; fi && \
-    curl -sSL -O https://github.com/mozilla/geckodriver/releases/download/v${GECKO_DRIVER_VERSION}/geckodriver-v${GECKO_DRIVER_VERSION}-${ARCH}.tar.gz && \
-    tar zxf geckodriver-v${GECKO_DRIVER_VERSION}-${ARCH}.tar.gz
+    curl -sSL -O https://github.com/mozilla/geckodriver/releases/download/v${GECKODRIVER_VERSION}/geckodriver-v${GECKODRIVER_VERSION}-${ARCH}.tar.gz && \
+    tar zxf geckodriver-v${GECKODRIVER_VERSION}-${ARCH}.tar.gz
 
 
 
 FROM python:3.12.0-slim-bullseye@sha256:8c5ca5725a49e3ab3a1e76bd7e93fff1aeec2fdfd91288627f4510eea5a72e09
 
+# Disable any user interaction
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Install required packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends firefox-esr && \
     apt-get autoremove -y && \
@@ -50,11 +72,16 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* /usr/share/doc /usr/share/man
 
-COPY --from=0 /root/.local /root/.local
-COPY --from=1 /geckodriver /usr/local/bin/geckodriver
+# Enable custom virtual environment
+ENV VIRTUAL_ENV=/opt/venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-ENV PATH=/root/.local/bin:$PATH
+# Copy dependencies from previous stage
+COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
 
-COPY renew.py renew.py
+# Copy geckodriver from previous stage
+COPY --from=geckodriver --chmod=755 /geckodriver /usr/local/bin/geckodriver
 
+# Copy and set the entrypoint bash script
+COPY renew.py .
 ENTRYPOINT ["python3", "renew.py"]

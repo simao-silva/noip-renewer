@@ -22,9 +22,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.0
 
-      - name: Get commit short hash
-        id: short_digest
-        run: echo "shortsha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      - name: Check isort compliance
+        uses: isort/isort-action@v1.1.0
+        with:
+          sort-paths: renew.py
 
       - name: Build image for tests
         uses: docker/build-push-action@v5.0.0

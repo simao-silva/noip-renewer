@@ -14,13 +14,13 @@
         "digest"
       ],
       "automerge": true,
-      "automergeType": "branch",
+      "automergeType": "pr",
       "ignoreTests": true
     }
   ],
   "regexManagers": [
     {
-      "description": "Get versions for PyPI",
+      "description": "Get versions for PyPI and Geckodriver",
       "fileMatch": [
         "^\\.github\\/workflows\\/[^/]+\\.ya?ml$"
       ],

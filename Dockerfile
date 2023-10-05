@@ -1,12 +1,25 @@
-FROM python:3.12.0-alpine@sha256:ae35274f417fc81ba6ee1fc84206e8517f28117566ee6a04a64f004c1409bdac
+FROM python:3.12.0-alpine@sha256:ae35274f417fc81ba6ee1fc84206e8517f28117566ee6a04a64f004c1409bdac as builder
+
+# Prevent Python from writing out pyc files
+ENV PYTHONDONTWRITEBYTECODE 1
+
+# Keep Python from buffering stdin/stdout
+ENV PYTHONUNBUFFERED 1
+
+# Enable custom virtual environment
+ENV VIRTUAL_ENV=/opt/venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 ARG PIP_VERSION
 
-COPY requirements.txt /requirements.txt
+# Add requirements file
+COPY requirements.txt requirements.txt
 
-RUN apk add --no-cache gcc libc-dev libffi-dev && \
-    pip install --no-cache-dir pip=="$PIP_VERSION" && \
-    pip install --no-cache-dir --user -r /requirements.txt
+# Install requirements
+RUN python3 -m venv $VIRTUAL_ENV && \
+    pip install --upgrade pip=="${PIP_VERSION}" && \
+    pip install --no-cache-dir -r requirements.txt
+
 
 
 FROM python:3.12.0-alpine@sha256:ae35274f417fc81ba6ee1fc84206e8517f28117566ee6a04a64f004c1409bdac
@@ -16,10 +29,13 @@ RUN apk add --no-cache firefox && \
     ln -s /usr/bin/geckodriver /usr/local/bin/geckodriver && \
     rm -rf /var/cache/apk/* /tmp/*
 
-COPY --from=0 /root/.local /root/.local
+# Enable custom virtual environment
+ENV VIRTUAL_ENV=/opt/venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-ENV PATH=/root/.local/bin:$PATH
+# Copy dependencies from previous stage
+COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
 
+# Copy and set the entrypoint bash script
 COPY renew.py .
-
 ENTRYPOINT ["python3", "renew.py"]

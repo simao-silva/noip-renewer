@@ -71,7 +71,7 @@ if __name__ == "__main__":
     # OPEN BROWSER
     print("Opening browser")
     browser_options = webdriver.FirefoxOptions()
-    # browser_options.add_argument("--headless")
+    browser_options.add_argument("--headless")
     browser_options.add_argument("user-agent=" + str("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"))
     service = Service(executable_path="/usr/local/bin/geckodriver", log_output="/dev/null")
     browser = webdriver.Firefox(options=browser_options, service=service)
@@ -131,6 +131,8 @@ if __name__ == "__main__":
             confirmed_hosts = 0
 
             for host in hosts:
+                current_host = host.find_element(by=By.TAG_NAME, value="a").text
+                print("Confirming \"" + current_host + "\"")
                 try:
                     button = host.find_element(by=By.TAG_NAME, value="button")
                 except NoSuchElementException as e:
@@ -138,9 +140,8 @@ if __name__ == "__main__":
 
                 if button.text == "Confirm" or translate(button.text) == "Confirm":
                     button.click()
-                    confirmed_host = host.find_element(by=By.TAG_NAME, value="a").text
                     confirmed_hosts += 1
-                    print("Host \"" + confirmed_host + "\" confirmed")
+                    print("Host \"" + current_host + "\" confirmed")
                     sleep(0.25)
 
             if confirmed_hosts == 1:

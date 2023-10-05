@@ -44,6 +44,10 @@ or
 ```shell script
 docker run --rm -it simaofsilva/noip-renewer:<TAG> <EMAIL> <PASSWORD>
 ```
+or
+```shell script
+docker run --rm --env EMAIL=<NO_IP_USERNAME> --env PASSWORD=<NO_IP_PASSWORD> simaofsilva/noip-renewer:<TAG> 
+```
 
 ## Known issues / limitations
 * The script assumes that the No-IP account language is set to english. For other languages it depends on the translation provided by [googletrans](https://pypi.org/project/googletrans/) so it might not work in other languages ([#11](https://github.com/simao-silva/noip-renewer/issues/11));

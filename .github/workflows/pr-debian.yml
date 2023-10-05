@@ -8,7 +8,7 @@ on:
 env:
   IMAGE_NAME: "simaofsilva/noip-renewer"
   PIP_VERSION: "23.2.1" # renovate: datasource=pypi depName=pip versioning=pep440
-  GECKO_DRIVER_VERSION: "0.33.0" # renovate: datasource=github-tags depName=mozilla/geckodriver
+  GECKODRIVER_VERSION: "0.33.0" # renovate: datasource=github-tags depName=mozilla/geckodriver
 
 jobs:
   build_debian:
@@ -23,9 +23,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.0
 
-      - name: Get commit short hash
-        id: short_digest
-        run: echo "shortsha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      - name: Check isort compliance
+        uses: isort/isort-action@v1.1.0
+        with:
+          sort-paths: renew.py
 
       - name: Build image for tests
         uses: docker/build-push-action@v5.0.0
@@ -37,7 +38,7 @@ jobs:
           file: Dockerfile.debian
           build-args: |
             PIP_VERSION=${{ env.PIP_VERSION }}
-            GECKO_DRIVER_VERSION=${{ env.GECKO_DRIVER_VERSION }}
+            GECKODRIVER_VERSION=${{ env.GECKODRIVER_VERSION }}
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master

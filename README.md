@@ -46,7 +46,7 @@ docker run --rm -it simaofsilva/noip-renewer:<TAG> <EMAIL> <PASSWORD>
 ```
 or
 ```shell script
-docker run --rm --env EMAIL=<NO_IP_USERNAME> --env PASSWORD=<NO_IP_PASSWORD> simaofsilva/noip-renewer:<TAG> 
+docker run --rm --env NO_IP_USERNAME=<EMAIL> --env NO_IP_PASSWORD=<PASSWORD> simaofsilva/noip-renewer:<TAG> 
 ```
 
 ## Known issues / limitations

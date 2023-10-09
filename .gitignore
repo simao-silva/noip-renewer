@@ -106,9 +106,9 @@ venv.bak/
 # others
 geckodriver.log
 *.png
-
 renew.bak
 deprecated/
 .idea
 debug
 test.sh
+.scannerwork

@@ -22,11 +22,32 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4.1.0
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
       - name: Check isort compliance
         uses: isort/isort-action@v1.1.0
         with:
           sort-paths: renew.py
+
+      # Triggering SonarQube analysis as results of it are required by Quality Gate check
+      - uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      # Check the Quality Gate status
+      - uses: sonarsource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      # Output from the Quality Gate
+      # The possible outputs of the "quality-gate-status" variable are "PASSED", "WARN" or "FAILED"
+      - name: "Example show SonarQube Quality Gate Status value"
+        if: always() # Run even if Quality Gate check failed
+        run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
 
       - name: Build image for tests
         uses: docker/build-push-action@v5.0.0

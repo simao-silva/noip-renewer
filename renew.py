@@ -132,7 +132,7 @@ if __name__ == "__main__":
 
             for host in hosts:
                 current_host = host.find_element(by=By.TAG_NAME, value="a").text
-                print("Confirming \"" + current_host + "\"")
+                print("Checking if host  [\"" + current_host + "\"] needs confirmation")
                 try:
                     button = host.find_element(by=By.TAG_NAME, value="button")
                 except NoSuchElementException as e:
@@ -141,7 +141,7 @@ if __name__ == "__main__":
                 if button.text == "Confirm" or translate(button.text) == "Confirm":
                     button.click()
                     confirmed_hosts += 1
-                    print("Host \"" + current_host + "\" confirmed")
+                    print("Host [\"" + current_host + "\"] confirmed")
                     sleep(0.25)
 
             if confirmed_hosts == 1:

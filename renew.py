@@ -1,3 +1,4 @@
+import os
 import random
 from getpass import getpass
 from sys import argv
@@ -61,6 +62,39 @@ def get_credentials():
         return email, password
     
 
+def exit_with_error(message):
+    print(str(message))
+    browser.quit()
+    exit(1)
+
+
+def get_credentials():
+    """
+    Retrieves the credentials required for authentication.
+
+    Returns:
+        - email (str): The email address associated with the credentials.
+        - password (str): The password associated with the credentials.
+
+    Notes:
+        - The function first checks if the email and password are already set as environment variables.
+        - If the email or password is not set, it checks if command line arguments were passed.
+        - If the email or password is still not set, it prompts the user to enter the values interactively.
+    """
+    email = os.getenv("NO_IP_USERNAME", "")
+    password = os.getenv("NO_IP_PASSWORD", "")
+
+    if len(email) == 0 or len(password) == 0:
+        if len(argv) == 3:
+            email = argv[1]
+            password = argv[2]
+        else:
+            email = str(input("Email: ")).replace("\n", "")
+            password = getpass("Password: ").replace("\n", "")
+
+    return email, password
+
+
 if __name__ == "__main__":
     LOGIN_URL = "https://www.noip.com/login?ref_url=console"
     HOST_URL = "https://my.noip.com/dynamic-dns"
@@ -84,45 +118,37 @@ if __name__ == "__main__":
         try:
             username_input = WebDriverWait(browser, 10).until(lambda browser: browser.find_element(by=By.ID, value="username"))
         except TimeoutException:
-            print("Username input not found within the specified timeout.")
-            browser.quit()
-            exit(1)
+            exit_with_error(message="Username input not found within the specified timeout.")
 
         try:
             password_input = WebDriverWait(browser, 10).until(lambda browser: browser.find_element(by=By.ID, value="password"))
         except TimeoutException:
-            print("Password input not found within the specified timeout.")
-            browser.quit()
-            exit(1)
+            exit_with_error(message="Password input not found within the specified timeout.")
 
         username_input.send_keys(email)
         password_input.send_keys(password)
 
         try:
-            login_button = WebDriverWait(browser, 10).until(lambda browser: browser.find_element(by=By.ID, value="clogs-captcha-button"))
+            WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.element_to_be_clickable((By.ID, "clogs-captcha-button")))
+            login_button = browser.find_element(By.ID, "clogs-captcha-button")
             login_button.click()
         except TimeoutException:
-            print("Login button not found within the specified timeout.")
-            browser.quit()
-            exit(1)
+            exit_with_error(message="Login button not found within the specified timeout.")
 
-        wait = WebDriverWait(driver=browser, timeout=20)
         try:
-            dashboard_nav = WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.visibility_of(browser.find_element(by=By.ID, value="dashboard-nav")))
+            WebDriverWait(driver=browser, timeout=120, poll_frequency=3).until(expected_conditions.visibility_of_element_located((By.ID, "dashboard-nav")))
             print("Login successful")
         except TimeoutException:
-            print("Could not login. Check if account is blocked.")
-            browser.quit()
-            exit(1)
+            exit_with_error(message="Could not login. Check if account is blocked.")
+        except NoSuchElementException:
+            exit_with_error(message="Could not find element \"dashboard-nav\". Exiting.")
 
         browser.get(HOST_URL)
 
         try:
-            create_hostname_button = WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.visibility_of(browser.find_element(by=By.ID, value="host-panel")))
+            WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.visibility_of(browser.find_element(by=By.ID, value="host-panel")))
         except TimeoutException:
-            print("Could not load NO-IP hostnames page.")
-            browser.quit()
-            exit(1)
+            exit_with_error(message="Could not load NO-IP hostnames page.")
 
         # CONFIRM HOSTS
         try:

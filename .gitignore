@@ -111,4 +111,5 @@ deprecated/
 .idea
 debug
 test.sh
+.vscode/settings.json
 .scannerwork

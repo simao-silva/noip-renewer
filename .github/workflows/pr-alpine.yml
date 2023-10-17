@@ -20,7 +20,7 @@ jobs:
         uses: docker/setup-buildx-action@v3.0.0
 
       - name: Checkout
-        uses: actions/checkout@v4.1.0
+        uses: actions/checkout@v4.1.1
 
       - name: Check isort compliance
         uses: isort/isort-action@v1.1.0

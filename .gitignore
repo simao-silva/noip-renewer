@@ -103,6 +103,9 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# SonarQube
+.scannerwork
+
 # others
 geckodriver.log
 *.png
@@ -111,5 +114,3 @@ deprecated/
 .idea
 debug
 test.sh
-.vscode/settings.json
-.scannerwork

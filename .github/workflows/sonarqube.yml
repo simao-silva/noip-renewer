@@ -17,9 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     if: "${{ github.actor == github.repository_owner }}"
     steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3.0.0
-
       - name: Checkout
         uses: actions/checkout@v4.1.1
         with:

@@ -19,6 +19,9 @@ jobs:
       - name: Print commiter name
         run: echo "The commiter name is $GITHUB_ACTOR"
 
+      - name: Print owner name
+        run: echo "The owner name is $GITHUB_REPOSITORY_OWNER"
+
   restrict:
     runs-on: ubuntu-latest
     # A job can expose output to another job

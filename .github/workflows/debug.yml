@@ -1,4 +1,4 @@
-name: SonarQube analysis
+name: Debug
 
 on:
   # Trigger analysis when pushing in master or pull requests, and when creating

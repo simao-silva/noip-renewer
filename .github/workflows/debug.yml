@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print commiter name
-        run: echo "The commiter name is ${{ env.GITHUB_ACTOR }}"
+        run: echo "The commiter name is $GITHUB_ACTOR"
 
   restrict:
     runs-on: ubuntu-latest

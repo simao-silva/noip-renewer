@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print commiter name
-        run: echo "The commiter name is ${{ github.event.commits[0].committer.name }}"
+        run: echo "The commiter name is ${{ github.actor }}"
 
       - name: Print owner name
         run: echo "The owner name is ${{ github.repository_owner }}"

@@ -1,4 +1,4 @@
-FROM python:3.12.0-slim-bullseye@sha256:d32d0c9d956bcf865447edd3c56f412efc4e8df187745fff66778b5375b9a076 AS builder
+FROM python:3.12.0-slim-bullseye@sha256:e5315daa9c4adbb8246ca11420a508ce3effce9ded5eb1878b6763f18fffb2ab AS builder
 
 SHELL ["/bin/bash", "-c"]
 
@@ -32,7 +32,7 @@ RUN python3 -m venv $VIRTUAL_ENV && \
 
 
 
-FROM python:3.12.0-slim-bullseye@sha256:d32d0c9d956bcf865447edd3c56f412efc4e8df187745fff66778b5375b9a076 AS geckodriver
+FROM python:3.12.0-slim-bullseye@sha256:e5315daa9c4adbb8246ca11420a508ce3effce9ded5eb1878b6763f18fffb2ab AS geckodriver
 
 SHELL ["/bin/bash", "-c"]
 
@@ -53,7 +53,7 @@ RUN set -x && \
 
 
 
-FROM python:3.12.0-slim-bullseye@sha256:d32d0c9d956bcf865447edd3c56f412efc4e8df187745fff66778b5375b9a076
+FROM python:3.12.0-slim-bullseye@sha256:e5315daa9c4adbb8246ca11420a508ce3effce9ded5eb1878b6763f18fffb2ab
 
 # Disable any user interaction
 ENV DEBIAN_FRONTEND=noninteractive

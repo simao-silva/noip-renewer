@@ -114,3 +114,4 @@ deprecated/
 .idea
 debug
 test.sh
+*.sarif

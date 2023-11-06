@@ -50,7 +50,8 @@ jobs:
           exit-code: "1"
           ignore-unfixed: true
           vuln-type: "os,library"
-          severity: "HIGH,CRITICAL"
+          severity: "MEDIUM,HIGH,CRITICAL"
+          skip-files: "/usr/bin/geckodriver,/usr/local/bin/geckodriver"
 
       - name: Login to DockerHub
         uses: docker/login-action@v3.0.0

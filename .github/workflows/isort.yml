@@ -1,4 +1,4 @@
-name: Run isort
+name: Isort
 
 on:
   - push

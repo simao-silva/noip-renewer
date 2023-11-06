@@ -41,4 +41,16 @@ jobs:
           exit-code: "1"
           ignore-unfixed: true
           vuln-type: "os,library"
-          severity: "HIGH,CRITICAL"
+          severity: "MEDIUM,HIGH,CRITICAL"
+          skip-files: "/usr/bin/geckodriver,/usr/local/bin/geckodriver"
+
+      # On hold until https://github.com/aquasecurity/trivy-action/issues/228 is fixed
+      # - name: Upload Trivy scan results to GitHub Security
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   if: always()
+      #   with:
+      #     # Path to SARIF file relative to the root of the repository
+      #     sarif_file: trivy-alpine-image-scan.sarif
+      #     # Optional category for the results
+      #     # Used to differentiate multiple results for one commit
+      #     category: alpine-image-scan

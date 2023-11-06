@@ -29,6 +29,11 @@ RUN apk add --no-cache firefox && \
     ln -s /usr/bin/geckodriver /usr/local/bin/geckodriver && \
     rm -rf /var/cache/apk/* /tmp/*
 
+# Fix vulnerabilities reported by Trivy
+ARG PIP_VERSION
+RUN apk upgrade --no-cache libcrypto3 libssl3 && \
+    /usr/local/bin/pip install --upgrade pip=="${PIP_VERSION}"
+
 # Enable custom virtual environment
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"

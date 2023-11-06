@@ -39,18 +39,17 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ env.IMAGE_NAME }}:test-debian
-          format: "sarif"
-          output: "trivy-debian-image-scan.sarif"
+          format: "table"
           exit-code: "1"
           ignore-unfixed: true
           vuln-type: "os,library"
           severity: "MEDIUM,CRITICAL,HIGH"
 
-      - name: Upload Trivy scan results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          # Path to SARIF file relative to the root of the repository
-          sarif_file: trivy-debian-image-scan.sarif
-          # Optional category for the results
-          # Used to differentiate multiple results for one commit
-          category: debian-image-scan
+      # - name: Upload Trivy scan results to GitHub Security
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   with:
+      #     # Path to SARIF file relative to the root of the repository
+      #     sarif_file: trivy-debian-image-scan.sarif
+      #     # Optional category for the results
+      #     # Used to differentiate multiple results for one commit
+      #     category: debian-image-scan

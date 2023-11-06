@@ -34,7 +34,7 @@ jobs:
             PIP_VERSION=${{ env.PIP_VERSION }}
 
       - name: Run Trivy vulnerability scanner
-        uses: LiamMacP/trivy-action@228-FixReturnCode
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ env.IMAGE_NAME }}:test-alpine
           format: "table"

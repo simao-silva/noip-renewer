@@ -1,7 +1,10 @@
 name: Hadolint
 
 on:
-  - push
+  push:
+    paths:
+      - Dockerfile
+      - Dockerfile.debian
 
 permissions:
   contents: read

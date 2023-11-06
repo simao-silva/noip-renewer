@@ -1,0 +1,30 @@
+name: Trivy scanner
+
+on:
+  - push
+
+jobs:
+  trivy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Run Trivy scanner on repository
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: repo
+          ignore-unfixed: true
+          vuln-type: "os,library"
+          severity: "MEDIUM,HIGH,CRITICAL"
+          format: "sarif"
+          output: "trivy-repository-scan.sarif"
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: trivy-repository-scan.sarif
+          # Optional category for the results
+          # Used to differentiate multiple results for one commit
+          category: repository-scan

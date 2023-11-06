@@ -37,19 +37,19 @@ jobs:
         uses: LiamMacP/trivy-action@228-FixReturnCode
         with:
           image-ref: ${{ env.IMAGE_NAME }}:test-alpine
-          format: "sarif"
-          output: "trivy-alpine-image-scan.sarif"
+          format: "table"
           exit-code: "1"
           ignore-unfixed: true
           vuln-type: "os,library"
           severity: "MEDIUM,HIGH,CRITICAL"
 
-      - name: Upload Trivy scan results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v2
-        if: always()
-        with:
-          # Path to SARIF file relative to the root of the repository
-          sarif_file: trivy-alpine-image-scan.sarif
-          # Optional category for the results
-          # Used to differentiate multiple results for one commit
-          category: alpine-image-scan
+      # On hold until https://github.com/aquasecurity/trivy-action/issues/228 is fixed
+      # - name: Upload Trivy scan results to GitHub Security
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   if: always()
+      #   with:
+      #     # Path to SARIF file relative to the root of the repository
+      #     sarif_file: trivy-alpine-image-scan.sarif
+      #     # Optional category for the results
+      #     # Used to differentiate multiple results for one commit
+      #     category: alpine-image-scan

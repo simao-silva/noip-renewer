@@ -1,4 +1,4 @@
-name: Trivy scanner
+name: Hadolint
 
 on:
   - push
@@ -7,31 +7,33 @@ permissions:
   contents: read
 
 jobs:
-  trivy:
+  hadolint:
     permissions:
       contents: read # for actions/checkout to fetch code
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+    strategy:
+      matrix:
+        file: [Dockerfile, Dockerfile.debian]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
 
-      - name: Run Trivy scanner on repository
-        uses: aquasecurity/trivy-action@master
+      - name: Validate ${{ matrix.file }}
+        uses: hadolint/hadolint-action@v3.1.0
         with:
-          scan-type: repo
-          ignore-unfixed: true
-          vuln-type: "os,library"
-          severity: "MEDIUM,HIGH,CRITICAL"
-          format: "sarif"
-          output: "trivy-repository-scan.sarif"
+          dockerfile: ${{ matrix.file }}
+          no-fail: true
+          verbose: true
+          format: sarif
+          output-file: ${{ matrix.file }}.sarif
 
-      - name: Upload Trivy scan results to GitHub Security tab
+      - name: Upload Hadolint results of ${{ matrix.file }}
         uses: github/codeql-action/upload-sarif@v2.22.5
         with:
           # Path to SARIF file relative to the root of the repository
-          sarif_file: trivy-repository-scan.sarif
+          sarif_file: ${{ matrix.file }}.sarif
           # Optional category for the results
           # Used to differentiate multiple results for one commit
-          category: repository-scan
+          category: hadolint-${{ matrix.file }}-validation

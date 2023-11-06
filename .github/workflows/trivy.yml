@@ -34,4 +34,7 @@ jobs:
           sarif_file: trivy-repository-scan.sarif
           # Optional category for the results
           # Used to differentiate multiple results for one commit
-          category: repository-scan
+          # category: repository-scan
+
+      - name: See file
+        run: cat trivy-repository-scan.sarif

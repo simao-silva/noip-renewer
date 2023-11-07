@@ -10,28 +10,41 @@ ENV PYTHONUNBUFFERED 1
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
+# Set PIP version from build args
 ARG PIP_VERSION
 
+# Set the working directory
+WORKDIR /app
+
 # Add requirements file
-COPY requirements.txt requirements.txt
+COPY requirements.txt .
 
 # Install requirements
 RUN python3 -m venv $VIRTUAL_ENV && \
-    pip install --upgrade pip=="${PIP_VERSION}" && \
+    pip install --no-cache-dir --upgrade pip=="${PIP_VERSION}" && \
     pip install --no-cache-dir -r requirements.txt
 
 
 
 FROM python:3.12.0-alpine@sha256:a5d1738d6abbdff3e81c10b7f86923ebcb340ca536e21e8c5ee7d938d263dba1
 
-RUN apk add --no-cache firefox && \
-    apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing geckodriver && \
+# renovate: datasource=repology depName=alpine_3_18/firefox versioning=loose
+ARG FIREFOX_VERSION="119.0-r0"
+
+# renovate: datasource=repology depName=alpine_edge/geckodriver versioning=loose
+ARG GECKODRIVER_VERSION="0.33.0-r1"
+
+# renovate: datasource=repology depName=alpine_3_18/openssl versioning=loose
+ARG OPENSSL_VERSION="3.1.4-r0"
+
+RUN apk add --no-cache firefox="${FIREFOX_VERSION}" && \
+    apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing geckodriver="${GECKODRIVER_VERSION}" && \
     ln -s /usr/bin/geckodriver /usr/local/bin/geckodriver && \
     rm -rf /var/cache/apk/* /tmp/*
 
 # Fix vulnerabilities reported by Trivy
 ARG PIP_VERSION
-RUN apk upgrade --no-cache libcrypto3 libssl3 && \
+RUN apk add --no-cache libcrypto3="${OPENSSL_VERSION}" libssl3="${OPENSSL_VERSION}" && \
     /usr/local/bin/pip install --upgrade pip=="${PIP_VERSION}"
 
 # Enable custom virtual environment
@@ -40,6 +53,9 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # Copy dependencies from previous stage
 COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
+
+# Set the working directory
+WORKDIR /app
 
 # Copy and set the entrypoint bash script
 COPY renew.py .

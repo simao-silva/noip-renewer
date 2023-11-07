@@ -1,4 +1,4 @@
-FROM python:3.12.0-slim-bullseye@sha256:05b6879e27675b91b71beba0011132ae2a461468fd9b1f2ccfe16fb0c24d7c3f AS builder
+FROM python:3.12.0-slim-bookworm@sha256:80571b64ab7b94950d49d413f074e1932b65f6f75e0c34747b40ea41889a2ca9 AS builder
 
 SHELL ["/bin/bash", "-c"]
 
@@ -16,51 +16,87 @@ ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 ARG PIP_VERSION
-ARG ARMV7_DEPS="gcc libc6-dev libffi-dev rustc cargo libssl-dev"
+
+# renovate: datasource=repology depName=debian_12/gcc-12 versioning=loose
+ARG GCC_VERSION="4:12.2.0-3"
+
+# renovate: datasource=repology depName=debian_12/glibc versioning=loose
+ARG GLIBC_VERSION="2.36-9+deb12u3"
+
+# renovate: datasource=repology depName=debian_12/libffi versioning=loose
+ARG LIBFFI_VERSION="3.4.4-1"
+
+# renovate: datasource=repology depName=debian_12/rustc versioning=loose
+ARG RUSTC_VERSION="1.63.0+dfsg1-2"
+
+# renovate: datasource=repology depName=debian_12/cargo versioning=loose
+ARG CARGO_VERSION="0.66.0+ds1-1"
+
+# renovate: datasource=repology depName=debian_12/openssl versioning=loose
+ARG OPENSSL_VERSION="3.0.11-1~deb12u2"
+
+ARG ARMV7_DEPS=" \
+    gcc=${GCC_VERSION} \
+    libc6-dev=${GLIBC_VERSION} \
+    libffi-dev=${LIBFFI_VERSION} \
+    rustc=${RUSTC_VERSION} \
+    cargo=${CARGO_VERSION} \
+    libssl-dev=${OPENSSL_VERSION} \
+    "
 
 # Install required packages
+# hadolint ignore=DL3008
 RUN apt-get update && \
-    if [ $(getconf LONG_BIT) -eq 32 ]; then apt-get install -y --no-install-recommends ${ARMV7_DEPS}; fi
+    if [ "$(getconf LONG_BIT)" -eq 32 ]; then apt-get install -y --no-install-recommends ${ARMV7_DEPS}; fi
+
+# Set the working directory
+WORKDIR /app
 
 # Add requirements file
 COPY requirements.txt .
 
 # Install requirements
 RUN python3 -m venv $VIRTUAL_ENV && \
-    pip install --upgrade pip=="${PIP_VERSION}" && \
+    pip install --no-cache-dir --upgrade pip=="${PIP_VERSION}" && \
     pip install --no-cache-dir -r requirements.txt
 
 
 
-FROM python:3.12.0-slim-bullseye@sha256:05b6879e27675b91b71beba0011132ae2a461468fd9b1f2ccfe16fb0c24d7c3f AS geckodriver
+FROM python:3.12.0-slim-bookworm@sha256:80571b64ab7b94950d49d413f074e1932b65f6f75e0c34747b40ea41889a2ca9 AS geckodriver
 
 SHELL ["/bin/bash", "-c"]
-
-ARG GECKODRIVER_VERSION
 
 # Disable any user interaction
 ENV DEBIAN_FRONTEND=noninteractive
 
+ARG GECKODRIVER_VERSION
+
+# renovate: datasource=repology depName=debian_12/curl versioning=loose
+ARG CURL_VERSION="7.88.1-10+deb12u4"
+
 # Install required packages
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl
+    apt-get install -y --no-install-recommends curl="${CURL_VERSION}"
 
 # Download geckodriver
 RUN set -x && \
     if [ "$(uname --m)" == "x86_64" ]; then ARCH="linux64"; elif [ "$(uname --m)" == "aarch64" ]; then ARCH="linux-aarch64"; else ARCH="linux32"; fi && \
-    curl -sSL -O https://github.com/mozilla/geckodriver/releases/download/v${GECKODRIVER_VERSION}/geckodriver-v${GECKODRIVER_VERSION}-${ARCH}.tar.gz && \
-    tar zxf geckodriver-v${GECKODRIVER_VERSION}-${ARCH}.tar.gz
+    curl -sSL -O https://github.com/mozilla/geckodriver/releases/download/v"${GECKODRIVER_VERSION}"/geckodriver-v"${GECKODRIVER_VERSION}"-"${ARCH}".tar.gz && \
+    tar zxf geckodriver-v"${GECKODRIVER_VERSION}"-"${ARCH}".tar.gz
 
 
 
-FROM python:3.12.0-slim-bullseye@sha256:05b6879e27675b91b71beba0011132ae2a461468fd9b1f2ccfe16fb0c24d7c3f
+FROM python:3.12.0-slim-bookworm@sha256:80571b64ab7b94950d49d413f074e1932b65f6f75e0c34747b40ea41889a2ca9
 
 # Disable any user interaction
 ENV DEBIAN_FRONTEND=noninteractive
 
+# renovate: datasource=repology depName=debian_12/firefox versioning=loose
+ARG FIREFOX_VERSION="115.4.0esr-1~deb12u1"
+
 # Install required packages
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends firefox-esr && \
+    apt-get install -y --no-install-recommends firefox-esr="${FIREFOX_VERSION}" && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* /usr/share/doc /usr/share/man
@@ -78,6 +114,9 @@ COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
 
 # Copy geckodriver from previous stage
 COPY --from=geckodriver --chmod=755 /geckodriver /usr/local/bin/geckodriver
+
+# Set the working directory
+WORKDIR /app
 
 # Copy and set the entrypoint bash script
 COPY renew.py .

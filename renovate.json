@@ -7,6 +7,26 @@
   "prHourlyLimit": 0,
   "packageRules": [
     {
+      "matchDatasources": [
+        "repology"
+      ],
+      "matchPackagePatterns": [
+        "^debian_12/"
+      ],
+      "groupName": "debian packages",
+      "groupSlug": "debian"
+    },
+    {
+      "matchDatasources": [
+        "repology"
+      ],
+      "matchPackagePatterns": [
+        "^alpine_3_18/"
+      ],
+      "groupName": "alpine packages",
+      "groupSlug": "alpine"
+    },
+    {
       "matchUpdateTypes": [
         "major",
         "minor",
@@ -22,10 +42,20 @@
     {
       "description": "Get versions for PyPI and Geckodriver",
       "fileMatch": [
-        "^\\.github\\/workflows\\/[^/]+\\.ya?ml$"
+        "^\\.github\\/workflows\\/[^\\/]+\\.ya?ml"
       ],
       "matchStrings": [
         ".*VERSION: .(?<currentValue>.*). # renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    },
+    {
+      "description": "Update repology datasource in Dockerfiles",
+      "fileMatch": [
+        "^Dockerfile.*$"
+      ],
+      "matchStrings": [
+        "#\\srenovate:\\sdatasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?( extractVersion=(?<extractVersion>.*?))?\\s(ENV|ARG) .*?_VERSION=\"(?<currentValue>.*)\"\\s"
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     }

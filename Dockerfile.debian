@@ -18,7 +18,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 ARG PIP_VERSION
 
 # renovate: datasource=repology depName=debian_12/gcc-12 versioning=loose
-ARG GCC_VERSION="4:12.2.0-3"
+ARG GCC_VERSION="12.2.0-14"
 
 # renovate: datasource=repology depName=debian_12/glibc versioning=loose
 ARG GLIBC_VERSION="2.36-9+deb12u3"

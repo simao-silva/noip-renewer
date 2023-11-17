@@ -33,7 +33,7 @@ jobs:
         run: echo "shortsha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Build image for tests
-        uses: docker/build-push-action@v5.0.0
+        uses: docker/build-push-action@v5.1.0
         with:
           context: .
           platforms: linux/amd64
@@ -61,7 +61,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build for ARM v7 (caching)
-        uses: docker/build-push-action@v5.0.0
+        uses: docker/build-push-action@v5.1.0
         with:
           context: .
           platforms: linux/arm/v7
@@ -73,7 +73,7 @@ jobs:
             GECKODRIVER_VERSION=${{ env.GECKODRIVER_VERSION }}
 
       - name: Build and push all to Docker Hub
-        uses: docker/build-push-action@v5.0.0
+        uses: docker/build-push-action@v5.1.0
         with:
           context: .
           platforms: linux/arm/v7,linux/amd64,linux/arm64/v8

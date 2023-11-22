@@ -92,7 +92,7 @@ FROM python:3.12.0-slim-bookworm@sha256:32477c7ecb3b18a47cff8eb5b8149bc21c858998
 ENV DEBIAN_FRONTEND=noninteractive
 
 # renovate: datasource=repology depName=debian_12/firefox-esr versioning=loose
-ARG FIREFOX_VERSION="115.4.0esr-1~deb12u1"
+ARG FIREFOX_VERSION="115.5.0esr-1~deb12u1"
 
 # Install required packages
 RUN apt-get update && \

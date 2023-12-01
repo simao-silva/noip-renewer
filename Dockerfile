@@ -1,4 +1,4 @@
-FROM python:3.12.0-alpine@sha256:3d2969ec27f0b38fc53ba7e4b6e01459a6f397f27649d82dc8e82631267bca0d AS builder
+FROM python:3.12.0-alpine@sha256:1d688a37293956d3e0658dfb54938082933cca848ec9105c1680b39d91b912a8 AS builder
 
 # Prevent Python from writing out pyc files
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -26,7 +26,7 @@ RUN python3 -m venv $VIRTUAL_ENV && \
 
 
 
-FROM python:3.12.0-alpine@sha256:3d2969ec27f0b38fc53ba7e4b6e01459a6f397f27649d82dc8e82631267bca0d
+FROM python:3.12.0-alpine@sha256:1d688a37293956d3e0658dfb54938082933cca848ec9105c1680b39d91b912a8
 
 # renovate: datasource=repology depName=alpine_3_18/firefox versioning=loose
 ARG FIREFOX_VERSION="119.0-r0"

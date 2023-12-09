@@ -38,7 +38,7 @@ ARG GECKODRIVER_VERSION="0.33.0-r2"
 ARG OPENSSL_VERSION="3.1.4-r1"
 
 RUN apk add --no-cache firefox="${FIREFOX_VERSION}" && \
-    apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing geckodriver="${GECKODRIVER_VERSION}" && \
+    apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community geckodriver="${GECKODRIVER_VERSION}" && \
     ln -s /usr/bin/geckodriver /usr/local/bin/geckodriver && \
     rm -rf /var/cache/apk/* /tmp/*
 

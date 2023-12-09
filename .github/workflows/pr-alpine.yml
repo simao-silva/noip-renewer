@@ -42,7 +42,7 @@ jobs:
           ignore-unfixed: true
           vuln-type: "os,library"
           severity: "MEDIUM,HIGH,CRITICAL"
-          skip-files: "/usr/bin/geckodriver,/usr/local/bin/geckodriver"
+          skip-files: "/usr/bin/geckodriver,/usr/local/bin/geckodriver,/usr/lib/librav1e.so.0.6.6"
 
       # On hold until https://github.com/aquasecurity/trivy-action/issues/228 is fixed
       # - name: Upload Trivy scan results to GitHub Security

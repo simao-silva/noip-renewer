@@ -21,7 +21,7 @@
         "repology"
       ],
       "matchPackagePatterns": [
-        "^alpine_3_18/"
+        "^alpine_3_19/"
       ],
       "groupName": "alpine packages",
       "groupSlug": "alpine"

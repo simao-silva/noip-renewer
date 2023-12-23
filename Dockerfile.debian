@@ -72,7 +72,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ARG GECKODRIVER_VERSION
 
 # renovate: datasource=repology depName=debian_12/curl versioning=loose
-ARG CURL_VERSION="7.88.1-10+deb12u4"
+ARG CURL_VERSION="7.88.1-10+deb12u5"
 
 # Install required packages
 RUN apt-get update && \

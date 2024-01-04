@@ -81,8 +81,8 @@ RUN apt-get update && \
 # Download geckodriver
 RUN set -x && \
     if [ "$(uname --m)" == "x86_64" ]; then ARCH="linux64"; elif [ "$(uname --m)" == "aarch64" ]; then ARCH="linux-aarch64"; else ARCH="linux32"; fi && \
-    curl -sSL -O https://github.com/mozilla/geckodriver/releases/download/v"${GECKODRIVER_VERSION}"/geckodriver-v"${GECKODRIVER_VERSION}"-"${ARCH}".tar.gz && \
-    tar zxf geckodriver-v"${GECKODRIVER_VERSION}"-"${ARCH}".tar.gz
+    curl -sSL -O https://github.com/mozilla/geckodriver/releases/download/"${GECKODRIVER_VERSION}"/geckodriver-"${GECKODRIVER_VERSION}"-"${ARCH}".tar.gz && \
+    tar zxf geckodriver-"${GECKODRIVER_VERSION}"-"${ARCH}".tar.gz
 
 
 

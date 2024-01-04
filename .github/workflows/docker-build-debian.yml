@@ -13,7 +13,7 @@ on:
 env:
   IMAGE_NAME: "simaofsilva/noip-renewer"
   PIP_VERSION: "23.3.2" # renovate: datasource=pypi depName=pip versioning=pep440
-  GECKODRIVER_VERSION: "0.33.0" # renovate: datasource=github-tags depName=mozilla/geckodriver
+  GECKODRIVER_VERSION: "v0.34.0" # renovate: datasource=github-tags depName=mozilla/geckodriver
 
 jobs:
   build_debian:

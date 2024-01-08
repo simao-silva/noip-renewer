@@ -32,7 +32,7 @@ FROM python:3.12.1-alpine@sha256:c793b92fd9e0e2a0b611756788a033d569ca864b733461c
 ARG FIREFOX_VERSION="120.0.1-r0"
 
 # renovate: datasource=repology depName=alpine_edge/geckodriver versioning=loose
-ARG GECKODRIVER_VERSION="0.33.0-r2"
+ARG GECKODRIVER_VERSION="0.34.0-r0"
 
 # renovate: datasource=repology depName=alpine_3_19/openssl versioning=loose
 ARG OPENSSL_VERSION="3.1.4-r2"

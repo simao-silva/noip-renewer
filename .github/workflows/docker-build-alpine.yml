@@ -74,13 +74,7 @@ jobs:
           build-args: |
             PIP_VERSION=${{ env.PIP_VERSION }}
 
-#  delete_old_runs:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Delete workflow runs
-#        uses: Mattraks/delete-workflow-runs@v2.0.3
-#        with:
-#          token: ${{ github.token }}
-#          repository: ${{ github.repository }}
-#          retain_days: 15
-#          keep_minimum_runs: 5
+  validate-Dockerfile:
+    uses: ./.github/workflows/hadolint.yml
+    with:
+      filename: Dockerfile

@@ -12,4 +12,4 @@ jobs:
 
       - name: Validate Renovate Configuration with renovate-config-validator
         shell: bash
-        run: docker run --rm -v $(pwd):/app -w /app renovate/renovate:slim renovate-config-validator --strict
+        run: docker run --rm -v $(pwd):/app -w /app renovate/renovate renovate-config-validator --strict

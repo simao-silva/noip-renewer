@@ -10,7 +10,7 @@ env:
   PIP_VERSION: "23.3.2" # renovate: datasource=pypi depName=pip versioning=pep440
 
 jobs:
-  build_alpine:
+  build-alpine:
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
@@ -54,3 +54,8 @@ jobs:
       #     # Optional category for the results
       #     # Used to differentiate multiple results for one commit
       #     category: alpine-image-scan
+
+  validate-Dockerfile:
+    uses: ./.github/workflows/hadolint.yml
+    with:
+      filename: Dockerfile

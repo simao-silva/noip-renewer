@@ -1,7 +1,9 @@
 name: Isort
 
 on:
-  - push
+  push:
+    paths:
+      - renew.py
 
 jobs:
   isort:

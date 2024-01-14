@@ -15,7 +15,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-ARG PIP_VERSION
+# renovate: datasource=pypi depName=pip versioning=pep440
+ARG PIP_VERSION="23.3.2"
 
 # renovate: datasource=repology depName=debian_12/gcc versioning=loose
 ARG GCC_VERSION="4:12.2.0-3"
@@ -69,10 +70,11 @@ SHELL ["/bin/bash", "-c"]
 # Disable any user interaction
 ENV DEBIAN_FRONTEND=noninteractive
 
-ARG GECKODRIVER_VERSION
-
 # renovate: datasource=repology depName=debian_12/curl versioning=loose
 ARG CURL_VERSION="7.88.1-10+deb12u5"
+
+# renovate: datasource=github-tags depName=mozilla/geckodriver
+ARG GECKODRIVER_VERSION="v0.34.0"
 
 # Install required packages
 RUN apt-get update && \
@@ -91,6 +93,9 @@ FROM python:3.12.1-slim-bookworm@sha256:ee9a59cfdad294560241c9a8c8e40034f165feb4
 # Disable any user interaction
 ENV DEBIAN_FRONTEND=noninteractive
 
+# renovate: datasource=pypi depName=pip versioning=pep440
+ARG PIP_VERSION="23.3.2"
+
 # renovate: datasource=repology depName=debian_12/firefox-esr versioning=loose
 ARG FIREFOX_VERSION="115.6.0esr-1~deb12u1"
 
@@ -102,7 +107,6 @@ RUN apt-get update && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* /usr/share/doc /usr/share/man
 
 # Fix vulnerabilities reported by Trivy
-ARG PIP_VERSION
 RUN /usr/local/bin/pip install --upgrade pip=="${PIP_VERSION}" && \
     apt-get update && \
     apt-get upgrade -y libgnutls30 perl-base && \

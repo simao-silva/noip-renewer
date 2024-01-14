@@ -3,7 +3,7 @@ name: Hadolint
 on:
   workflow_call:
     inputs:
-      filename:
+      dockerfile:
         required: true
         type: string
 
@@ -18,20 +18,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.1
 
-      - name: Validate ${{ inputs.filename }}
+      - name: Validate ${{ inputs.dockerfile }}
         uses: hadolint/hadolint-action@v3.1.0
         with:
-          dockerfile: ${{ inputs.filename }}
+          dockerfile: ${{ inputs.dockerfile }}
           no-fail: true
           verbose: true
           format: sarif
-          output-file: ${{ inputs.filename }}.sarif
+          output-file: ${{ inputs.dockerfile }}.sarif
 
-      - name: Upload Hadolint results of ${{ inputs.filename }}
+      - name: Upload Hadolint results of ${{ inputs.dockerfile }}
         uses: github/codeql-action/upload-sarif@v3.23.0
         with:
           # Path to SARIF file relative to the root of the repository
-          sarif_file: ${{ inputs.filename }}.sarif
+          sarif_file: ${{ inputs.dockerfile }}.sarif
           # Optional category for the results
           # Used to differentiate multiple results for one commit
-          category: hadolint-${{ inputs.filename }}-validation
+          category: hadolint-${{ inputs.dockerfile }}-validation

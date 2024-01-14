@@ -1,0 +1,127 @@
+name: build and push image
+
+on:
+  workflow_call:
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+    inputs:
+      variant:
+        required: true
+        type: string
+      dockerfile:
+        required: true
+        type: string
+      platforms:
+        required: true
+        type: string
+
+env:
+  IMAGE_NAME: "simaofsilva/noip-renewer"
+
+jobs:
+  build-and-push:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3.0.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.0.0
+
+      - name: Get commit short hash
+        id: short_digest
+        run: echo "shortsha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Build image for tests
+        uses: docker/build-push-action@v5.1.0
+        with:
+          context: .
+          platforms: linux/amd64
+          load: true
+          tags: ${{ env.IMAGE_NAME }}:test-${{ inputs.variant }}
+          file: ${{ inputs.dockerfile }}
+
+      - name: Set up Trivy
+        run: |
+          docker run --rm aquasec/trivy --version
+          docker volume create trivy-db
+          docker run --rm -v trivy-db:/root/.cache/ aquasec/trivy image --download-db-only
+
+      - name: Run Trivy vulnerability scanner
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock:ro \
+            -v ./scan-results:/scan-results \
+            -v trivy-db:/root/.cache/ \
+            aquasec/trivy image \
+              --exit-code 1 \
+              --ignore-unfixed \
+              --vuln-type os,library \
+              --severity MEDIUM,CRITICAL,HIGH \
+              --format sarif \
+              --output /scan-results/trivy-${{ inputs.variant }}-image-scan.sarif \
+              --skip-files /usr/lib/librav1e.so.0.6.6 \
+              ${{ env.IMAGE_NAME }}:test-${{ inputs.variant }}
+
+      - name: Upload Trivy scan results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3.23.0
+        if: always()
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: scan-results/trivy-${{ inputs.variant }}-image-scan.sarif
+          # Optional category for the results
+          # Used to differentiate multiple results for one commit
+          category: ${{ inputs.variant }}-image-scan
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3.0.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build for ARM v7 (caching)
+        if: contains(inputs.platforms, 'linux/arm/v7')
+        uses: docker/build-push-action@v5.1.0
+        with:
+          context: .
+          platforms: linux/arm/v7
+          load: true
+          tags: ${{ env.IMAGE_NAME }}:${{ steps.short_digest.outputs.shortsha }}-armv7
+          file: ${{ inputs.dockerfile }}
+
+      - name: Build and push for Docker Hub
+        uses: docker/build-push-action@v5.1.0
+        with:
+          context: .
+          platforms: ${{ inputs.platforms }}
+          push: true
+          tags: |
+            ${{ env.IMAGE_NAME }}:${{ steps.short_digest.outputs.shortsha }}-${{ inputs.variant }}
+            ${{ env.IMAGE_NAME }}:${{ inputs.variant }}
+          file: ${{ inputs.dockerfile }}
+
+      - name: Set latest tag
+        if: inputs.variant == 'alpine'
+        uses: docker/build-push-action@v5.1.0
+        with:
+          context: .
+          platforms: ${{ inputs.platforms }}
+          push: true
+          tags: |
+            ${{ env.IMAGE_NAME }}:latest
+          file: ${{ inputs.dockerfile }}
+
+  validate-Dockerfile:
+    uses: ./.github/workflows/hadolint.yml
+    with:
+      dockerfile: ${{ inputs.dockerfile }}

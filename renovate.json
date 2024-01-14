@@ -55,7 +55,7 @@
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     },
     {
-      "description": "Update repology datasource in Dockerfiles",
+      "description": "Update packages set in Dockerfiles",
       "customType": "regex",
       "fileMatch": [
         "^Dockerfile.*$"

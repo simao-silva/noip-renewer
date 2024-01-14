@@ -10,96 +10,13 @@ on:
       - renew*.py
       - requirements.txt
 
-env:
-  IMAGE_NAME: "simaofsilva/noip-renewer"
-  PIP_VERSION: "23.3.2" # renovate: datasource=pypi depName=pip versioning=pep440
-
 jobs:
   build-alpine:
-    permissions:
-      contents: read # for actions/checkout to fetch code
-      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4.1.1
-
-      - name: Get commit short hash
-        id: short_digest
-        run: echo "shortsha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3.0.0
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3.0.0
-
-      - name: Build image for tests
-        uses: docker/build-push-action@v5.1.0
-        with:
-          context: .
-          platforms: linux/amd64
-          load: true
-          tags: ${{ env.IMAGE_NAME }}:test-alpine
-          file: Dockerfile
-          build-args: |
-            PIP_VERSION=${{ env.PIP_VERSION }}
-
-      - name: Set up Trivy
-        run: |
-          docker run --rm aquasec/trivy --version
-          docker volume create trivy-db
-          docker run --rm -v trivy-db:/root/.cache/ aquasec/trivy image --download-db-only
-
-      - name: Run Trivy vulnerability scanner
-        run: |
-          docker run --rm \
-            -v /var/run/docker.sock:/var/run/docker.sock:ro \
-            -v ./scan-results:/scan-results \
-            -v trivy-db:/root/.cache/ \
-            aquasec/trivy image \
-              --exit-code 1 \
-              --ignore-unfixed \
-              --vuln-type os,library \
-              --severity MEDIUM,CRITICAL,HIGH \
-              --format sarif \
-              --output /scan-results/trivy-alpine-image-scan.sarif \
-              --skip-files /usr/lib/librav1e.so.0.6.6 \
-              ${{ env.IMAGE_NAME }}:test-alpine
-
-      - name: Upload Trivy scan results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3.23.0
-        if: always()
-        with:
-          # Path to SARIF file relative to the root of the repository
-          sarif_file: scan-results/trivy-alpine-image-scan.sarif
-          # Optional category for the results
-          # Used to differentiate multiple results for one commit
-          category: alpine-image-scan
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v3.0.0
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build and push for Docker Hub
-        id: docker_build
-        uses: docker/build-push-action@v5.1.0
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64/v8
-          push: true
-          tags: |
-            ${{ env.IMAGE_NAME }}:${{ steps.short_digest.outputs.shortsha }}-alpine
-            ${{ env.IMAGE_NAME }}:alpine
-            ${{ env.IMAGE_NAME }}:latest
-          file: Dockerfile
-          build-args: |
-            PIP_VERSION=${{ env.PIP_VERSION }}
-
-  validate-Dockerfile:
-    uses: ./.github/workflows/hadolint.yml
+    uses: ./.github/workflows/docker-build-push.yml
     with:
-      filename: Dockerfile
+      variant: alpine
+      dockerfile: Dockerfile
+      platforms: linux/amd64,linux/arm64/v8
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}

@@ -62,7 +62,7 @@ jobs:
               ${{ env.IMAGE_NAME }}:test-${{ inputs.variant }}
 
       - name: Upload Trivy scan results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3.23.0
+        uses: github/codeql-action/upload-sarif@v3.23.1
         if: always()
         with:
           # Path to SARIF file relative to the root of the repository

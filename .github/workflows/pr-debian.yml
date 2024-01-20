@@ -4,11 +4,6 @@ on:
   push:
     branches-ignore:
       - "master"
-    paths:
-      - Dockerfile.debian
-      - renew*.py
-      - requirements.txt
-      - .github/workflows/pr-debian.yml
 
 jobs:
   build-debian:

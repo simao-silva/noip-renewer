@@ -12,7 +12,6 @@ on:
 
 env:
   IMAGE_NAME: "simaofsilva/noip-renewer"
-  TRIVY_VERSION: "0.48.3"
 
 jobs:
   build-image:
@@ -42,9 +41,9 @@ jobs:
 
       - name: Set up Trivy
         run: |
-          docker run --rm aquasec/trivy:${{ env.TRIVY_VERSION }} --version
+          docker run --rm aquasec/trivy --version
           docker volume create trivy-db
-          docker run --rm -v trivy-db:/root/.cache/ aquasec/trivy:${{ env.TRIVY_VERSION }} image --download-db-only
+          docker run --rm -v trivy-db:/root/.cache/ aquasec/trivy image --download-db-only
 
       - name: Run Trivy vulnerability scanner
         run: |
@@ -52,7 +51,7 @@ jobs:
             -v /var/run/docker.sock:/var/run/docker.sock:ro \
             -v ./scan-results:/scan-results \
             -v trivy-db:/root/.cache/ \
-            aquasec/trivy:${{ env.TRIVY_VERSION }} image \
+            aquasec/trivy image \
               --exit-code 1 \
               --ignore-unfixed \
               --vuln-type os,library \

@@ -58,8 +58,14 @@ jobs:
               --severity MEDIUM,CRITICAL,HIGH \
               --format sarif \
               --output /scan-results/trivy-${{ inputs.variant }}-image-scan.sarif \
-              --skip-files /usr/lib/librav1e.so.0.6.6 \
+              --skip-files /usr/lib/librav1e.so.0.6.6,/usr/bin/geckodriver \
               ${{ env.IMAGE_NAME }}:test-${{ inputs.variant }}
+
+      - name: Fix report unwanted backslash escape
+        if: always()
+        run: |
+          sudo chown -R $USER:$USER scan-results
+          sed -i 's|\\\\n|\\n|g' scan-results/trivy-${{ inputs.variant }}-image-scan.sarif
 
       - name: Upload Trivy scan results to GitHub Security
         uses: github/codeql-action/upload-sarif@v3.23.1

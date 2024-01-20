@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - "master"
+    paths:
+      - Dockerfile
+      - .github/workflows/docker-build-alpine.yml
+      - .github/workflows/docker-build-push.yml
+      - renew*.py
+      - requirements.txt
 
 jobs:
   build-alpine:

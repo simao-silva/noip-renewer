@@ -62,9 +62,17 @@ jobs:
               --skip-files /usr/lib/librav1e.so.0.6.6 \
               ${{ env.IMAGE_NAME }}:test-${{ inputs.variant }}
 
+      - name: Fix report new lines
+        if: always()
+        run: |
+          ls -lah
+          sudo chown -R $USER:$USER scan-results
+          ls -lahR scan-results
+          sed -i 's|\\\\n|\\n|g' scan-results/trivy-${{ inputs.variant }}-image-scan.sarif
+
       - name: Upload Trivy scan results to GitHub Security
         uses: github/codeql-action/upload-sarif@v3.23.1
-        if: ${{ always() }}
+        if: always()
         with:
           # Path to SARIF file relative to the root of the repository
           sarif_file: scan-results/trivy-${{ inputs.variant }}-image-scan.sarif

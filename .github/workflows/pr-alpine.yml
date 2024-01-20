@@ -4,12 +4,6 @@ on:
   push:
     branches-ignore:
       - "master"
-    paths:
-      - Dockerfile
-      - renew*.py
-      - requirements.txt
-      - .github/workflows/pr-alpine.yml
-      - .github/workflows/pr.yml
 
 jobs:
   build-alpine:

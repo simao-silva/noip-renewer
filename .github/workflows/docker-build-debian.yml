@@ -4,11 +4,6 @@ on:
   push:
     branches:
       - "master"
-    paths:
-      - Dockerfile.debian
-      - .github/workflows/docker-build-debian.yml
-      - renew*.py
-      - requirements.txt
 
 jobs:
   build-debian:

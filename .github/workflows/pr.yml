@@ -51,7 +51,7 @@ jobs:
             -v /var/run/docker.sock:/var/run/docker.sock:ro \
             -v ./scan-results:/scan-results \
             -v trivy-db:/root/.cache/ \
-            aquasec/trivy image \
+            aquasec/trivy:0.47.0 image \
               --exit-code 1 \
               --ignore-unfixed \
               --vuln-type os,library \

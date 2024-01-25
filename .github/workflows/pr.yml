@@ -41,9 +41,9 @@ jobs:
 
       - name: Set up Trivy
         run: |
-          docker run --rm aquasec/trivy --version
+          docker run --rm aquasec/trivy:canary --version
           docker volume create trivy-db
-          docker run --rm -v trivy-db:/root/.cache/ aquasec/trivy image --download-db-only
+          docker run --rm -v trivy-db:/root/.cache/ aquasec/trivy:canary image --download-db-only
 
       - name: Run Trivy vulnerability scanner
         run: |
@@ -51,7 +51,7 @@ jobs:
             -v /var/run/docker.sock:/var/run/docker.sock:ro \
             -v ./scan-results:/scan-results \
             -v trivy-db:/root/.cache/ \
-            aquasec/trivy image \
+            aquasec/trivy:canary image \
               --exit-code 1 \
               --ignore-unfixed \
               --vuln-type os,library \

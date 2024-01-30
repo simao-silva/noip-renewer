@@ -22,7 +22,7 @@ ARG PIP_VERSION="23.3.2"
 ARG GCC_VERSION="4:12.2.0-3"
 
 # renovate: datasource=repology depName=debian_12/glibc versioning=loose
-ARG GLIBC_VERSION="2.36-9+deb12u3"
+ARG GLIBC_VERSION="2.36-9+deb12u4"
 
 # renovate: datasource=repology depName=debian_12/libffi versioning=loose
 ARG LIBFFI_VERSION="3.4.4-1"

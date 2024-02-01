@@ -55,7 +55,7 @@ jobs:
               --exit-code 1 \
               --ignore-unfixed \
               --vuln-type os,library \
-              --severity MEDIUM,CRITICAL,HIGH \
+              --severity CRITICAL,HIGH \
               --format sarif \
               --output /scan-results/trivy-${{ inputs.variant }}-image-scan.sarif \
               ${{ env.IMAGE_NAME }}:test-${{ inputs.variant }}

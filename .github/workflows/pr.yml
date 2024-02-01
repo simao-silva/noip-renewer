@@ -53,6 +53,7 @@ jobs:
             -v trivy-db:/root/.cache/ \
             aquasec/trivy image \
               --vuln-type os,library \
+              --ignore-unfixed \
               --severity UNKNOWN,LOW,MEDIUM \
               --format sarif \
               --output /scan-results/trivy-${{ inputs.variant }}-image-scan-low.sarif \
@@ -78,10 +79,6 @@ jobs:
               --format sarif \
               --output /scan-results/trivy-${{ inputs.variant }}-image-scan.sarif \
               ${{ env.IMAGE_NAME }}:test-${{ inputs.variant }}
-
-      - name: Show report
-        if: always()
-        run: cat scan-results/trivy-${{ inputs.variant }}-image-scan.sarif
 
       - name: Upload Trivy scan results to GitHub Security
         uses: github/codeql-action/upload-sarif@v3.23.2

@@ -41,9 +41,9 @@ jobs:
 
       - name: Set up Trivy
         run: |
-          docker run --rm aquasec/trivy:canary --version
+          docker run --rm aquasec/trivy --version
           docker volume create trivy-db
-          docker run --rm -v trivy-db:/root/.cache/ aquasec/trivy:canary image --download-db-only
+          docker run --rm -v trivy-db:/root/.cache/ aquasec/trivy image --download-db-only
 
       - name: Run Trivy vulnerability scanner
         run: |
@@ -51,7 +51,7 @@ jobs:
             -v /var/run/docker.sock:/var/run/docker.sock:ro \
             -v ./scan-results:/scan-results \
             -v trivy-db:/root/.cache/ \
-            aquasec/trivy:canary image \
+            aquasec/trivy image \
               --exit-code 1 \
               --ignore-unfixed \
               --vuln-type os,library \
@@ -60,7 +60,7 @@ jobs:
               --output /scan-results/trivy-${{ inputs.variant }}-image-scan.sarif \
               ${{ env.IMAGE_NAME }}:test-${{ inputs.variant }}
 
-      - name: Fix report unwanted backslash escape
+      - name: Show report
         if: always()
         run: |
           sudo chown -R $USER:$USER scan-results

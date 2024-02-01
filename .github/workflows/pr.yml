@@ -45,6 +45,26 @@ jobs:
           docker volume create trivy-db
           docker run --rm -v trivy-db:/root/.cache/ aquasec/trivy image --download-db-only
 
+      - name: Run Trivy vulnerability scanner for low severity cases
+        run: |
+          docker run --rm \
+            -v /var/run/docker.sock:/var/run/docker.sock:ro \
+            -v ./scan-results:/scan-results \
+            -v trivy-db:/root/.cache/ \
+            aquasec/trivy image \
+              --vuln-type os,library \
+              --ignore-unfixed \
+              --severity UNKNOWN,LOW,MEDIUM \
+              --format sarif \
+              --output /scan-results/trivy-${{ inputs.variant }}-image-scan-low.sarif \
+              ${{ env.IMAGE_NAME }}:test-${{ inputs.variant }}
+
+      - name: Upload Trivy low severity cases scan results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3.23.2
+        with:
+          sarif_file: scan-results/trivy-${{ inputs.variant }}-image-scan-low.sarif
+          category: ${{ inputs.variant }}-image-scan-low-cases
+
       - name: Run Trivy vulnerability scanner
         run: |
           docker run --rm \
@@ -55,17 +75,10 @@ jobs:
               --exit-code 1 \
               --ignore-unfixed \
               --vuln-type os,library \
-              --severity MEDIUM,CRITICAL,HIGH \
+              --severity CRITICAL,HIGH \
               --format sarif \
               --output /scan-results/trivy-${{ inputs.variant }}-image-scan.sarif \
-              --skip-files /usr/lib/librav1e.so.0.6.6,/usr/bin/geckodriver \
               ${{ env.IMAGE_NAME }}:test-${{ inputs.variant }}
-
-      - name: Fix report unwanted backslash escape
-        if: always()
-        run: |
-          sudo chown -R $USER:$USER scan-results
-          sed -i 's|\\\\n|\\n|g' scan-results/trivy-${{ inputs.variant }}-image-scan.sarif
 
       - name: Upload Trivy scan results to GitHub Security
         uses: github/codeql-action/upload-sarif@v3.23.2

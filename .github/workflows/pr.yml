@@ -55,14 +55,14 @@ jobs:
               --vuln-type os,library \
               --severity UNKNOWN,LOW,MEDIUM \
               --format sarif \
-              --output /scan-results/trivy-${{ inputs.variant }}-image-scan-medium.sarif \
+              --output /scan-results/trivy-${{ inputs.variant }}-image-scan-low.sarif \
               ${{ env.IMAGE_NAME }}:test-${{ inputs.variant }}
 
       - name: Upload Trivy low severity cases scan results to GitHub Security
         uses: github/codeql-action/upload-sarif@v3.23.2
         with:
-          sarif_file: scan-results/trivy-${{ inputs.variant }}-image-scan-medium.sarif
-          category: ${{ inputs.variant }}-image-scan
+          sarif_file: scan-results/trivy-${{ inputs.variant }}-image-scan-low.sarif
+          category: ${{ inputs.variant }}-image-scan-low-cases
 
       - name: Run Trivy vulnerability scanner
         run: |

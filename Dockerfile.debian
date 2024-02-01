@@ -101,7 +101,7 @@ ARG FIREFOX_VERSION="115.7.0esr-1~deb12u1"
 
 # Install required packages
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends firefox-esr=="${FIREFOX_VERSION}" && \
+    apt-get install -y --no-install-recommends firefox-esr="${FIREFOX_VERSION}" && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* /usr/share/doc /usr/share/man

@@ -41,13 +41,9 @@ ARG GECKODRIVER_VERSION="0.34.0-r0"
 ARG OPENSSL_VERSION="3.1.4-r5"
 
 RUN apk add --no-cache firefox && \
-    apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community geckodriver="${GECKODRIVER_VERSION}" && \
+    apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community geckodriver && \
     ln -s /usr/bin/geckodriver /usr/local/bin/geckodriver && \
     rm -rf /var/cache/apk/* /tmp/*
-
-# Fix vulnerabilities reported by Trivy
-RUN apk add --no-cache libcrypto3="${OPENSSL_VERSION}" libssl3="${OPENSSL_VERSION}" && \
-    /usr/local/bin/pip install --upgrade pip=="${PIP_VERSION}"
 
 # Enable custom virtual environment
 ENV VIRTUAL_ENV=/opt/venv

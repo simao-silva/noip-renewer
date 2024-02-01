@@ -1,4 +1,4 @@
-FROM python:3.12.1-slim-bookworm@sha256:db7e9284d53f7b827c58a6239b9d2907c33250215823b1cdb7d1e983e70dafa5 AS builder
+FROM python:3.12.1-slim-bookworm@sha256:adf930b2d26268085dc0ca83ad49e756c991a2b2ed355cfcb24409d1b08c9faa AS builder
 
 SHELL ["/bin/bash", "-c"]
 
@@ -63,7 +63,7 @@ RUN python3 -m venv $VIRTUAL_ENV && \
 
 
 
-FROM python:3.12.1-slim-bookworm@sha256:db7e9284d53f7b827c58a6239b9d2907c33250215823b1cdb7d1e983e70dafa5 AS geckodriver
+FROM python:3.12.1-slim-bookworm@sha256:adf930b2d26268085dc0ca83ad49e756c991a2b2ed355cfcb24409d1b08c9faa AS geckodriver
 
 SHELL ["/bin/bash", "-c"]
 
@@ -88,7 +88,7 @@ RUN set -x && \
 
 
 
-FROM python:3.12.1-slim-bookworm@sha256:db7e9284d53f7b827c58a6239b9d2907c33250215823b1cdb7d1e983e70dafa5
+FROM python:3.12.1-slim-bookworm@sha256:adf930b2d26268085dc0ca83ad49e756c991a2b2ed355cfcb24409d1b08c9faa
 
 # Disable any user interaction
 ENV DEBIAN_FRONTEND=noninteractive

@@ -16,7 +16,7 @@ ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # renovate: datasource=pypi depName=pip versioning=pep440
-ARG PIP_VERSION="23.3.2"
+ARG PIP_VERSION="24.0"
 
 # renovate: datasource=repology depName=debian_12/gcc versioning=loose
 ARG GCC_VERSION="4:12.2.0-3"
@@ -94,7 +94,7 @@ FROM python:3.12.1-slim-bookworm@sha256:a64ac5be6928c6a94f00b16e09cdf3ba3edd4445
 ENV DEBIAN_FRONTEND=noninteractive
 
 # renovate: datasource=pypi depName=pip versioning=pep440
-ARG PIP_VERSION="23.3.2"
+ARG PIP_VERSION="24.0"
 
 # renovate: datasource=repology depName=debian_12/firefox-esr versioning=loose
 ARG FIREFOX_VERSION="115.7.0esr-1~deb12u1"

@@ -109,7 +109,7 @@ RUN apt-get update && \
 # Fix vulnerabilities reported by Trivy
 RUN /usr/local/bin/pip install --upgrade pip=="${PIP_VERSION}" && \
     apt-get update && \
-    apt-get upgrade -y libgnutls30 perl-base && \
+    apt-get upgrade -y libgnutls30 perl-base libexpat1 && \
     apt-get clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 

@@ -60,7 +60,7 @@ jobs:
               ${{ env.IMAGE_NAME }}:test-${{ inputs.variant }}
 
       - name: Upload Trivy low severity cases scan results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3.24.3
+        uses: github/codeql-action/upload-sarif@v3.24.4
         with:
           sarif_file: scan-results/trivy-${{ inputs.variant }}-image-scan-low.sarif
           category: ${{ inputs.variant }}-image-scan-low-cases
@@ -81,7 +81,7 @@ jobs:
               ${{ env.IMAGE_NAME }}:test-${{ inputs.variant }}
 
       - name: Upload Trivy scan results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3.24.3
+        uses: github/codeql-action/upload-sarif@v3.24.4
         if: always()
         with:
           # Path to SARIF file relative to the root of the repository

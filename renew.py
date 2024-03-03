@@ -9,6 +9,7 @@ from deep_translator import GoogleTranslator
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
@@ -28,6 +29,7 @@ def translate(text):
 
 def get_user_agent():
     r = requests.get(url="https://jnrbsn.github.io/user-agents/user-agents.json")
+    r.close()
     if r.status_code == 200 and len(list(r.json())) > 0:
         agents = r.json()
         return list(agents).pop(random.randint(0, len(agents) - 1))
@@ -76,19 +78,23 @@ if __name__ == "__main__":
 
     email, password = get_credentials()
 
-    # OPEN BROWSER
-    print("Opening browser")
+    # Set up browser
+    profile = FirefoxProfile()
+    profile.set_preference("general.useragent.override", get_user_agent())
     browser_options = webdriver.FirefoxOptions()
     browser_options.add_argument("--headless")
-    browser_options.add_argument("user-agent=" + get_user_agent())
+    browser_options.profile = profile
     service = Service(executable_path="/usr/local/bin/geckodriver", log_output="/dev/null")
     browser = webdriver.Firefox(options=browser_options, service=service)
+
+    # OPEN BROWSER
+    print("Using user agent: " + browser.execute_script("return navigator.userAgent;"))
+    print("Opening browser")
 
     # LOGIN
     browser.get(LOGIN_URL)
 
     if browser.current_url == LOGIN_URL:
-
         try:
             username_input = WebDriverWait(browser, 10).until(lambda browser: browser.find_element(by=By.ID, value="username"))
         except TimeoutException:

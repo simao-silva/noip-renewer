@@ -71,6 +71,12 @@ jobs:
               --output /scan-results/trivy-${{ inputs.variant }}-image-scan-low.sarif \
               ${{ env.IMAGE_NAME }}:test-${{ inputs.variant }}
 
+      - name: Fix unicode characters in Trivy scan results
+        if: always()
+        run: |
+          sudo chown -R $USER:$USER scan-results
+          sed -i 's/\\u0026#39;/\x27/g' scan-results/trivy-${{ inputs.variant }}-image-scan-low.sarif
+
       - name: Upload Trivy low severity cases scan results to GitHub Security
         uses: github/codeql-action/upload-sarif@v3.24.6
         with:
@@ -91,6 +97,12 @@ jobs:
               --format sarif \
               --output /scan-results/trivy-${{ inputs.variant }}-image-scan.sarif \
               ${{ env.IMAGE_NAME }}:test-${{ inputs.variant }}
+
+      - name: Fix unicode characters in Trivy scan results
+        if: always()
+        run: |
+          sudo chown -R $USER:$USER scan-results
+          sed -i 's/\\u0026#39;/\x27/g' scan-results/trivy-${{ inputs.variant }}-image-scan.sarif
 
       - name: Upload Trivy scan results to GitHub Security
         uses: github/codeql-action/upload-sarif@v3.24.6

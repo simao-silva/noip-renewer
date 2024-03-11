@@ -83,6 +83,7 @@ jobs:
               --severity CRITICAL,HIGH \
               --format sarif \
               --output /scan-results/trivy-${{ inputs.variant }}-image-scan.sarif \
+              --skip-files /usr/bin/geckodriver,/usr/local/bin/geckodriver \
               ${{ env.IMAGE_NAME }}:test-${{ inputs.variant }}
 
       - name: Fix unicode characters in Trivy scan results

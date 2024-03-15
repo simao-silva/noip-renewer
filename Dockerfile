@@ -41,7 +41,7 @@ ARG GECKODRIVER_VERSION="0.34.0-r0"
 ARG OPENSSL_VERSION="3.1.4-r5"
 
 # renovate: datasource=repology depName=alpine_3_19/expat versioning=loose
-ARG EXPAT_VERSION="2.6.0-r0"
+ARG EXPAT_VERSION="2.6.2-r0"
 
 RUN apk add --no-cache firefox="${FIREFOX_VERSION}" && \
     apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community geckodriver="${GECKODRIVER_VERSION}" && \

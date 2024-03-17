@@ -24,8 +24,9 @@ def get_hosts():
 
 
 def translate(text):
-    return GoogleTranslator(source='auto', target='en').translate(text=text)
-
+    if str(os.getenv("TRANSLATE_ENABLED", True)).lower() == "true":
+        return GoogleTranslator(source='auto', target='en').translate(text=text)
+    return text
 
 def get_user_agent():
     r = requests.get(url="https://jnrbsn.github.io/user-agents/user-agents.json")

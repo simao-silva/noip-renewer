@@ -31,25 +31,30 @@ docker pull simaofsilva/noip-renewer:latest
 
 #### Building image locally
 
-```shell script
+```sh
 docker build -t simaofsilva/noip-renewer -f Dockerfile.dev .
 ```
 
 ## Using image
 
-```shell script
+```sh
 docker run --rm -it simaofsilva/noip-renewer:<TAG>
 ```
 or
-```shell script
+```sh
 docker run --rm -it simaofsilva/noip-renewer:<TAG> <EMAIL> <PASSWORD>
 ```
 or
-```shell script
+```sh
 docker run --rm --env NO_IP_USERNAME=<EMAIL> --env NO_IP_PASSWORD=<PASSWORD> simaofsilva/noip-renewer:<TAG> 
 ```
 
+or with translation disabled
+```sh
+docker run --rm --env NO_IP_USERNAME=<EMAIL> --env NO_IP_PASSWORD=<PASSWORD> --env TRANSLATE_ENABLED=false simaofsilva/noip-renewer:<TAG> 
+```
+
 ## Known issues / limitations
-* The script assumes that the No-IP account language is set to english. For other languages it depends on the translation provided by [googletrans](https://pypi.org/project/googletrans/) so it might not work in other languages ([#11](https://github.com/simao-silva/noip-renewer/issues/11));
+* The script assumes that the No-IP account language is set to english. For other languages it depends on the translation provided by [googletrans](https://pypi.org/project/googletrans/) so it might not work in other languages ([#11](https://github.com/simao-silva/noip-renewer/issues/11)). In any case, translation can be disabled by setting `TRANSLATE_ENABLED` to `false`; 
 
 * In fresh accounts an extra pop up might appear that unable the script to proceed ([#14](https://github.com/simao-silva/noip-renewer/issues/14)). It appears to not show on following renovations.

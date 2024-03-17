@@ -89,7 +89,7 @@ if __name__ == "__main__":
     browser = webdriver.Firefox(options=browser_options, service=service)
 
     # OPEN BROWSER
-    print("Using user agent: " + browser.execute_script("return navigator.userAgent;"))
+    print("Using user agent \"" + browser.execute_script("return navigator.userAgent;") + "\"")
     print("Opening browser")
 
     # LOGIN

@@ -1,4 +1,4 @@
-FROM python:3.12.2-alpine@sha256:1bf8e10904181a535546cb14980ca635fec33d944a097ce786f9fc34d6cff20c AS builder
+FROM python:3.12.2-alpine@sha256:c7eb5c92b7933fe52f224a91a1ced27b91840ac9c69c58bef40d602156bcdb41 AS builder
 
 # Prevent Python from writing out pyc files
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -26,7 +26,7 @@ RUN python3 -m venv $VIRTUAL_ENV && \
 
 
 
-FROM python:3.12.2-alpine@sha256:1bf8e10904181a535546cb14980ca635fec33d944a097ce786f9fc34d6cff20c
+FROM python:3.12.2-alpine@sha256:c7eb5c92b7933fe52f224a91a1ced27b91840ac9c69c58bef40d602156bcdb41
 
 # renovate: datasource=pypi depName=pip versioning=pep440
 ARG PIP_VERSION="24.0"

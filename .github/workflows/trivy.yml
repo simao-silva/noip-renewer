@@ -25,7 +25,7 @@ jobs:
           output: "trivy-repository-scan.sarif"
 
       - name: Upload Trivy scan results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3.24.9
+        uses: github/codeql-action/upload-sarif@v3.24.10
         with:
           # Path to SARIF file relative to the root of the repository
           sarif_file: trivy-repository-scan.sarif

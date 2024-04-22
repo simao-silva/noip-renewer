@@ -18,7 +18,7 @@ jobs:
     if: "${{ github.actor == github.repository_owner }}"
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.3
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 

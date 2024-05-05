@@ -34,6 +34,9 @@ ARG PIP_VERSION="24.0"
 # renovate: datasource=repology depName=alpine_3_19/firefox versioning=loose
 ARG FIREFOX_VERSION="125.0.3-r0"
 
+# renovate: datasource=repology depName=alpine_3_19/font-noto versioning=loose
+ARG FONT_MOTO_VERSION="23.7.1-r0"
+
 # renovate: datasource=repology depName=alpine_edge/geckodriver versioning=loose
 ARG GECKODRIVER_VERSION="0.34.0-r0"
 
@@ -43,7 +46,7 @@ ARG OPENSSL_VERSION="3.1.4-r6"
 # renovate: datasource=repology depName=alpine_3_19/expat versioning=loose
 ARG EXPAT_VERSION="2.6.2-r0"
 
-RUN apk add --no-cache firefox="${FIREFOX_VERSION}" && \
+RUN apk add --no-cache firefox="${FIREFOX_VERSION}" font-noto=="${FONT_MOTO_VERSION}" && \
     apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community geckodriver="${GECKODRIVER_VERSION}" && \
     ln -s /usr/bin/geckodriver /usr/local/bin/geckodriver && \
     rm -rf /var/cache/apk/* /tmp/*

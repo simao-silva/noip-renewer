@@ -4,6 +4,7 @@ from getpass import getpass
 from sys import argv
 from time import sleep
 
+import pyotp
 import requests
 from deep_translator import GoogleTranslator
 from selenium import webdriver
@@ -88,14 +89,16 @@ if __name__ == "__main__":
     service = Service(executable_path="/usr/local/bin/geckodriver", log_output="/dev/null")
     browser = webdriver.Firefox(options=browser_options, service=service)
 
-    # OPEN BROWSER
+    # Open browser
     print("Using user agent \"" + browser.execute_script("return navigator.userAgent;") + "\"")
     print("Opening browser")
 
-    # LOGIN
+    # Go to login page
     browser.get(LOGIN_URL)
 
     if browser.current_url == LOGIN_URL:
+
+        # Find and fill login form
         try:
             username_input = WebDriverWait(browser, 10).until(lambda browser: browser.find_element(by=By.ID, value="username"))
         except TimeoutException:
@@ -109,29 +112,65 @@ if __name__ == "__main__":
         username_input.send_keys(email)
         password_input.send_keys(password)
 
+        # Find and click login button
         try:
-            WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.element_to_be_clickable((By.ID, "clogs-captcha-button")))
+            WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.visibility_of_element_located((By.ID, "clogs-captcha-button")))
             login_button = browser.find_element(By.ID, "clogs-captcha-button")
             login_button.click()
         except TimeoutException:
             exit_with_error(message="Login button not found within the specified timeout.")
 
+        # Wait for login to complete
+        try:
+            WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.visibility_of_any_elements_located((By.CLASS_NAME, "nav-link")))
+        except TimeoutException:
+            exit_with_error(message="Could not do post login action. Exiting.")
+
+        # Check if login has 2FA enabled
+        if browser.current_url.find("2fa") > -1:
+            totp_secret = os.getenv("NO_IP_TOTP_KEY", "")
+            if len(totp_secret) == 0:
+                totp_secret = str(input("Enter 2FA key: ")).replace("\n", "")
+
+            try:
+                totp_input = WebDriverWait(browser, 10).until(lambda browser: browser.find_element(by=By.ID, value="challenge_code"))
+            except TimeoutException:
+                exit_with_error(message="2FA input not found within the specified timeout.")
+
+            totp = pyotp.TOTP(totp_secret)
+
+            try:
+                WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.element_to_be_clickable((By.NAME, "submit")))
+                submit_button = browser.find_elements(By.NAME, "submit")
+                if len(submit_button) > 0:
+                    totp_input.send_keys(totp.now())
+                    submit_button[0].click()
+                else:
+                    exit_with_error(message="2FA submit button not found. Exiting.")
+            except TimeoutException:
+                exit_with_error(message="2FA submit button not found within the specified timeout.")
+            except NoSuchElementException:
+                exit_with_error(message="2FA submit button not found. Exiting.")
+
+        # Wait for account dashboard to load
         try:
             WebDriverWait(driver=browser, timeout=120, poll_frequency=3).until(expected_conditions.visibility_of_element_located((By.ID, "dashboard-nav")))
             print("Login successful")
         except TimeoutException:
             exit_with_error(message="Could not login. Check if account is blocked.")
         except NoSuchElementException:
-            exit_with_error(message="Could not find element \"dashboard-nav\". Exiting.")
+            exit_with_error(message="Could not find element dashboard menu. Exiting.")
 
+        # Go to hostnames page
         browser.get(HOST_URL)
 
+        # Wait for hostnames page to load
         try:
             WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.visibility_of(browser.find_element(by=By.ID, value="host-panel")))
         except TimeoutException:
             exit_with_error(message="Could not load NO-IP hostnames page.")
 
-        # CONFIRM HOSTS
+        # Confirm hosts
         try:
             hosts = get_hosts()
             print("Confirming hosts phase")
@@ -161,6 +200,7 @@ if __name__ == "__main__":
         except Exception as e:
             print("Error: ", e)
 
+        # Log off
         finally:
             print("Logging off\n\n")
             browser.get(LOGOUT_URL)

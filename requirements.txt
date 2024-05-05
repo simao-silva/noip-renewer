@@ -1,3 +1,4 @@
 selenium==4.20.0
 requests==2.31.0
 deep_translator==1.11.4
+pyotp==2.9.0

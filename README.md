@@ -48,6 +48,10 @@ or
 ```sh
 docker run --rm --env NO_IP_USERNAME=<EMAIL> --env NO_IP_PASSWORD=<PASSWORD> simaofsilva/noip-renewer:<TAG> 
 ```
+or with 2FA
+```sh
+docker run --rm --env NO_IP_USERNAME=<EMAIL> --env NO_IP_PASSWORD=<PASSWORD> --env NO_IP_TOTP_KEY=<NOIP TOTP KEY> simaofsilva/noip-renewer:<TAG> 
+```
 
 or with translation disabled
 ```sh
@@ -55,6 +59,6 @@ docker run --rm --env NO_IP_USERNAME=<EMAIL> --env NO_IP_PASSWORD=<PASSWORD> --e
 ```
 
 ## Known issues / limitations
-* The script assumes that the No-IP account language is set to english. For other languages it depends on the translation provided by [googletrans](https://pypi.org/project/googletrans/) so it might not work in other languages ([#11](https://github.com/simao-silva/noip-renewer/issues/11)). In any case, translation can be disabled by setting `TRANSLATE_ENABLED` to `false`; 
+* The script assumes that the No-IP account language is set to English. For other languages it depends on the translation provided by [googletrans](https://pypi.org/project/googletrans/) so it might not work in other languages ([#11](https://github.com/simao-silva/noip-renewer/issues/11)). In any case, translation can be disabled by setting `TRANSLATE_ENABLED` to `false`; 
 
 * In fresh accounts an extra pop up might appear that unable the script to proceed ([#14](https://github.com/simao-silva/noip-renewer/issues/14)). It appears to not show on following renovations.

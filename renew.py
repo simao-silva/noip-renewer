@@ -73,6 +73,24 @@ def get_credentials():
     return email, password
 
 
+def validate_otp(code):
+    valid = True
+
+    if len(code) != 6:
+        exit_with_error(message="Invalid email verification code. The code must have 6 digits. Exiting.")
+        valid = False
+    if otp_code.isnumeric() is False:
+        exit_with_error("Email verification code must be numeric. Exiting.")
+        valid = False
+
+    return valid
+
+def validate_2fa(code):
+    if len(code) != 16 or code.isalnum() is False:
+        exit_with_error(message="Invalid 2FA key. Key must have 16 alphanumeric characters. Exiting.")
+        return False
+    return True
+
 if __name__ == "__main__":
     LOGIN_URL = "https://www.noip.com/login?ref_url=console"
     HOST_URL = "https://my.noip.com/dynamic-dns"
@@ -126,31 +144,54 @@ if __name__ == "__main__":
         except TimeoutException:
             exit_with_error(message="Could not do post login action. Exiting.")
 
-        # Check if login has 2FA enabled
+        # Check if login has 2FA enabled and handle it
         if browser.current_url.find("2fa") > -1:
-            totp_secret = os.getenv("NO_IP_TOTP_KEY", "")
-            if len(totp_secret) == 0:
-                totp_secret = str(input("Enter 2FA key: ")).replace("\n", "")
 
-            try:
-                totp_input = WebDriverWait(browser, 10).until(lambda browser: browser.find_element(by=By.ID, value="challenge_code"))
-            except TimeoutException:
-                exit_with_error(message="2FA input not found within the specified timeout.")
-
-            totp = pyotp.TOTP(totp_secret)
-
+            # Wait for submit button to ensure page is loaded
             try:
                 WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.element_to_be_clickable((By.NAME, "submit")))
                 submit_button = browser.find_elements(By.NAME, "submit")
-                if len(submit_button) > 0:
-                    totp_input.send_keys(totp.now())
-                    submit_button[0].click()
-                else:
+                if len(submit_button) < 1:
                     exit_with_error(message="2FA submit button not found. Exiting.")
             except TimeoutException:
-                exit_with_error(message="2FA submit button not found within the specified timeout.")
+                exit_with_error(message="2FA page did not load within the specified timeout. Exiting.")
             except NoSuchElementException:
                 exit_with_error(message="2FA submit button not found. Exiting.")
+
+            # Find if account has 2FA enabled or if is relying on email verification code
+            CODE_METHOD = None
+            try:
+                code_form = browser.find_element(by=By.ID, value="otp-input")
+                CODE_METHOD = "email"
+            except NoSuchElementException:
+                try:
+                    code_form = browser.find_element(by=By.ID, value="challenge_code")
+                    CODE_METHOD = "app"
+                except NoSuchElementException:
+                    exit_with_error(message="2FA/Email code input not found. Exiting.")
+
+            # Account has email verification code
+            if CODE_METHOD == "email":
+                otp_code = str(input("Enter OTP code: ")).replace("\n", "")
+                if validate_otp(otp_code):
+                    code_inputs = code_form.find_elements(by=By.TAG_NAME, value="input")
+                    if len(code_inputs) == 6:
+                        for i in range(len(code_inputs)):
+                            code_inputs[i].send_keys(otp_code[i])
+                    else:
+                        exit_with_error(message="Email code input not found. Exiting.")
+
+            # Account has 2FA code
+            elif CODE_METHOD == "app":
+                totp_secret = os.getenv("NO_IP_TOTP_KEY", "")
+                if len(totp_secret) == 0:
+                    totp_secret = str(input("Enter 2FA key: ")).replace("\n", "")
+                    if validate_2fa(totp_secret):
+                        totp = pyotp.TOTP(totp_secret)
+                        code_form.send_keys(totp.now())
+
+            # Click submit button
+            submit_button[0].click()
 
         # Wait for account dashboard to load
         try:

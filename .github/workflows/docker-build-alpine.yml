@@ -3,7 +3,7 @@ name: build and push image (Alpine version)
 on:
   push:
     branches:
-      - "master"
+      - "dev"
     paths:
       - Dockerfile
       - .github/workflows/docker-build-alpine.yml

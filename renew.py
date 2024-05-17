@@ -9,6 +9,7 @@ import requests
 from deep_translator import GoogleTranslator
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
 from selenium.webdriver.firefox.service import Service
@@ -186,9 +187,10 @@ if __name__ == "__main__":
                 totp_secret = os.getenv("NO_IP_TOTP_KEY", "")
                 if len(totp_secret) == 0:
                     totp_secret = str(input("Enter 2FA key: ")).replace("\n", "")
-                    if validate_2fa(totp_secret):
-                        totp = pyotp.TOTP(totp_secret)
-                        code_form.send_keys(totp.now())
+                if validate_2fa(totp_secret):
+                    totp = pyotp.TOTP(totp_secret)
+                    browser.execute_script("arguments[0].focus();", code_form)
+                    ActionChains(browser).send_keys(totp.now()).perform()
 
             # Click submit button
             submit_button[0].click()

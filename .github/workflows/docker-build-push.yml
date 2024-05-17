@@ -19,7 +19,7 @@ on:
         type: string
 
 env:
-  IMAGE_NAME: "raymond1025/noip-renewer-dev"
+  IMAGE_NAME: "raymond1025/noip-renewer"
 
 jobs:
   build-and-push:

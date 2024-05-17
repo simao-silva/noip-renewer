@@ -186,9 +186,9 @@ if __name__ == "__main__":
                 totp_secret = os.getenv("NO_IP_TOTP_KEY", "")
                 if len(totp_secret) == 0:
                     totp_secret = str(input("Enter 2FA key: ")).replace("\n", "")
-                    if validate_2fa(totp_secret):
-                        totp = pyotp.TOTP(totp_secret)
-                        code_form.send_keys(totp.now())
+                if validate_2fa(totp_secret):
+                    totp = pyotp.TOTP(totp_secret)
+                    code_form.send_keys(totp.now())
 
             # Click submit button
             submit_button[0].click()

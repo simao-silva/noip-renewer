@@ -48,7 +48,8 @@ ARG ARMV7_DEPS=" \
 # Install required packages
 # hadolint ignore=DL3008
 RUN apt-get update && \
-    if [ "$(getconf LONG_BIT)" -eq 32 ]; then apt-get install -y --no-install-recommends ${ARMV7_DEPS}; fi
+    if [ "$(getconf LONG_BIT)" -eq 32 ]; then apt-get install -y --no-install-recommends ${ARMV7_DEPS}; fi && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # Set the working directory
 WORKDIR /app

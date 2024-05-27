@@ -57,7 +57,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install requirements
-RUN python3 -m venv $VIRTUAL_ENV && \
+RUN python3 -m venv "${VIRTUAL_ENV}" && \
     pip install --no-cache-dir --upgrade pip=="${PIP_VERSION}" && \
     pip install --no-cache-dir -r requirements.txt
 
@@ -78,7 +78,9 @@ ARG GECKODRIVER_VERSION="v0.34.0"
 
 # Install required packages
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl="${CURL_VERSION}"
+    apt-get install -y --no-install-recommends curl="${CURL_VERSION}" && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # Download geckodriver
 RUN set -x && \
@@ -104,14 +106,14 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends firefox-esr="${FIREFOX_VERSION}" && \
     apt-get autoremove -y && \
     apt-get clean && \
-    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* /usr/share/doc /usr/share/man
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/cache/apt/archives/* /var/tmp/* /usr/share/doc /usr/share/man
 
 # Fix vulnerabilities reported by Trivy
 RUN /usr/local/bin/pip install --upgrade pip=="${PIP_VERSION}" && \
     apt-get update && \
     apt-get upgrade -y libgnutls30 perl-base libexpat1 && \
     apt-get clean && \
-    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/cache/apt/archives/* /var/tmp/*
 
 # Enable custom virtual environment
 ENV VIRTUAL_ENV=/opt/venv

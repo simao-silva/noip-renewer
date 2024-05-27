@@ -20,7 +20,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install requirements
-RUN python3 -m venv $VIRTUAL_ENV && \
+RUN python3 -m venv ${VIRTUAL_ENV} && \
     pip install --no-cache-dir --upgrade pip=="${PIP_VERSION}" && \
     pip install --no-cache-dir -r requirements.txt
 

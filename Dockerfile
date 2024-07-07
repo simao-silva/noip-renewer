@@ -11,7 +11,7 @@ ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # renovate: datasource=pypi depName=pip versioning=pep440
-ARG PIP_VERSION="24.1.1"
+ARG PIP_VERSION="24.1.2"
 
 # Set the working directory
 WORKDIR /app
@@ -29,7 +29,7 @@ RUN python3 -m venv ${VIRTUAL_ENV} && \
 FROM python:3.12.4-alpine@sha256:b7662fc33e07f05fb2f579c3634e1e4d2e30c02553397c6c24f775cb360dbc03
 
 # renovate: datasource=pypi depName=pip versioning=pep440
-ARG PIP_VERSION="24.1.1"
+ARG PIP_VERSION="24.1.2"
 
 # renovate: datasource=repology depName=alpine_3_20/firefox versioning=loose
 ARG FIREFOX_VERSION="126.0.1-r0"

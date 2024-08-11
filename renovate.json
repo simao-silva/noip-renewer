@@ -10,8 +10,8 @@
       "matchDatasources": [
         "repology"
       ],
-      "matchPackagePatterns": [
-        "^debian_12/"
+      "matchPackageNames": [
+        "/^debian_12//"
       ],
       "groupName": "debian packages",
       "groupSlug": "debian"
@@ -20,8 +20,8 @@
       "matchDatasources": [
         "repology"
       ],
-      "matchPackagePatterns": [
-        "^alpine_3_19/"
+      "matchPackageNames": [
+        "/^alpine_3_19//"
       ],
       "groupName": "alpine packages",
       "groupSlug": "alpine"

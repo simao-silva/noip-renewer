@@ -1,7 +1,14 @@
 name: Renovate validation
 
 on:
-  - push
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   renovate-config-validator:
@@ -12,4 +19,4 @@ jobs:
 
       - name: Validate Renovate Configuration with renovate-config-validator
         shell: bash
-        run: docker run --rm -v $(pwd):/app -w /app renovate/renovate renovate-config-validator --strict
+        run: docker run --rm -v $(pwd):/app -w /app renovate/renovate renovate-config-validator --strict renovate.json

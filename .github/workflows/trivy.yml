@@ -1,7 +1,14 @@
 name: Trivy scanner
 
 on:
-  - push
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   repository-scan:

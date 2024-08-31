@@ -48,11 +48,14 @@ or
 ```sh
 docker run --rm --env NO_IP_USERNAME=<EMAIL> --env NO_IP_PASSWORD=<PASSWORD> simaofsilva/noip-renewer:<TAG> 
 ```
+or with OTP
+```sh
+docker run --rm --env NO_IP_USERNAME=<EMAIL> --env NO_IP_PASSWORD=<PASSWORD> --env NO_IP_OTP_KEY=<NO IP OTP KEY> simaofsilva/noip-renewer:<TAG> 
+```
 or with 2FA
 ```sh
 docker run --rm --env NO_IP_USERNAME=<EMAIL> --env NO_IP_PASSWORD=<PASSWORD> --env NO_IP_TOTP_KEY=<NOIP TOTP KEY> simaofsilva/noip-renewer:<TAG> 
 ```
-
 or with translation disabled
 ```sh
 docker run --rm --env NO_IP_USERNAME=<EMAIL> --env NO_IP_PASSWORD=<PASSWORD> --env TRANSLATE_ENABLED=false simaofsilva/noip-renewer:<TAG> 

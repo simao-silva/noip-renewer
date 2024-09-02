@@ -173,9 +173,7 @@ if __name__ == "__main__":
 
             # Account has email verification code
             if CODE_METHOD == "email":
-                otp_code = os.getenv("NO_IP_OTP_KEY", "")
-                if len(otp_code) == 0:
-                    otp_code = str(input("Enter OTP code: ")).replace("\n", "")
+                otp_code = str(input("Enter OTP code: ")).replace("\n", "")
                 if validate_otp(otp_code):
                     code_inputs = code_form.find_elements(by=By.TAG_NAME, value="input")
                     if len(code_inputs) == 6:

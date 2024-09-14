@@ -3,10 +3,10 @@ FROM python:3.12.6-slim-bookworm@sha256:15bad989b293be1dd5eb26a87ecacadaee1559f9
 SHELL ["/bin/bash", "-c"]
 
 # Prevent Python from writing out pyc files
-ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONDONTWRITEBYTECODE=1
 
 # Keep Python from buffering stdin/stdout
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
 
 # Disable any user interaction
 ENV DEBIAN_FRONTEND=noninteractive

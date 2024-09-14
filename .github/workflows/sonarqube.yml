@@ -15,7 +15,7 @@ on:
 jobs:
   sonarqube:
     runs-on: ubuntu-latest
-    if: "${{ github.actor == github.repository_owner }}"
+    if: "${{ github.actor == github.repository_owner && github.repository == 'simao-silva/noip-renewer' }}"
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.7
@@ -37,6 +37,6 @@ jobs:
 
       # Output from the Quality Gate
       # The possible outputs of the "quality-gate-status" variable are "PASSED", "WARN" or "FAILED"
-      - name: "Example show SonarQube Quality Gate Status value"
+      - name: "Show SonarQube Quality Gate Status value"
         if: always() # Run even if Quality Gate check failed
         run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"

@@ -1,4 +1,4 @@
-FROM python:3.12.5-slim-bookworm@sha256:59c7332a4a24373861c4a5f0eec2c92b87e3efeb8ddef011744ef9a751b1d11c AS builder
+FROM python:3.12.6-slim-bookworm@sha256:15bad989b293be1dd5eb26a87ecacadaee1559f98e29f02bf6d00c8d86129f39 AS builder
 
 SHELL ["/bin/bash", "-c"]
 
@@ -34,7 +34,7 @@ ARG RUSTC_VERSION="1.63.0+dfsg1-2"
 ARG CARGO_VERSION="0.66.0+ds1-1"
 
 # renovate: datasource=repology depName=debian_12/openssl versioning=loose
-ARG OPENSSL_VERSION="3.0.14-1~deb12u1"
+ARG OPENSSL_VERSION="3.0.14-1~deb12u2"
 
 ARG ARMV7_DEPS=" \
     gcc=${GCC_VERSION} \
@@ -64,7 +64,7 @@ RUN python3 -m venv "${VIRTUAL_ENV}" && \
 
 
 
-FROM python:3.12.5-slim-bookworm@sha256:59c7332a4a24373861c4a5f0eec2c92b87e3efeb8ddef011744ef9a751b1d11c AS geckodriver
+FROM python:3.12.6-slim-bookworm@sha256:15bad989b293be1dd5eb26a87ecacadaee1559f98e29f02bf6d00c8d86129f39 AS geckodriver
 
 SHELL ["/bin/bash", "-c"]
 
@@ -91,7 +91,7 @@ RUN set -x && \
 
 
 
-FROM python:3.12.5-slim-bookworm@sha256:59c7332a4a24373861c4a5f0eec2c92b87e3efeb8ddef011744ef9a751b1d11c
+FROM python:3.12.6-slim-bookworm@sha256:15bad989b293be1dd5eb26a87ecacadaee1559f98e29f02bf6d00c8d86129f39
 
 # Disable any user interaction
 ENV DEBIAN_FRONTEND=noninteractive
@@ -100,7 +100,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ARG PIP_VERSION="24.2"
 
 # renovate: datasource=repology depName=debian_12/firefox-esr versioning=loose
-ARG FIREFOX_VERSION="115.14.0esr-1~deb12u1"
+ARG FIREFOX_VERSION="115.15.0esr-1~deb12u1"
 
 # Install required packages
 RUN apt-get update && \

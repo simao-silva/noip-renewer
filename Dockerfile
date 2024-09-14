@@ -1,4 +1,4 @@
-FROM python:3.12.5-alpine@sha256:c2f41e6a5a67bc39b95be3988dd19fbd05d1b82375c46d9826c592cca014d4de AS builder
+FROM python:3.12.6-alpine@sha256:7130f75b1bb16c7c5d802782131b4024fe3d7a87ce7d936e8948c2d2e0180bc4 AS builder
 
 # Prevent Python from writing out pyc files
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -26,7 +26,7 @@ RUN python3 -m venv ${VIRTUAL_ENV} && \
 
 
 
-FROM python:3.12.5-alpine@sha256:c2f41e6a5a67bc39b95be3988dd19fbd05d1b82375c46d9826c592cca014d4de
+FROM python:3.12.6-alpine@sha256:7130f75b1bb16c7c5d802782131b4024fe3d7a87ce7d936e8948c2d2e0180bc4
 
 # renovate: datasource=pypi depName=pip versioning=pep440
 ARG PIP_VERSION="24.2"
@@ -41,10 +41,10 @@ ARG FONT_MOTO_VERSION="23.7.1-r0"
 ARG GECKODRIVER_VERSION="0.35.0-r0"
 
 # renovate: datasource=repology depName=alpine_3_20/openssl versioning=loose
-ARG OPENSSL_VERSION="3.3.1-r3"
+ARG OPENSSL_VERSION="3.3.2-r0"
 
 # renovate: datasource=repology depName=alpine_3_20/expat versioning=loose
-ARG EXPAT_VERSION="2.6.2-r0"
+ARG EXPAT_VERSION="2.6.3-r0"
 
 RUN apk add --no-cache firefox="${FIREFOX_VERSION}" font-noto=="${FONT_MOTO_VERSION}" && \
     apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community geckodriver="${GECKODRIVER_VERSION}" && \

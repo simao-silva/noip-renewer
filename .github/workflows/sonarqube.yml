@@ -1,11 +1,6 @@
 name: SonarQube analysis
 
 on:
-  # Trigger analysis when pushing in master or pull requests, and when creating
-  # a pull request.
-  push:
-    branches:
-      - master
   pull_request:
     types:
       - opened
@@ -15,7 +10,7 @@ on:
 jobs:
   sonarqube:
     runs-on: ubuntu-latest
-    if: "${{ github.actor == github.repository_owner && github.repository == 'simao-silva/noip-renewer' }}"
+    if: "${{ github.event.pull_request.head.repo.full_name == 'simao-silva/noip-renewer' }}"
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.7

@@ -40,6 +40,8 @@ jobs:
           file: ${{ inputs.dockerfile }}
 
       - name: Set up Trivy
+        env:
+          TRIVY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db
         run: |
           docker run --rm aquasec/trivy --version
           docker volume create trivy-db

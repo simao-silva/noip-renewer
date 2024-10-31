@@ -30,7 +30,9 @@ jobs:
           severity: "MEDIUM,HIGH,CRITICAL"
           format: "sarif"
           output: "trivy-repository-scan.sarif"
-
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+  
       - name: Upload Trivy scan results to GitHub Security
         uses: github/codeql-action/upload-sarif@v3.27.0
         with:

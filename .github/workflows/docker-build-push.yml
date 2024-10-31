@@ -52,12 +52,16 @@ jobs:
           file: ${{ inputs.dockerfile }}
 
       - name: Set up Trivy
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           docker run --rm aquasec/trivy --version
           docker volume create trivy-db
           docker run --rm -v trivy-db:/root/.cache/ aquasec/trivy image --download-db-only
 
       - name: Run Trivy vulnerability scanner for low severity cases
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           docker run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock:ro \
@@ -84,6 +88,8 @@ jobs:
           category: ${{ inputs.variant }}-image-scan-low-cases
 
       - name: Run Trivy vulnerability scanner
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           docker run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock:ro \

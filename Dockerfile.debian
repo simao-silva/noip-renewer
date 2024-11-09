@@ -22,7 +22,7 @@ ARG PIP_VERSION="24.3.1"
 ARG GCC_VERSION="4:12.2.0-3"
 
 # renovate: datasource=repology depName=debian_12/glibc versioning=loose
-ARG GLIBC_VERSION="2.36-9+deb12u8"
+ARG GLIBC_VERSION="2.36-9+deb12u9"
 
 # renovate: datasource=repology depName=debian_12/libffi versioning=loose
 ARG LIBFFI_VERSION="3.4.4-1"
@@ -34,7 +34,7 @@ ARG RUSTC_VERSION="1.63.0+dfsg1-2"
 ARG CARGO_VERSION="0.66.0+ds1-1"
 
 # renovate: datasource=repology depName=debian_12/openssl versioning=loose
-ARG OPENSSL_VERSION="3.0.14-1~deb12u2"
+ARG OPENSSL_VERSION="3.0.15-1~deb12u1"
 
 ARG ARMV7_DEPS=" \
     gcc=${GCC_VERSION} \
@@ -72,7 +72,7 @@ SHELL ["/bin/bash", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive
 
 # renovate: datasource=repology depName=debian_12/curl versioning=loose
-ARG CURL_VERSION="7.88.1-10+deb12u7"
+ARG CURL_VERSION="7.88.1-10+deb12u8"
 
 # renovate: datasource=github-tags depName=mozilla/geckodriver
 ARG GECKODRIVER_VERSION="v0.35.0"

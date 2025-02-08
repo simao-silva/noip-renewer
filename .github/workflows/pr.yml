@@ -68,7 +68,7 @@ jobs:
           sed -i 's/\\u0026#39;/\x27/g' scan-results/trivy-${{ inputs.variant }}-image-scan-low.sarif
       
       - name: Upload Trivy low severity cases scan results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3.28.8
+        uses: github/codeql-action/upload-sarif@v3.28.9
         with:
           sarif_file: scan-results/trivy-${{ inputs.variant }}-image-scan-low.sarif
           category: ${{ inputs.variant }}-image-scan-low-cases
@@ -96,7 +96,7 @@ jobs:
           sed -i 's/\\u0026#39;/\x27/g' scan-results/trivy-${{ inputs.variant }}-image-scan.sarif
       
       - name: Upload Trivy scan results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3.28.8
+        uses: github/codeql-action/upload-sarif@v3.28.9
         if: always()
         with:
           # Path to SARIF file relative to the root of the repository

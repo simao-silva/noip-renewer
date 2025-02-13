@@ -32,7 +32,7 @@ FROM python:3.13.2-alpine@sha256:bb2c06f24622d10187d0884b5b0a66426a9c8511c344492
 ARG PIP_VERSION="25.0.1"
 
 # renovate: datasource=repology depName=alpine_3_21/firefox versioning=loose
-ARG FIREFOX_VERSION="134.0-r0"
+ARG FIREFOX_VERSION="135.0-r0"
 
 # renovate: datasource=repology depName=alpine_3_21/font-noto versioning=loose
 ARG FONT_MOTO_VERSION="24.7.1-r0"

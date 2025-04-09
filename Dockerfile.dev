@@ -1,11 +1,11 @@
-FROM python:3.13.2-alpine@sha256:323a717dc4a010fee21e3f1aac738ee10bb485de4e7593ce242b36ee48d6b352
+FROM python:3.13.3-alpine@sha256:7ce9864f2f4181df6ad32ea6625fb80bee3031d679faec6015623525ba753706
 
 RUN apk add --no-cache gcc libc-dev libffi-dev && \
     pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir --user selenium googletrans=="3.1.0a0" requests
 
 
-FROM python:3.13.2-alpine@sha256:323a717dc4a010fee21e3f1aac738ee10bb485de4e7593ce242b36ee48d6b352
+FROM python:3.13.3-alpine@sha256:7ce9864f2f4181df6ad32ea6625fb80bee3031d679faec6015623525ba753706
 
 RUN apk add --no-cache chromium chromium-chromedriver && \
     rm -rf /var/cache/apk/* /tmp/* /usr/share/doc

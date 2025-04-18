@@ -18,17 +18,19 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 
 def get_hosts():
-    return browser \
-        .find_element(by=By.ID, value="host-panel") \
-        .find_element(by=By.TAG_NAME, value="table") \
-        .find_element(by=By.TAG_NAME, value="tbody") \
+    return (
+        browser.find_element(by=By.ID, value="host-panel")
+        .find_element(by=By.TAG_NAME, value="table")
+        .find_element(by=By.TAG_NAME, value="tbody")
         .find_elements(by=By.TAG_NAME, value="tr")
+    )
 
 
 def translate(text):
     if str(os.getenv("TRANSLATE_ENABLED", True)).lower() == "true":
-        return GoogleTranslator(source='auto', target='en').translate(text=text)
+        return GoogleTranslator(source="auto", target="en").translate(text=text)
     return text
+
 
 def get_user_agent():
     r = requests.get(url="https://jnrbsn.github.io/user-agents/user-agents.json")
@@ -78,7 +80,9 @@ def validate_otp(code):
     valid = True
 
     if len(code) != 6:
-        exit_with_error(message="Invalid email verification code. The code must have 6 digits. Exiting.")
+        exit_with_error(
+            message="Invalid email verification code. The code must have 6 digits. Exiting."
+        )
         valid = False
     if otp_code.isnumeric() is False:
         exit_with_error("Email verification code must be numeric. Exiting.")
@@ -86,11 +90,15 @@ def validate_otp(code):
 
     return valid
 
+
 def validate_2fa(code):
     if len(code) != 16 or code.isalnum() is False:
-        exit_with_error(message="Invalid 2FA key. Key must have 16 alphanumeric characters. Exiting.")
+        exit_with_error(
+            message="Invalid 2FA key. Key must have 16 alphanumeric characters. Exiting."
+        )
         return False
     return True
+
 
 if __name__ == "__main__":
     LOGIN_URL = "https://www.noip.com/login?ref_url=console"
@@ -105,11 +113,17 @@ if __name__ == "__main__":
     browser_options = webdriver.FirefoxOptions()
     browser_options.add_argument("--headless")
     browser_options.profile = profile
-    service = Service(executable_path="/usr/local/bin/geckodriver", log_output="/dev/null")
+    service = Service(
+        executable_path="/usr/local/bin/geckodriver", log_output="/dev/null"
+    )
     browser = webdriver.Firefox(options=browser_options, service=service)
 
     # Open browser
-    print("Using user agent \"" + browser.execute_script("return navigator.userAgent;") + "\"")
+    print(
+        'Using user agent "'
+        + browser.execute_script("return navigator.userAgent;")
+        + '"'
+    )
     print("Opening browser")
 
     # Go to login page
@@ -119,29 +133,47 @@ if __name__ == "__main__":
 
         # Find and fill login form
         try:
-            username_input = WebDriverWait(browser, 10).until(lambda browser: browser.find_element(by=By.ID, value="username"))
+            username_input = WebDriverWait(browser, 10).until(
+                lambda browser: browser.find_element(by=By.ID, value="username")
+            )
         except TimeoutException:
-            exit_with_error(message="Username input not found within the specified timeout.")
+            exit_with_error(
+                message="Username input not found within the specified timeout."
+            )
 
         try:
-            password_input = WebDriverWait(browser, 10).until(lambda browser: browser.find_element(by=By.ID, value="password"))
+            password_input = WebDriverWait(browser, 10).until(
+                lambda browser: browser.find_element(by=By.ID, value="password")
+            )
         except TimeoutException:
-            exit_with_error(message="Password input not found within the specified timeout.")
+            exit_with_error(
+                message="Password input not found within the specified timeout."
+            )
 
         username_input.send_keys(email)
         password_input.send_keys(password)
 
         # Find and click login button
         try:
-            WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.visibility_of_element_located((By.ID, "clogs-captcha-button")))
+            WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(
+                expected_conditions.visibility_of_element_located(
+                    (By.ID, "clogs-captcha-button")
+                )
+            )
             login_button = browser.find_element(By.ID, "clogs-captcha-button")
             login_button.click()
         except TimeoutException:
-            exit_with_error(message="Login button not found within the specified timeout.")
+            exit_with_error(
+                message="Login button not found within the specified timeout."
+            )
 
         # Wait for login to complete
         try:
-            WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.visibility_of_any_elements_located((By.CLASS_NAME, "nav-link")))
+            WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(
+                expected_conditions.visibility_of_any_elements_located(
+                    (By.CLASS_NAME, "nav-link")
+                )
+            )
         except TimeoutException:
             exit_with_error(message="Could not do post login action. Exiting.")
 
@@ -150,12 +182,16 @@ if __name__ == "__main__":
 
             # Wait for submit button to ensure page is loaded
             try:
-                WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.element_to_be_clickable((By.NAME, "submit")))
+                WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(
+                    expected_conditions.element_to_be_clickable((By.NAME, "submit"))
+                )
                 submit_button = browser.find_elements(By.NAME, "submit")
                 if len(submit_button) < 1:
                     exit_with_error(message="2FA submit button not found. Exiting.")
             except TimeoutException:
-                exit_with_error(message="2FA page did not load within the specified timeout. Exiting.")
+                exit_with_error(
+                    message="2FA page did not load within the specified timeout. Exiting."
+                )
             except NoSuchElementException:
                 exit_with_error(message="2FA submit button not found. Exiting.")
 
@@ -197,7 +233,11 @@ if __name__ == "__main__":
 
         # Wait for account dashboard to load
         try:
-            WebDriverWait(driver=browser, timeout=120, poll_frequency=3).until(expected_conditions.visibility_of_element_located((By.ID, "dashboard-nav")))
+            WebDriverWait(driver=browser, timeout=120, poll_frequency=3).until(
+                expected_conditions.visibility_of_element_located(
+                    (By.ID, "content-wrapper")
+                )
+            )
             print("Login successful")
         except TimeoutException:
             exit_with_error(message="Could not login. Check if account is blocked.")
@@ -209,7 +249,11 @@ if __name__ == "__main__":
 
         # Wait for hostnames page to load
         try:
-            WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(expected_conditions.visibility_of(browser.find_element(by=By.ID, value="host-panel")))
+            WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(
+                expected_conditions.visibility_of(
+                    browser.find_element(by=By.ID, value="host-panel")
+                )
+            )
         except TimeoutException:
             exit_with_error(message="Could not load NO-IP hostnames page.")
 
@@ -221,7 +265,7 @@ if __name__ == "__main__":
 
             for host in hosts:
                 current_host = host.find_element(by=By.TAG_NAME, value="a").text
-                print("Checking if host \"" + current_host + "\" needs confirmation")
+                print('Checking if host "' + current_host + '" needs confirmation')
                 try:
                     button = host.find_element(by=By.TAG_NAME, value="button")
                 except NoSuchElementException as e:
@@ -230,7 +274,7 @@ if __name__ == "__main__":
                 if button.text == "Confirm" or translate(button.text) == "Confirm":
                     button.click()
                     confirmed_hosts += 1
-                    print("Host \"" + current_host + "\" confirmed")
+                    print('Host "' + current_host + '" confirmed')
                     sleep(0.25)
 
             if confirmed_hosts == 1:

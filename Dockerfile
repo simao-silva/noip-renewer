@@ -46,13 +46,16 @@ ARG OPENSSL_VERSION="3.3.3-r0"
 # renovate: datasource=repology depName=alpine_3_21/expat versioning=loose
 ARG EXPAT_VERSION="2.7.0-r0"
 
+# renovate: datasource=repology depName=alpine_3_21/sqlite versioning=loose
+ARG SQLITE_VERSION="3.48.0-r1"
+
 RUN apk add --no-cache firefox="${FIREFOX_VERSION}" font-noto=="${FONT_MOTO_VERSION}" && \
     apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community geckodriver="${GECKODRIVER_VERSION}" && \
     ln -s /usr/bin/geckodriver /usr/local/bin/geckodriver && \
     rm -rf /var/cache/apk/* /tmp/*
 
 # Fix vulnerabilities reported by Trivy
-RUN apk add --no-cache libcrypto3="${OPENSSL_VERSION}" libssl3="${OPENSSL_VERSION}" libexpat="${EXPAT_VERSION}" && \
+RUN apk add --no-cache libcrypto3="${OPENSSL_VERSION}" libssl3="${OPENSSL_VERSION}" libexpat="${EXPAT_VERSION}" sqlite-libs="${SQLITE_VERSION}" && \
     /usr/local/bin/pip install --upgrade pip=="${PIP_VERSION}"
 
 # Enable custom virtual environment

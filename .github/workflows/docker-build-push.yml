@@ -67,7 +67,7 @@ jobs:
             -v ./scan-results:/scan-results \
             -v trivy-db:/root/.cache/ \
             aquasec/trivy image \
-              --vuln-type os,library \
+              --pkg-types os,library \
               --ignore-unfixed \
               --severity UNKNOWN,LOW,MEDIUM \
               --format sarif \
@@ -95,7 +95,7 @@ jobs:
             aquasec/trivy image \
               --exit-code 1 \
               --ignore-unfixed \
-              --vuln-type os,library \
+              --pkg-types os,library \
               --severity CRITICAL,HIGH \
               --format sarif \
               --output /scan-results/trivy-${{ inputs.variant }}-image-scan.sarif \

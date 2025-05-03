@@ -38,7 +38,7 @@ jobs:
           tags: |
             ${{ env.IMAGE_NAME }}:${{ steps.short_digest.outputs.shortsha }}-alpine
           file: Dockerfile
-          build-args:
+          build-args: |
             BUILD_DATE=${{ steps.short_digest.outputs.build_date }}
             VERSION=${{ steps.short_digest.outputs.shortsha }}
             VCS_REF=${{ github.event.pull_request.head.sha || github.sha }}

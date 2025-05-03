@@ -25,19 +25,21 @@ jobs:
 
       - name: Get commit short hash
         id: short_digest
-        run: echo "shortsha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        run:
+          echo "shortsha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "build_data=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
 
       - name: Build and push for Docker Hub
         uses: docker/build-push-action@v6.16.0
         with:
           context: .
           platforms: linux/amd64
-          push: false
+          load: true
           tags: |
             ${{ env.IMAGE_NAME }}:${{ steps.short_digest.outputs.shortsha }}-alpine
           file: Dockerfile
           build-args:
-            BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+            BUILD_DATE=${{ steps.short_digest.outputs.build_data }}
             VERSION=${{ steps.short_digest.outputs.shortsha }}
             VCS_REF=${{ github.event.pull_request.head.sha || github.sha }}
 

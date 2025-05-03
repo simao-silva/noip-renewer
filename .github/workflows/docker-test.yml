@@ -39,7 +39,7 @@ jobs:
           build-args:
             BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
             VERSION=${{ steps.short_digest.outputs.shortsha }}
-            VCS_REF=${{ GITHUB_SHA }}
+            VCS_REF=${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Show labels
         run: docker image inspect ${{ env.IMAGE_NAME }}:${{ steps.short_digest.outputs.shortsha }}-alpine | jq -r ".[].Config.Labels"

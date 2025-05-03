@@ -28,6 +28,22 @@ RUN python3 -m venv ${VIRTUAL_ENV} && \
 
 FROM python:3.13.3-alpine@sha256:18159b2be11db91f84b8f8f655cd860f805dbd9e49a583ddaac8ab39bf4fe1a7
 
+ARG BUILD_DATE
+ARG VERSION
+ARG VCS_REF
+
+LABEL \
+    maintainer="Simão Silva <37107350+simao-silva@users.noreply.github.com>" \
+    org.opencontainers.image.authors="Simão Silva <37107350+simao-silva@users.noreply.github.com>" \
+    org.opencontainers.image.created=$BUILD_DATE \
+    org.opencontainers.image.description="Renewing No-IP hosts by browser automation" \
+    org.opencontainers.image.licenses="MIT" \
+    org.opencontainers.image.revision=$VCS_REF \
+    org.opencontainers.image.source="https://github.com/simao-silva/noip-renewer" \
+    org.opencontainers.image.title="No-IP Renewer" \
+    org.opencontainers.image.url="https://github.com/simao-silva/noip-renewer" \
+    org.opencontainers.image.version=$VERSION
+
 # renovate: datasource=pypi depName=pip versioning=pep440
 ARG PIP_VERSION="25.1.1"
 

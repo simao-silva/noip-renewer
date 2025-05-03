@@ -1,0 +1,45 @@
+name: build and push image
+
+on:
+  push:
+
+env:
+  IMAGE_NAME: "simaofsilva/noip-renewer"
+
+jobs:
+  build-and-push:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3.6.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.10.0
+
+      - name: Get commit short hash
+        id: short_digest
+        run: echo "shortsha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Build and push for Docker Hub
+        uses: docker/build-push-action@v6.16.0
+        with:
+          context: .
+          platforms: linux/amd64
+          push: false
+          tags: |
+            ${{ env.IMAGE_NAME }}:${{ steps.short_digest.outputs.shortsha }}-alpine
+          file: Dockerfile
+          build-args:
+            BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+            VERSION=${{ steps.short_digest.outputs.shortsha }}
+            VCS_REF=${{ GITHUB_SHA }}
+
+      - name: Show labels
+        run: docker image inspect ${{ env.IMAGE_NAME }}:${{ steps.short_digest.outputs.shortsha }}-alpine | jq -r ".[].Config.Labels"

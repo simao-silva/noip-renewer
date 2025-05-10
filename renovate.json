@@ -46,8 +46,8 @@
     {
       "description": "Get versions for PyPI and Geckodriver",
       "customType": "regex",
-      "fileMatch": [
-        "^\\.github\\/workflows\\/[^\\/]+\\.ya?ml"
+      "managerFilePatterns": [
+        "/^\\.github\\/workflows\\/[^\\/]+\\.ya?ml/"
       ],
       "matchStrings": [
         ".*VERSION: .(?<currentValue>.*). # renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?"
@@ -57,8 +57,8 @@
     {
       "description": "Update packages set in Dockerfiles",
       "customType": "regex",
-      "fileMatch": [
-        "^Dockerfile.*$"
+      "managerFilePatterns": [
+        "/^Dockerfile.*$/"
       ],
       "matchStrings": [
         "#\\srenovate:\\sdatasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?( extractVersion=(?<extractVersion>.*?))?\\s(ENV|ARG) .*?_VERSION=\"(?<currentValue>.*)\"\\s"

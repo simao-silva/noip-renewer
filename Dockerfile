@@ -31,22 +31,22 @@ FROM python:3.13.3-alpine@sha256:a94caf6aab428e086bc398beaf64a6b7a0fad4589573462
 # renovate: datasource=pypi depName=pip versioning=pep440
 ARG PIP_VERSION="25.1.1"
 
-# renovate: datasource=repology depName=alpine_3_21/firefox versioning=loose
-ARG FIREFOX_VERSION="136.0.4-r0"
+# renovate: datasource=repology depName=alpine_3_22/firefox versioning=loose
+ARG FIREFOX_VERSION="139.0-r0"
 
-# renovate: datasource=repology depName=alpine_3_21/font-noto versioning=loose
-ARG FONT_MOTO_VERSION="24.7.1-r0"
+# renovate: datasource=repology depName=alpine_3_22/font-noto versioning=loose
+ARG FONT_MOTO_VERSION="2025.05.01-r0"
 
 # renovate: datasource=repology depName=alpine_edge/geckodriver versioning=loose
 ARG GECKODRIVER_VERSION="0.36.0-r0"
 
-# renovate: datasource=repology depName=alpine_3_21/openssl versioning=loose
+# renovate: datasource=repology depName=alpine_3_22/openssl versioning=loose
 ARG OPENSSL_VERSION="3.3.3-r0"
 
-# renovate: datasource=repology depName=alpine_3_21/expat versioning=loose
+# renovate: datasource=repology depName=alpine_3_22/expat versioning=loose
 ARG EXPAT_VERSION="2.7.0-r0"
 
-# renovate: datasource=repology depName=alpine_3_21/sqlite versioning=loose
+# renovate: datasource=repology depName=alpine_3_22/sqlite versioning=loose
 ARG SQLITE_VERSION="3.48.0-r2"
 
 RUN apk add --no-cache firefox="${FIREFOX_VERSION}" font-noto=="${FONT_MOTO_VERSION}" && \

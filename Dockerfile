@@ -32,7 +32,7 @@ FROM python:3.13.5-alpine@sha256:9b4929a72599b6c6389ece4ecbf415fd1355129f22bb92b
 ARG PIP_VERSION="25.1.1"
 
 # renovate: datasource=repology depName=alpine_3_22/firefox versioning=loose
-ARG FIREFOX_VERSION="139.0-r0"
+ARG FIREFOX_VERSION="140.0.4-r1"
 
 # renovate: datasource=repology depName=alpine_3_22/font-noto versioning=loose
 ARG FONT_MOTO_VERSION="2025.05.01-r0"
@@ -47,7 +47,7 @@ ARG OPENSSL_VERSION="3.5.1-r0"
 ARG EXPAT_VERSION="2.7.1-r0"
 
 # renovate: datasource=repology depName=alpine_3_22/sqlite versioning=loose
-ARG SQLITE_VERSION="3.49.2-r0"
+ARG SQLITE_VERSION="3.49.2-r1"
 
 RUN apk add --no-cache firefox="${FIREFOX_VERSION}" font-noto=="${FONT_MOTO_VERSION}" && \
     apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community geckodriver="${GECKODRIVER_VERSION}" && \

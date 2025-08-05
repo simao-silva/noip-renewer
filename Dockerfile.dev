@@ -2,7 +2,7 @@ FROM python:3.13.5-alpine@sha256:37b14db89f587f9eaa890e4a442a3fe55db452b69cca140
 
 RUN apk add --no-cache gcc libc-dev libffi-dev && \
     pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir --user selenium googletrans=="3.1.0a0" requests
+    pip install --no-cache-dir --user googletrans=="3.1.0a0" requests selenium
 
 
 FROM python:3.13.5-alpine@sha256:37b14db89f587f9eaa890e4a442a3fe55db452b69cca1403cc730bd0fbdc8aaf
@@ -14,6 +14,6 @@ COPY --from=0 /root/.local /root/.local
 
 ENV PATH=/root/.local/bin:$PATH
 
-ADD renew.py .
+COPY renew.py .
 
 ENTRYPOINT ["python3", "renew.py"]

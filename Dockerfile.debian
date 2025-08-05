@@ -85,9 +85,16 @@ RUN apt-get update && \
 
 # Download geckodriver
 RUN set -x && \
-    if [ "$(uname --m)" == "x86_64" ]; then ARCH="linux64"; elif [ "$(uname --m)" == "aarch64" ]; then ARCH="linux-aarch64"; else ARCH="linux32"; fi && \
-    curl -sSL -O https://github.com/mozilla/geckodriver/releases/download/"${GECKODRIVER_VERSION}"/geckodriver-"${GECKODRIVER_VERSION}"-"${ARCH}".tar.gz && \
-    tar zxf geckodriver-"${GECKODRIVER_VERSION}"-"${ARCH}".tar.gz
+    ARCH="$(uname -m)" && \
+    if [ "$ARCH" = "x86_64" ]; then \
+        ARCH="linux64"; \
+    elif [ "$ARCH" = "aarch64" ]; then \
+        ARCH="linux-aarch64"; \
+    else \
+        ARCH="linux32"; \
+    fi && \
+    curl --proto "=https" -sSL -O "https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-${ARCH}.tar.gz" && \
+    tar zxf "geckodriver-${GECKODRIVER_VERSION}-${ARCH}.tar.gz"
 
 
 
@@ -102,19 +109,14 @@ ARG PIP_VERSION="25.1.1"
 # renovate: datasource=repology depName=debian_12/firefox-esr versioning=loose
 ARG FIREFOX_VERSION="128.13.0esr-1~deb12u1"
 
-# Install required packages
+# Install required packages and apply fixes for vulnerabilities reported by Trivy
 RUN apt-get update && \
     apt-get install -y --no-install-recommends firefox-esr="${FIREFOX_VERSION}" && \
+    /usr/local/bin/pip install --upgrade pip=="${PIP_VERSION}" && \
+    apt-get upgrade -y libgnutls30 perl-base libexpat1 && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/cache/apt/archives/* /var/tmp/* /usr/share/doc /usr/share/man
-
-# Fix vulnerabilities reported by Trivy
-RUN /usr/local/bin/pip install --upgrade pip=="${PIP_VERSION}" && \
-    apt-get update && \
-    apt-get upgrade -y libgnutls30 perl-base libexpat1 && \
-    apt-get clean && \
-    rm -rf /tmp/* /var/lib/apt/lists/* /var/cache/apt/archives/* /var/tmp/*
 
 # Enable custom virtual environment
 ENV VIRTUAL_ENV=/opt/venv

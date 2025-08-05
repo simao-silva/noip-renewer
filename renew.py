@@ -263,9 +263,12 @@ if __name__ == "__main__":
             print("Confirming hosts phase")
             confirmed_hosts = 0
 
-            for host in hosts:
+            i = 0
+            while len(hosts) > 0 and i < len(hosts):
+                host = hosts[i]
+                i += 1
                 if HOSTNAME_PREFIX in host.get_attribute('id'):
-                    current_host = host.get_attribute('id')[28]
+                    current_host = host.get_attribute('id')[len(HOSTNAME_PREFIX)+1]
                     print('Host "' + current_host + '" needs confirmation')
                     try:
                         button = host.find_element(by=By.TAG_NAME, value="button")
@@ -277,6 +280,8 @@ if __name__ == "__main__":
                         confirmed_hosts += 1
                         print('Host "' + current_host + '" confirmed')
                         sleep(5)  # Wait to avoid error "Element XXXX is not clickable at point (x,y) because another element XXXX obscures it"
+                        hosts = get_hosts()  # Refresh list of hosts to confirm
+                        i = 0
 
             if confirmed_hosts == 1:
                 print("1 host confirmed")

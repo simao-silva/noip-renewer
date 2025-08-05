@@ -1,4 +1,4 @@
-FROM python:3.13.5-slim-bookworm@sha256:6544e0e002b40ae0f59bc3618b07c1e48064c4faed3a15ae2fbd2e8f663e8283 AS builder
+FROM python:3.13.5-slim-bookworm@sha256:4c2cf9917bd1cbacc5e9b07320025bdb7cdf2df7b0ceaccb55e9dd7e30987419 AS builder
 
 SHELL ["/bin/bash", "-c"]
 
@@ -64,7 +64,7 @@ RUN python3 -m venv "${VIRTUAL_ENV}" && \
 
 
 
-FROM python:3.13.5-slim-bookworm@sha256:6544e0e002b40ae0f59bc3618b07c1e48064c4faed3a15ae2fbd2e8f663e8283 AS geckodriver
+FROM python:3.13.5-slim-bookworm@sha256:4c2cf9917bd1cbacc5e9b07320025bdb7cdf2df7b0ceaccb55e9dd7e30987419 AS geckodriver
 
 SHELL ["/bin/bash", "-c"]
 
@@ -91,7 +91,7 @@ RUN set -x && \
 
 
 
-FROM python:3.13.5-slim-bookworm@sha256:6544e0e002b40ae0f59bc3618b07c1e48064c4faed3a15ae2fbd2e8f663e8283
+FROM python:3.13.5-slim-bookworm@sha256:4c2cf9917bd1cbacc5e9b07320025bdb7cdf2df7b0ceaccb55e9dd7e30987419
 
 # Disable any user interaction
 ENV DEBIAN_FRONTEND=noninteractive
@@ -100,7 +100,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ARG PIP_VERSION="25.1.1"
 
 # renovate: datasource=repology depName=debian_12/firefox-esr versioning=loose
-ARG FIREFOX_VERSION="128.12.0esr-1~deb12u1"
+ARG FIREFOX_VERSION="128.13.0esr-1~deb12u1"
 
 # Install required packages
 RUN apt-get update && \

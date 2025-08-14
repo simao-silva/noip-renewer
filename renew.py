@@ -19,10 +19,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 def get_hosts():
     return (
-        browser.find_element(by=By.ID, value="host-panel")
-        .find_element(by=By.TAG_NAME, value="table")
-        .find_element(by=By.TAG_NAME, value="tbody")
-        .find_elements(by=By.TAG_NAME, value="tr")
+        browser.find_element(by=By.ID, value="zone-collection-wrapper")
+        .find_elements(by=By.XPATH, value="//*[starts-with(@id, 'expiration-banner-hostname-')]")
     )
 
 
@@ -102,8 +100,8 @@ def validate_2fa(code):
 
 if __name__ == "__main__":
     LOGIN_URL = "https://www.noip.com/login?ref_url=console"
-    HOST_URL = "https://my.noip.com/dynamic-dns"
-    LOGOUT_URL = "https://my.noip.com/logout"
+    HOST_URL = "https://my.noip.com/dns/records"
+    LOGOUT_URL = "https://my.noip.com/auth/logout"
 
     email, password = get_credentials()
 
@@ -251,7 +249,7 @@ if __name__ == "__main__":
         try:
             WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(
                 expected_conditions.visibility_of(
-                    browser.find_element(by=By.ID, value="host-panel")
+                    browser.find_element(by=By.ID, value="zone-collection-wrapper")
                 )
             )
         except TimeoutException:
@@ -260,24 +258,32 @@ if __name__ == "__main__":
         # Confirm hosts
         try:
             hosts = get_hosts()
-            print("Confirming hosts phase")
+            print("Host confirmation phase")
             confirmed_hosts = 0
 
             for host in hosts:
-                current_host = host.find_element(by=By.TAG_NAME, value="a").text
-                print('Checking if host "' + current_host + '" needs confirmation')
-                try:
-                    button = host.find_element(by=By.TAG_NAME, value="button")
-                except NoSuchElementException as e:
-                    break
+                current_host = host.find_element(by=By.TAG_NAME, value="h4")
 
-                if button.text == "Confirm" or translate(button.text) == "Confirm":
-                    button.click()
-                    confirmed_hosts += 1
-                    print('Host "' + current_host + '" confirmed')
-                    sleep(0.25)
+                if current_host is not None:
+                    current_host = current_host.text.replace("Expires in 7 days - ", "")
+                    print('Host "' + current_host + '" needs confirmation')
 
-            if confirmed_hosts == 1:
+                    try:
+                        buttons = host.find_elements(by=By.TAG_NAME, value="button")
+                    except NoSuchElementException as e:
+                        break
+
+                    for button in buttons:
+                        if button.text == "Confirm" or translate(button.text) == "Confirm":
+                            button.click()
+                            confirmed_hosts += 1
+                            print('Host "' + current_host + '" confirmed')
+                            sleep(0.25)
+                            break
+
+            if confirmed_hosts == 0:
+                print("No host requires confirmation")
+            elif confirmed_hosts == 1:
                 print("1 host confirmed")
             else:
                 print(str(confirmed_hosts) + " hosts confirmed")
@@ -287,7 +293,7 @@ if __name__ == "__main__":
         except Exception as e:
             print("Error: ", e)
 
-        # Log off
+        # Logging off
         finally:
             print("Logging off\n\n")
             browser.get(LOGOUT_URL)

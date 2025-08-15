@@ -3,6 +3,7 @@ import random
 from getpass import getpass
 from sys import argv
 from time import sleep
+import re
 
 import pyotp
 import requests
@@ -96,6 +97,14 @@ def validate_2fa(code):
         )
         return False
     return True
+
+
+def clean_host_name(host_text):
+    """
+    Removes the expiration prefix from a host name string.
+    """
+    pattern = r'Expires in \d+ days - '
+    return re.sub(pattern, '', host_text)
 
 
 if __name__ == "__main__":
@@ -257,29 +266,33 @@ if __name__ == "__main__":
 
         # Confirm hosts
         try:
-            hosts = get_hosts()
-            print("Host confirmation phase")
-            confirmed_hosts = 0
+            while True:
+                hosts = get_hosts()
+                print("Host confirmation phase")
+                confirmed_hosts = 0
 
-            for host in hosts:
-                current_host = host.find_element(by=By.TAG_NAME, value="h4")
+                if len(hosts) == 0:
+                    break
 
-                if current_host is not None:
-                    current_host = current_host.text.replace("Expires in 7 days - ", "")
-                    print('Host "' + current_host + '" needs confirmation')
+                for host in hosts:
+                    current_host = host.find_element(by=By.TAG_NAME, value="h4")
 
-                    try:
-                        buttons = host.find_elements(by=By.TAG_NAME, value="button")
-                    except NoSuchElementException as e:
-                        break
+                    if current_host is not None:
+                        current_host = clean_host_name(current_host.text)
+                        print('Host "' + current_host + '" needs confirmation')
 
-                    for button in buttons:
-                        if button.text == "Confirm" or translate(button.text) == "Confirm":
-                            button.click()
-                            confirmed_hosts += 1
-                            print('Host "' + current_host + '" confirmed')
-                            sleep(0.25)
+                        try:
+                            buttons = host.find_elements(by=By.TAG_NAME, value="button")
+                        except NoSuchElementException as e:
                             break
+
+                        for button in buttons:
+                            if button.text == "Confirm" or translate(button.text) == "Confirm":
+                                button.click()
+                                confirmed_hosts += 1
+                                print('Host "' + current_host + '" confirmed')
+                                sleep(0.25)
+                                break
 
             if confirmed_hosts == 0:
                 print("No host requires confirmation")

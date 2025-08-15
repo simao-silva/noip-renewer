@@ -1,9 +1,9 @@
 import os
 import random
+import re
 from getpass import getpass
 from sys import argv
 from time import sleep
-import re
 
 import pyotp
 import requests

@@ -266,10 +266,11 @@ if __name__ == "__main__":
 
         # Confirm hosts
         try:
+            print("Host confirmation phase")
+            confirmed_hosts = 0
+
             while True:
                 hosts = get_hosts()
-                print("Host confirmation phase")
-                confirmed_hosts = 0
 
                 if len(hosts) == 0:
                     break

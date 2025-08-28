@@ -19,10 +19,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 def get_hosts():
     return (
-        browser.find_element(by=By.ID, value="host-panel")
-        .find_element(by=By.TAG_NAME, value="table")
-        .find_element(by=By.TAG_NAME, value="tbody")
-        .find_elements(by=By.TAG_NAME, value="tr")
+        browser.find_element(by=By.CLASS_NAME, value="zone-container")
+        .find_elements(by=By.CLASS_NAME, value="flex-row")
     )
 
 
@@ -104,6 +102,8 @@ if __name__ == "__main__":
     LOGIN_URL = "https://www.noip.com/login?ref_url=console"
     HOST_URL = "https://my.noip.com/dynamic-dns"
     LOGOUT_URL = "https://my.noip.com/logout"
+
+    HOSTNAME_PREFIX = "expiration-banner-hostname-"
 
     email, password = get_credentials()
 
@@ -251,7 +251,7 @@ if __name__ == "__main__":
         try:
             WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(
                 expected_conditions.visibility_of(
-                    browser.find_element(by=By.ID, value="host-panel")
+                    browser.find_element(by=By.CLASS_NAME, value="zone-container")
                 )
             )
         except TimeoutException:
@@ -263,19 +263,25 @@ if __name__ == "__main__":
             print("Confirming hosts phase")
             confirmed_hosts = 0
 
-            for host in hosts:
-                current_host = host.find_element(by=By.TAG_NAME, value="a").text
-                print('Checking if host "' + current_host + '" needs confirmation')
-                try:
-                    button = host.find_element(by=By.TAG_NAME, value="button")
-                except NoSuchElementException as e:
-                    break
+            i = 0
+            while len(hosts) > 0 and i < len(hosts):
+                host = hosts[i]
+                i += 1
+                if HOSTNAME_PREFIX in host.get_attribute('id'):
+                    current_host = host.get_attribute('id')[len(HOSTNAME_PREFIX)+1]
+                    print('Host "' + current_host + '" needs confirmation')
+                    try:
+                        button = host.find_element(by=By.TAG_NAME, value="button")
+                    except NoSuchElementException as e:
+                        break
 
-                if button.text == "Confirm" or translate(button.text) == "Confirm":
-                    button.click()
-                    confirmed_hosts += 1
-                    print('Host "' + current_host + '" confirmed')
-                    sleep(0.25)
+                    if button.text == "Confirm" or translate(button.text) == "Confirm":
+                        button.click()
+                        confirmed_hosts += 1
+                        print('Host "' + current_host + '" confirmed')
+                        sleep(5)  # Wait to avoid error "Element XXXX is not clickable at point (x,y) because another element XXXX obscures it"
+                        hosts = get_hosts()  # Refresh list of hosts to confirm
+                        i = 0
 
             if confirmed_hosts == 1:
                 print("1 host confirmed")

@@ -1,4 +1,4 @@
-FROM python:3.13.6-alpine@sha256:f196fd275fdad7287ccb4b0a85c2e402bb8c794d205cf6158909041c1ee9f38d AS builder
+FROM python:3.13.7-alpine@sha256:9ba6d8cbebf0fb6546ae71f2a1c14f6ffd2fdab83af7fa5669734ef30ad48844 AS builder
 
 # Prevent Python from writing out pyc files
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -26,13 +26,13 @@ RUN python3 -m venv ${VIRTUAL_ENV} && \
 
 
 
-FROM python:3.13.6-alpine@sha256:f196fd275fdad7287ccb4b0a85c2e402bb8c794d205cf6158909041c1ee9f38d
+FROM python:3.13.7-alpine@sha256:9ba6d8cbebf0fb6546ae71f2a1c14f6ffd2fdab83af7fa5669734ef30ad48844
 
 # renovate: datasource=pypi depName=pip versioning=pep440
 ARG PIP_VERSION="25.2"
 
 # renovate: datasource=repology depName=alpine_3_22/firefox versioning=loose
-ARG FIREFOX_VERSION="140.0.4-r1"
+ARG FIREFOX_VERSION="142.0-r0"
 
 # renovate: datasource=repology depName=alpine_3_22/font-noto versioning=loose
 ARG FONT_MOTO_VERSION="2025.05.01-r0"
@@ -41,7 +41,7 @@ ARG FONT_MOTO_VERSION="2025.05.01-r0"
 ARG GECKODRIVER_VERSION="0.36.0-r0"
 
 # renovate: datasource=repology depName=alpine_3_22/openssl versioning=loose
-ARG OPENSSL_VERSION="3.5.1-r0"
+ARG OPENSSL_VERSION="3.5.2-r0"
 
 # renovate: datasource=repology depName=alpine_3_22/expat versioning=loose
 ARG EXPAT_VERSION="2.7.1-r0"

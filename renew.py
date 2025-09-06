@@ -251,49 +251,56 @@ if __name__ == "__main__":
         except NoSuchElementException:
             exit_with_error(message="Could not find element dashboard menu. Exiting.")
 
-        # Go to hostnames page
-        browser.get(HOST_URL)
-
-        # Wait for hostnames page to load
-        try:
-            WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(
-                expected_conditions.visibility_of(
-                    browser.find_element(by=By.ID, value="zone-collection-wrapper")
-                )
-            )
-        except TimeoutException:
-            exit_with_error(message="Could not load NO-IP hostnames page.")
-
         # Confirm hosts
         try:
             print("Host confirmation phase")
             confirmed_hosts = 0
 
             while True:
+                # Go to hostnames page
+                browser.get(HOST_URL)
+
+                # Wait for hostnames page to load
+                try:
+                    WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(
+                        expected_conditions.visibility_of(
+                            browser.find_element(by=By.ID, value="zone-collection-wrapper")
+                        )
+                    )
+                except TimeoutException:
+                    exit_with_error(message="Could not load NO-IP hostnames page.")
+
                 hosts = get_hosts()
 
                 if len(hosts) == 0:
                     break
+                else:
+                    host = hosts[0]
 
-                for host in hosts:
-                    current_host = host.find_element(by=By.TAG_NAME, value="h4")
+                current_host = host.find_element(by=By.TAG_NAME, value="h4")
 
-                    if current_host is not None:
-                        current_host = clean_host_name(current_host.text)
-                        print('Host "' + current_host + '" needs confirmation')
+                if current_host is not None:
+                    current_host = clean_host_name(current_host.text)
+                    print('Host "' + current_host + '" needs confirmation')
 
-                        try:
-                            buttons = host.find_elements(by=By.TAG_NAME, value="button")
-                        except NoSuchElementException as e:
+                    try:
+                        buttons = host.find_elements(by=By.TAG_NAME, value="button")
+                    except NoSuchElementException as e:
+                        break
+
+                    for button in buttons:
+                        if button.text == "Confirm" or translate(button.text) == "Confirm":
+                            try:
+                                WebDriverWait(driver=browser, timeout=60, poll_frequency=3).until(
+                                    expected_conditions.element_to_be_clickable(button)
+                                )
+                            except TimeoutException:
+                                exit_with_error(message="Timeout waiting for button to be clickable.")
+                            button.click()
+                            confirmed_hosts += 1
+                            print('Host "' + current_host + '" confirmed')
+                            sleep(1)
                             break
-
-                        for button in buttons:
-                            if button.text == "Confirm" or translate(button.text) == "Confirm":
-                                button.click()
-                                confirmed_hosts += 1
-                                print('Host "' + current_host + '" confirmed')
-                                sleep(0.25)
-                                break
 
             if confirmed_hosts == 0:
                 print("No host requires confirmation")

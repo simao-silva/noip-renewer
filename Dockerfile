@@ -44,7 +44,7 @@ ARG GECKODRIVER_VERSION="0.36.0-r0"
 ARG OPENSSL_VERSION="3.5.2-r0"
 
 # renovate: datasource=repology depName=alpine_3_22/expat versioning=loose
-ARG EXPAT_VERSION="2.7.1-r0"
+ARG EXPAT_VERSION="2.7.2-r0"
 
 # renovate: datasource=repology depName=alpine_3_22/sqlite versioning=loose
 ARG SQLITE_VERSION="3.49.2-r1"

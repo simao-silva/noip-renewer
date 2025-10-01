@@ -41,7 +41,7 @@ ARG FONT_MOTO_VERSION="2025.05.01-r0"
 ARG GECKODRIVER_VERSION="0.36.0-r0"
 
 # renovate: datasource=repology depName=alpine_3_22/openssl versioning=loose
-ARG OPENSSL_VERSION="3.5.3-r1"
+ARG OPENSSL_VERSION="3.5.4-r0"
 
 # renovate: datasource=repology depName=alpine_3_22/expat versioning=loose
 ARG EXPAT_VERSION="2.7.3-r0"

@@ -13,7 +13,7 @@ jobs:
     if: "${{ github.event.pull_request.head.repo.full_name == 'simao-silva/noip-renewer' }}"
     steps:
       - name: Checkout
-        uses: actions/checkout@v6.0.0
+        uses: actions/checkout@v6.0.1
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 

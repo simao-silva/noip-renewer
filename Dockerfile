@@ -31,23 +31,23 @@ FROM python:3.14.1-alpine@sha256:b80c82b1a282283bd3e3cd3c6a4c895d56d1385879c8c82
 # renovate: datasource=pypi depName=pip versioning=pep440
 ARG PIP_VERSION="25.3"
 
-# renovate: datasource=repology depName=alpine_3_22/firefox versioning=loose
-ARG FIREFOX_VERSION="142.0-r0"
+# renovate: datasource=repology depName=alpine_3_23/firefox versioning=loose
+ARG FIREFOX_VERSION="145.0-r0"
 
-# renovate: datasource=repology depName=alpine_3_22/font-noto versioning=loose
-ARG FONT_MOTO_VERSION="2025.05.01-r0"
+# renovate: datasource=repology depName=alpine_3_23/font-noto versioning=loose
+ARG FONT_MOTO_VERSION="2025.12.01-r0"
 
 # renovate: datasource=repology depName=alpine_edge/geckodriver versioning=loose
 ARG GECKODRIVER_VERSION="0.36.0-r0"
 
-# renovate: datasource=repology depName=alpine_3_22/openssl versioning=loose
+# renovate: datasource=repology depName=alpine_3_23/openssl versioning=loose
 ARG OPENSSL_VERSION="3.5.4-r0"
 
-# renovate: datasource=repology depName=alpine_3_22/expat versioning=loose
+# renovate: datasource=repology depName=alpine_3_23/expat versioning=loose
 ARG EXPAT_VERSION="2.7.3-r0"
 
-# renovate: datasource=repology depName=alpine_3_22/sqlite versioning=loose
-ARG SQLITE_VERSION="3.49.2-r1"
+# renovate: datasource=repology depName=alpine_3_23/sqlite versioning=loose
+ARG SQLITE_VERSION="3.51.1-r0"
 
 # Install required packages and apply fixes for vulnerabilities reported by Trivy
 RUN apk add --no-cache \

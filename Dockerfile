@@ -47,7 +47,7 @@ ARG OPENSSL_VERSION="3.5.4-r0"
 ARG EXPAT_VERSION="2.7.3-r0"
 
 # renovate: datasource=repology depName=alpine_3_23/sqlite versioning=loose
-ARG SQLITE_VERSION="3.51.1-r0"
+ARG SQLITE_VERSION="3.51.2-r0"
 
 # Install required packages and apply fixes for vulnerabilities reported by Trivy
 RUN apk add --no-cache \

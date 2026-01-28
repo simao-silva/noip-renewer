@@ -34,7 +34,7 @@ ARG RUSTC_VERSION="1.63.0+dfsg1-2"
 ARG CARGO_VERSION="0.66.0+ds1-1"
 
 # renovate: datasource=repology depName=debian_12/openssl versioning=loose
-ARG OPENSSL_VERSION="3.0.18-1~deb12u1"
+ARG OPENSSL_VERSION="3.0.18-1~deb12u2"
 
 ARG ARMV7_DEPS=" \
     gcc=${GCC_VERSION} \

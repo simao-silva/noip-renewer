@@ -107,7 +107,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ARG PIP_VERSION="26.0.1"
 
 # renovate: datasource=repology depName=debian_12/firefox-esr versioning=loose
-ARG FIREFOX_VERSION="140.7.0esr-1~deb12u1"
+ARG FIREFOX_VERSION="140.8.0esr-1~deb12u1"
 
 # Install required packages and apply fixes for vulnerabilities reported by Trivy
 RUN apt-get update && \

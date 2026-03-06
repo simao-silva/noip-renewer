@@ -242,7 +242,7 @@ if __name__ == "__main__":
         try:
             WebDriverWait(driver=browser, timeout=120, poll_frequency=3).until(
                 expected_conditions.visibility_of_element_located(
-                    (By.ID, "content-wrapper")
+                    (By.ID, "main-wrapper")
                 )
             )
             print("Login successful")

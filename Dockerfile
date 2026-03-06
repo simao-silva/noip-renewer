@@ -49,14 +49,18 @@ ARG EXPAT_VERSION="2.7.4-r0"
 # renovate: datasource=repology depName=alpine_3_23/sqlite versioning=loose
 ARG SQLITE_VERSION="3.51.2-r0"
 
+# renovate: datasource=repology depName=alpine_3_23/zlib versioning=loose
+ARG ZLIB_VERSION="1.3.2-r0"
+
 # Install required packages and apply fixes for vulnerabilities reported by Trivy
 RUN apk add --no-cache \
-        firefox="${FIREFOX_VERSION}" \
-        font-noto=="${FONT_MOTO_VERSION}" \
-        libcrypto3="${OPENSSL_VERSION}" \
-        libexpat="${EXPAT_VERSION}" \
-        libssl3="${OPENSSL_VERSION}" \
-        sqlite-libs="${SQLITE_VERSION}" && \
+    firefox="${FIREFOX_VERSION}" \
+    font-noto=="${FONT_MOTO_VERSION}" \
+    libcrypto3="${OPENSSL_VERSION}" \
+    libexpat="${EXPAT_VERSION}" \
+    libssl3="${OPENSSL_VERSION}" \
+    sqlite-libs="${SQLITE_VERSION}" \
+    zlib="${ZLIB_VERSION}" && \
     apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community geckodriver="${GECKODRIVER_VERSION}" && \
     ln -s /usr/bin/geckodriver /usr/local/bin/geckodriver && \
     /usr/local/bin/pip install --upgrade pip=="${PIP_VERSION}" && \

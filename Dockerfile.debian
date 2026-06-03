@@ -75,7 +75,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ARG CURL_VERSION="7.88.1-10+deb12u14"
 
 # renovate: datasource=github-tags depName=mozilla/geckodriver
-ARG GECKODRIVER_VERSION="v0.36.0"
+ARG GECKODRIVER_VERSION="v0.37.0"
 
 # Install required packages
 RUN apt-get update && \

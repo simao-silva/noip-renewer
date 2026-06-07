@@ -36,21 +36,6 @@ ARG CARGO_VERSION="0.66.0+ds1-1"
 # renovate: datasource=repology depName=debian_12/openssl versioning=loose
 ARG OPENSSL_VERSION="3.0.20-1~deb12u1"
 
-ARG ARMV7_DEPS=" \
-    gcc=${GCC_VERSION} \
-    libc6-dev=${GLIBC_VERSION} \
-    libffi-dev=${LIBFFI_VERSION} \
-    rustc=${RUSTC_VERSION} \
-    cargo=${CARGO_VERSION} \
-    libssl-dev=${OPENSSL_VERSION} \
-    "
-
-# Install required packages
-# hadolint ignore=DL3008
-RUN apt-get update && \
-    if [ "$(getconf LONG_BIT)" -eq 32 ]; then apt-get install -y --no-install-recommends ${ARMV7_DEPS}; fi && \
-    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
-
 # Set the working directory
 WORKDIR /app
 
@@ -61,7 +46,6 @@ COPY requirements.txt .
 RUN python3 -m venv "${VIRTUAL_ENV}" && \
     pip install --no-cache-dir --upgrade pip=="${PIP_VERSION}" && \
     pip install --no-cache-dir -r requirements.txt
-
 
 
 FROM python:3.14.5-slim-bookworm@sha256:a9bee15510a364124aa24692899d269835683b883de42f7ebec8c293cf679ccb AS geckodriver
@@ -87,15 +71,12 @@ RUN apt-get update && \
 RUN set -x && \
     ARCH="$(uname -m)" && \
     if [ "$ARCH" = "x86_64" ]; then \
-        ARCH="linux64"; \
+    ARCH="linux64"; \
     elif [ "$ARCH" = "aarch64" ]; then \
-        ARCH="linux-aarch64"; \
-    else \
-        ARCH="linux32"; \
+    ARCH="linux-aarch64"; \
     fi && \
     curl --proto "=https" -sSL -O "https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-${ARCH}.tar.gz" && \
     tar zxf "geckodriver-${GECKODRIVER_VERSION}-${ARCH}.tar.gz"
-
 
 
 FROM python:3.14.5-slim-bookworm@sha256:a9bee15510a364124aa24692899d269835683b883de42f7ebec8c293cf679ccb

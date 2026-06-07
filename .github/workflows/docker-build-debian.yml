@@ -17,7 +17,7 @@ jobs:
     with:
       variant: debian
       dockerfile: Dockerfile.debian
-      platforms: linux/arm/v7,linux/amd64,linux/arm64/v8
+      platforms: linux/amd64,linux/arm64/v8
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}

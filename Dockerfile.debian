@@ -71,9 +71,9 @@ RUN apt-get update && \
 RUN set -x && \
     ARCH="$(uname -m)" && \
     if [ "$ARCH" = "x86_64" ]; then \
-    ARCH="linux64"; \
+      ARCH="linux64"; \
     elif [ "$ARCH" = "aarch64" ]; then \
-    ARCH="linux-aarch64"; \
+      ARCH="linux-aarch64"; \
     fi && \
     curl --proto "=https" -sSL -O "https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-${ARCH}.tar.gz" && \
     tar zxf "geckodriver-${GECKODRIVER_VERSION}-${ARCH}.tar.gz"

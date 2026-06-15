@@ -55,6 +55,7 @@ Import credentials from data/options.json for Home Assistant credentials from an
 # (e.g., a folder named "data" sitting next to your script)
 """
 
+script_dir = Path(__file__).resolve().parent  # Gets the folder your script is in
 file_path = script_dir / "data" / "options.json"
 
 # Open and parse the JSON file
@@ -67,8 +68,12 @@ for key, value in config_data.items():
 
 """
 # Verification. not needed active
-print(os.environ.get("NO_IP_USERNAME"))  # Outputs: User@Email.com
+
 """
+print(os.environ.get("NO_IP_USERNAME"))  # Outputs: User@Email.com
+print(os.environ.get("NO_IP_PASSWORD"))
+print(os.environ.get("NO_IP_TOTP_KEY"))
+print(os.environ.get("TRANSLATE_ENABLED"))
 
 def get_credentials():
     """

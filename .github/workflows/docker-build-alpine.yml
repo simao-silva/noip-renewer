@@ -1,0 +1,23 @@
+name: build and push image (Alpine version)
+
+on:
+  push:
+    branches:
+      - "master"
+    paths:
+      - Dockerfile
+      - .github/workflows/docker-build-alpine.yml
+      - .github/workflows/docker-build-push.yml
+      - renew*.py
+      - requirements.txt
+
+jobs:
+  build-alpine:
+    uses: ./.github/workflows/docker-build-push.yml
+    with:
+      variant: alpine
+      dockerfile: Dockerfile
+      platforms: linux/amd64,linux/arm64/v8
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}

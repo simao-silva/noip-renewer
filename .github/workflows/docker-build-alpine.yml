@@ -6,8 +6,6 @@ on:
       - "master"
     paths:
       - Dockerfile
-      - .github/workflows/docker-build-alpine.yml
-      - .github/workflows/docker-build-push.yml
       - renew*.py
       - requirements.txt
 

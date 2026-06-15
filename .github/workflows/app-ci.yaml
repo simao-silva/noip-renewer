@@ -2,7 +2,7 @@
 name: CI
 
 env:
-    MONITORED_FILES: "config.*"
+    MONITORED_FILES: "dockerfile*"
 # yamllint disable-line rule:truthy
 on:
   push:

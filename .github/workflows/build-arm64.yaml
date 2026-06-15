@@ -5,6 +5,12 @@ env:
 on:
   push:
     branches: [ "main", "master" ]
+
+permissions:
+  actions: write
+  contents: read
+  packages: write
+  security-events: write    
      
 jobs:
   build:

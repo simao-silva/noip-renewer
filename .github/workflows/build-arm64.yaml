@@ -1,8 +1,11 @@
 name: Build ARM64 Native Image
 
+env:
+    MONITORED_FILES: "config.*"
+
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "master" ]
      
 jobs:
   build:

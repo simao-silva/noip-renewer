@@ -6,7 +6,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Keep Python from buffering stdin/stdout
 ENV PYTHONUNBUFFERED=1
 
-# Enable custom virtual environment4
+# Enable custom virtual environment
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 

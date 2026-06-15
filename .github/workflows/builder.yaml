@@ -5,7 +5,7 @@ name: Builder
 
 env:
   BUILD_ARGS: 
-  MONITORED_FILES: "config.*"
+  MONITORED_FILES: "Dockerfile*"
 
 on:
   push:

@@ -1,9 +1,11 @@
+import json
 import os
 import random
 import re
 from getpass import getpass
 from sys import argv
 from time import sleep
+from pathlib import Path
 
 import pyotp
 import requests
@@ -46,6 +48,27 @@ def exit_with_error(message):
     browser.quit()
     exit(1)
 
+"""
+Import credentials from data/options.json for Home Assistant credentials from an Addon.
+
+# Point to the separate directory and file
+# (e.g., a folder named "data" sitting next to your script)
+"""
+
+file_path = script_dir / "data" / "options.json"
+
+# Open and parse the JSON file
+with open("options.json", "r") as file:
+    config_data = json.load(file)
+
+# Inject each key-value pair into the system environment
+for key, value in config_data.items():
+    os.environ[key] = str(value)
+
+"""
+# Verification. not needed active
+print(os.environ.get("NO_IP_USERNAME"))  # Outputs: User@Email.com
+"""
 
 def get_credentials():
     """

@@ -1,7 +1,5 @@
 name: Build ARM64 Native Image
 
-env:
-    MONITORED_FILES: "config.*"
 
 on:
   push:

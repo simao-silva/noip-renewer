@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     # Use the native ARM64 runner
-    runs-on: {{ matrix.os }}
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code

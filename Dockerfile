@@ -76,6 +76,6 @@ COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
 # Set the working directory
 WORKDIR /app
 
-# Copy and set the entrypoint bash script
+# Copy and set the entrypoint bash script,
 COPY renew.py .
 ENTRYPOINT ["python3", "renew.py"]

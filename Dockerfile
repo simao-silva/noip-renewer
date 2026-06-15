@@ -80,6 +80,16 @@ WORKDIR /app
 COPY renew.py .
 ENTRYPOINT ["python3", "renew.py"]
 
+
+# Build arguments    <<<< Need to remove this to build or add to build_arch to ignore builder
+ARG BUILD_ARCH  
+ARG BUILD_DATE
+ARG BUILD_DESCRIPTION
+ARG BUILD_NAME
+ARG BUILD_REF
+ARG BUILD_REPOSITORY
+ARG BUILD_VERSION
+
 # Labels for building
 org.opencontainers.image.title="${BUILD_NAME}" \
 org.opencontainers.image.description="${BUILD_DESCRIPTION}" \

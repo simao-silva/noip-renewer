@@ -54,9 +54,14 @@ Import credentials from data/options.json for Home Assistant credentials from an
 # Point to the separate directory and file
 # (e.g., a folder named "data" sitting next to your script)
 """
+# 1. finds the 'app' folder 
+current_dir = Path(__file__).resolve().parent
 
-script_dir = Path(__file__).resolve().parent  # Gets the folder your script is in
-file_path = script_dir / "data" / "options.json"
+# 2. Moves up to the main project folder
+project_root = current_dir.parent
+
+# 3. Finds the data directory and options.json file
+file_path = project_root / "data" / "options.json"
 
 # Open and parse the JSON file
 with open("options.json", "r") as file:

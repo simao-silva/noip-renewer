@@ -63,12 +63,12 @@ project_root = current_dir.parent
 # 3. Finds the data directory and options.json file
 file_path = project_root / "data" / "options.json"
 
-# Open and parse the JSON file
-with open("options.json", "r") as file:
-    config_data = json.load(file)
+# Open and parse the OPTIONS.JSON file
+with open("file_path", "r") as file:
+    options_data = json.load(file)
 
 # Inject each key-value pair into the system environment
-for key, value in config_data.items():
+for key, value in options_data.items():
     os.environ[key] = str(value)
 
 """

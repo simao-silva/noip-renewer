@@ -67,7 +67,7 @@ file_path = project_root / "data" / "options.json"
 print(file_path.exists())
 
 # Open and parse the OPTIONS.JSON file
-with open("file_path", "r") as file:
+with open(file_path, "r") as file:
     options_data = json.load(file)
 
 # Inject each key-value pair into the system environment

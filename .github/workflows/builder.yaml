@@ -40,7 +40,9 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+              habuild/noip-renewer-base:latest
+              habuild/noip-renewer-base:2026.06.2
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
           load: true

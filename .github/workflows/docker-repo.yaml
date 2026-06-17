@@ -11,7 +11,7 @@ name: Publish Docker image
 
 on:
   push:
-     paths: ["pushed"]
+     paths: ["pulled"]
      
 jobs:
   push_to_registry:

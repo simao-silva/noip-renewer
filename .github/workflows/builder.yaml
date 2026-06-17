@@ -22,7 +22,7 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v4
         with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
 
@@ -35,5 +35,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           load: true
           tags: | 
-             habuild/noip-renewer-base:2026.06.1
+             habuild/noip-renewer-base:2026.06.2
              habuild/noip-renewer-base:latest

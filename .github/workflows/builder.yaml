@@ -7,6 +7,11 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
     steps:
       - name: Set up Docker
         uses: docker/setup-docker-action@v5

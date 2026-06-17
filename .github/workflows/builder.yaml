@@ -2,11 +2,7 @@
 # yamllint disable rule:line-length
 
 name: Builder
-
-env:
-  BUILD_ARGS:
-  MONITORED_FILES: "config.*"
-  
+ 
 # yamllint disable-line rule:truthy
 on:
   push:

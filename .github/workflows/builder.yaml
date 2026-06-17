@@ -2,6 +2,7 @@ name: ci
 
 on:
   push:
+     paths: ["config.*", "pushed"]
 
 jobs:
   docker:

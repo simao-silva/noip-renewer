@@ -32,8 +32,17 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
           load: true
-          tags: | 
-             habuild/noip-renewer-base:2026.06.2
-             habuild/noip-renewer-base:latest
+
+      - name: Generate artifact attestation
+        uses: actions/attest@v4
+        with:
+          subject-name: index.docker.io/my-docker-hub-namespace/my-docker-hub-repository
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true  

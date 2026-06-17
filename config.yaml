@@ -6,3 +6,6 @@ description: simao-silva/noip-renewer for homeassistant addon
 url: "https://github.com/habuild/noip-renewer/tree/main/noip-renewer"
 init: false
 image: "ghcr.io/habuild/noip-renewer-base"
+arch:
+  - aarch64
+  - amd64

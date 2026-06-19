@@ -34,7 +34,7 @@ ARG RUSTC_VERSION="1.63.0+dfsg1-2"
 ARG CARGO_VERSION="0.66.0+ds1-1"
 
 # renovate: datasource=repology depName=debian_12/openssl versioning=loose
-ARG OPENSSL_VERSION="3.0.20-1~deb12u1"
+ARG OPENSSL_VERSION="3.0.20-1~deb12u2"
 
 # Set the working directory
 WORKDIR /app
@@ -88,7 +88,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ARG PIP_VERSION="26.1.2"
 
 # renovate: datasource=repology depName=debian_12/firefox-esr versioning=loose
-ARG FIREFOX_VERSION="140.11.0esr-1~deb12u1"
+ARG FIREFOX_VERSION="140.12.0esr-1~deb12u1"
 
 # Install required packages and apply fixes for vulnerabilities reported by Trivy
 RUN apt-get update && \

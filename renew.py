@@ -6,6 +6,7 @@ from getpass import getpass
 from sys import argv
 from time import sleep
 from pathlib import Path
+from datetime import datetime
 
 import pyotp
 import requests
@@ -48,40 +49,47 @@ def exit_with_error(message):
     browser.quit()
     exit(1)
 
-"""
-Import credentials from data/options.json for Home Assistant credentials from an Addon.
+def get_addon_info_options():
+    """
+    Import credentials from data/options.json for Home Assistant credentials from an Addon.
 
-# Point to the separate directory and file
-# (e.g., a folder named "data" sitting next to your script)
-"""
-# 1. finds the 'app' folder 
-current_dir = Path(__file__).resolve().parent
+    # Point to the separate directory and file
+    # (e.g., a folder named "data" sitting next to your script)
+    """
+    # 1. finds the 'app' folder 
+    current_dir = Path(__file__).resolve().parent
 
-# 2. Moves up to the main project folder
-project_root = current_dir.parent
+    # 2. Moves up to the main project folder
+    project_root = current_dir.parent
 
-# 3. Finds the data directory and options.json file
-file_path = project_root / "data" / "options.json"
+    # 3. Finds the data directory and options.json file
+    file_path = project_root / "data" / "options.json"
 
-# Verify path is available
-print(file_path.exists())
+    # Verify path is available
+    if file_path.exists():
+        print(file_path.exists())
+                
+        # Open and parse the OPTIONS.JSON file
+        with open(file_path, "r") as file:
+                options_data = json.load(file)
+        
+        # Inject each key-value pair into the system environment
+        for key, value in options_data.items():
+                os.environ[key] = str(value)
 
-# Open and parse the OPTIONS.JSON file
-with open(file_path, "r") as file:
-    options_data = json.load(file)
+        # Get current local time with system timezone attached
+        local_dt = datetime.now().astimezone()
+        print(local_dt.strftime("%Y-%m-%d %H:%M:%S %Z %z"))
 
-# Inject each key-value pair into the system environment
-for key, value in options_data.items():
-    os.environ[key] = str(value)
-
-"""
-# Verification. not needed active
-
-"""
-print(os.environ.get("NO_IP_USERNAME"))  # Outputs: User@Email.com
-print(os.environ.get("NO_IP_PASSWORD"))
-print(os.environ.get("NO_IP_TOTP_KEY"))
-print(os.environ.get("TRANSLATE_ENABLED"))
+        """
+        # Verification. not needed active
+        """
+        print(os.environ.get("NO_IP_USERNAME"))  # Outputs: User@Email.com
+        print(os.environ.get("NO_IP_PASSWORD"))
+        print(os.environ.get("NO_IP_TOTP_KEY"))
+        print(os.environ.get("TRANSLATE_ENABLED"))
+    else:
+        pass
 
 def get_credentials():
     """

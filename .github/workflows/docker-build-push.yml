@@ -43,7 +43,7 @@ jobs:
         run: echo "shortsha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Build image for tests
-        uses: docker/build-push-action@v7.2.0
+        uses: docker/build-push-action@v7.3.0
         with:
           context: .
           platforms: linux/amd64
@@ -125,7 +125,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push for Docker Hub
-        uses: docker/build-push-action@v7.2.0
+        uses: docker/build-push-action@v7.3.0
         with:
           context: .
           platforms: ${{ inputs.platforms }}
@@ -137,7 +137,7 @@ jobs:
 
       - name: Set latest tag
         if: inputs.variant == 'alpine'
-        uses: docker/build-push-action@v7.2.0
+        uses: docker/build-push-action@v7.3.0
         with:
           context: .
           platforms: ${{ inputs.platforms }}

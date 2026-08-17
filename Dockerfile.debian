@@ -1,4 +1,4 @@
-FROM python:3.14.7-slim-bookworm@sha256:23c59390fc717bf09f9336908199a0ae75d9c4264bf296123f94ad772fea3b52 AS builder
+FROM python:3.14.7-slim-trixie@sha256:ce40764625a4ff50df3548277632e7f96c4e77fe75fa848aae9885476e7df5a4 AS builder
 
 SHELL ["/bin/bash", "-c"]
 
@@ -18,23 +18,23 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 # renovate: datasource=pypi depName=pip versioning=pep440
 ARG PIP_VERSION="26.1.2"
 
-# renovate: datasource=repology depName=debian_12/gcc versioning=loose
+# renovate: datasource=repology depName=debian_13/gcc versioning=loose
 ARG GCC_VERSION="4:12.2.0-3"
 
-# renovate: datasource=repology depName=debian_12/glibc versioning=loose
+# renovate: datasource=repology depName=debian_13/glibc versioning=loose
 ARG GLIBC_VERSION="2.36-9+deb12u14"
 
-# renovate: datasource=repology depName=debian_12/libffi versioning=loose
+# renovate: datasource=repology depName=debian_13/libffi versioning=loose
 ARG LIBFFI_VERSION="3.4.4-1"
 
-# renovate: datasource=repology depName=debian_12/rustc versioning=loose
+# renovate: datasource=repology depName=debian_13/rustc versioning=loose
 ARG RUSTC_VERSION="1.63.0+dfsg1-2"
 
-# renovate: datasource=repology depName=debian_12/cargo versioning=loose
+# renovate: datasource=repology depName=debian_13/cargo versioning=loose
 ARG CARGO_VERSION="0.66.0+ds1-1"
 
-# renovate: datasource=repology depName=debian_12/openssl versioning=loose
-ARG OPENSSL_VERSION="3.0.20-1~deb12u2"
+# renovate: datasource=repology depName=debian_13/openssl versioning=loose
+ARG OPENSSL_VERSION="3.0.20-1~deb13u2"
 
 # Set the working directory
 WORKDIR /app
@@ -48,15 +48,15 @@ RUN python3 -m venv "${VIRTUAL_ENV}" && \
     pip install --no-cache-dir -r requirements.txt
 
 
-FROM python:3.14.7-slim-bookworm@sha256:23c59390fc717bf09f9336908199a0ae75d9c4264bf296123f94ad772fea3b52 AS geckodriver
+FROM python:3.14.7-slim-trixie@sha256:ce40764625a4ff50df3548277632e7f96c4e77fe75fa848aae9885476e7df5a4 AS geckodriver
 
 SHELL ["/bin/bash", "-c"]
 
 # Disable any user interaction
 ENV DEBIAN_FRONTEND=noninteractive
 
-# renovate: datasource=repology depName=debian_12/curl versioning=loose
-ARG CURL_VERSION="7.88.1-10+deb12u15"
+# renovate: datasource=repology depName=debian_13/curl versioning=loose
+ARG CURL_VERSION="8.14.1-2+deb13u4"
 
 # renovate: datasource=github-tags depName=mozilla/geckodriver
 ARG GECKODRIVER_VERSION="v0.37.1"
@@ -79,7 +79,7 @@ RUN set -x && \
     tar zxf "geckodriver-${GECKODRIVER_VERSION}-${ARCH}.tar.gz"
 
 
-FROM python:3.14.7-slim-bookworm@sha256:23c59390fc717bf09f9336908199a0ae75d9c4264bf296123f94ad772fea3b52
+FROM python:3.14.7-slim-trixie@sha256:ce40764625a4ff50df3548277632e7f96c4e77fe75fa848aae9885476e7df5a4
 
 # Disable any user interaction
 ENV DEBIAN_FRONTEND=noninteractive
@@ -87,8 +87,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 # renovate: datasource=pypi depName=pip versioning=pep440
 ARG PIP_VERSION="26.1.2"
 
-# renovate: datasource=repology depName=debian_12/firefox-esr versioning=loose
-ARG FIREFOX_VERSION="140.13.0esr-1~deb12u1"
+# renovate: datasource=repology depName=debian_13/firefox-esr versioning=loose
+ARG FIREFOX_VERSION="140.13.0esr-1~deb13u1"
 
 # Install required packages and apply fixes for vulnerabilities reported by Trivy
 RUN apt-get update && \

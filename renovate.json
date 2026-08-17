@@ -11,7 +11,7 @@
         "repology"
       ],
       "matchPackageNames": [
-        "/^debian_12//"
+        "/^debian_13//"
       ],
       "groupName": "debian packages",
       "groupSlug": "debian"

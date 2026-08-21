@@ -47,7 +47,7 @@ ARG OPENSSL_VERSION="3.5.7-r0"
 ARG EXPAT_VERSION="2.8.3-r0"
 
 # renovate: datasource=repology depName=alpine_3_24/sqlite versioning=loose
-ARG SQLITE_VERSION="3.53.2-r0"
+ARG SQLITE_VERSION="3.53.4-r0"
 
 # renovate: datasource=repology depName=alpine_3_24/zlib versioning=loose
 ARG ZLIB_VERSION="1.3.2-r0"

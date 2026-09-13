@@ -28,7 +28,7 @@ ARG GLIBC_VERSION="2.41-12+deb13u4"
 ARG LIBFFI_VERSION="3.4.8-2"
 
 # renovate: datasource=repology depName=debian_13/rustc versioning=loose
-ARG RUSTC_VERSION="1.85.0+dfsg3-1"
+ARG RUSTC_VERSION="1.85.1+dfsg1-1+deb13u1"
 
 # renovate: datasource=repology depName=debian_13/cargo versioning=loose
 ARG CARGO_VERSION="0.66.0+ds1-1"

@@ -1,4 +1,4 @@
-FROM python:3.14.5-alpine@sha256:5a824eb82cc75361f98611f3cfc5091ea33f10a6ccea4d4ebdabbc523b9a1614 AS builder
+FROM python:3.14.7-alpine@sha256:016508ba505da24f7139765bc4bb669df4e88eb2f12eeadd571bf2f88d7533df AS builder
 
 # Prevent Python from writing out pyc files
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -25,41 +25,46 @@ RUN python3 -m venv ${VIRTUAL_ENV} && \
     pip install --no-cache-dir -r requirements.txt
 
 
-FROM python:3.14.5-alpine@sha256:5a824eb82cc75361f98611f3cfc5091ea33f10a6ccea4d4ebdabbc523b9a1614
+
+FROM python:3.14.7-alpine@sha256:016508ba505da24f7139765bc4bb669df4e88eb2f12eeadd571bf2f88d7533df
 
 # renovate: datasource=pypi depName=pip versioning=pep440
 ARG PIP_VERSION="26.1.2"
 
-# renovate: datasource=repology depName=alpine_3_23/firefox versioning=loose
+# renovate: datasource=repology depName=alpine_3_24/firefox versioning=loose
 ARG FIREFOX_VERSION="151.0.3-r0"
 
-# renovate: datasource=repology depName=alpine_3_23/font-noto versioning=loose
-ARG FONT_MOTO_VERSION="2025.12.01-r0"
+# renovate: datasource=repology depName=alpine_3_24/font-noto versioning=loose
+ARG FONT_MOTO_VERSION="2026.06.01-r0"
 
 # renovate: datasource=repology depName=alpine_edge/geckodriver versioning=loose
-ARG GECKODRIVER_VERSION="0.36.0-r0"
+ARG GECKODRIVER_VERSION="0.37.1-r0"
 
-# renovate: datasource=repology depName=alpine_3_23/openssl versioning=loose
-ARG OPENSSL_VERSION="3.5.6-r0"
+# renovate: datasource=repology depName=alpine_3_24/openssl versioning=loose
+ARG OPENSSL_VERSION="3.5.8-r0"
 
-# renovate: datasource=repology depName=alpine_3_23/expat versioning=loose
-ARG EXPAT_VERSION="2.7.5-r0"
+# renovate: datasource=repology depName=alpine_3_24/expat versioning=loose
+ARG EXPAT_VERSION="2.8.4-r0"
 
-# renovate: datasource=repology depName=alpine_3_23/sqlite versioning=loose
-ARG SQLITE_VERSION="3.51.2-r0"
+# renovate: datasource=repology depName=alpine_3_24/sqlite versioning=loose
+ARG SQLITE_VERSION="3.53.4-r0"
 
-# renovate: datasource=repology depName=alpine_3_23/zlib versioning=loose
+# renovate: datasource=repology depName=alpine_3_24/util-linux versioning=loose
+ARG UTIL_LINUX_VERSION="2.42.3-r1"
+
+# renovate: datasource=repology depName=alpine_3_24/zlib versioning=loose
 ARG ZLIB_VERSION="1.3.2-r0"
 
 # Install required packages and apply fixes for vulnerabilities reported by Trivy
 RUN apk add --no-cache \
-    firefox="${FIREFOX_VERSION}" \
-    font-noto=="${FONT_MOTO_VERSION}" \
-    libcrypto3="${OPENSSL_VERSION}" \
-    libexpat="${EXPAT_VERSION}" \
-    libssl3="${OPENSSL_VERSION}" \
-    sqlite-libs="${SQLITE_VERSION}" \
-    zlib="${ZLIB_VERSION}" && \
+      firefox="${FIREFOX_VERSION}" \
+      font-noto="${FONT_MOTO_VERSION}" \
+      libcrypto3="${OPENSSL_VERSION}" \
+      libexpat="${EXPAT_VERSION}" \
+      libssl3="${OPENSSL_VERSION}" \
+      libuuid="${UTIL_LINUX_VERSION}" \
+      sqlite-libs="${SQLITE_VERSION}" \
+      zlib="${ZLIB_VERSION}" && \
     apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community geckodriver="${GECKODRIVER_VERSION}" && \
     ln -s /usr/bin/geckodriver /usr/local/bin/geckodriver && \
     /usr/local/bin/pip install --upgrade pip=="${PIP_VERSION}" && \

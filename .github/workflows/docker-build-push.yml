@@ -30,20 +30,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6.0.3
+        uses: actions/checkout@v7.0.1
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v4.1.0
+        uses: docker/setup-qemu-action@v4.4.0
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4.1.0
+        uses: docker/setup-buildx-action@v4.4.1
 
       - name: Get commit short hash
         id: short_digest
         run: echo "shortsha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Build image for tests
-        uses: docker/build-push-action@v7.2.0
+        uses: docker/build-push-action@v7.4.0
         with:
           context: .
           platforms: linux/amd64
@@ -81,7 +81,7 @@ jobs:
           sed -i 's/\\u0026#39;/\x27/g' scan-results/trivy-${{ inputs.variant }}-image-scan-low.sarif
 
       - name: Upload Trivy low severity cases scan results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v4.36.2
+        uses: github/codeql-action/upload-sarif@v4.38.1
         with:
           sarif_file: scan-results/trivy-${{ inputs.variant }}-image-scan-low.sarif
           category: ${{ inputs.variant }}-image-scan-low-cases
@@ -109,7 +109,7 @@ jobs:
           sed -i 's/\\u0026#39;/\x27/g' scan-results/trivy-${{ inputs.variant }}-image-scan.sarif
 
       - name: Upload Trivy scan results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v4.36.2
+        uses: github/codeql-action/upload-sarif@v4.38.1
         if: always()
         with:
           # Path to SARIF file relative to the root of the repository
@@ -119,13 +119,13 @@ jobs:
           category: ${{ inputs.variant }}-image-scan
 
       - name: Login to DockerHub
-        uses: docker/login-action@v4.2.0
+        uses: docker/login-action@v4.6.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push for Docker Hub
-        uses: docker/build-push-action@v7.2.0
+        uses: docker/build-push-action@v7.4.0
         with:
           context: .
           platforms: ${{ inputs.platforms }}
@@ -137,7 +137,7 @@ jobs:
 
       - name: Set latest tag
         if: inputs.variant == 'alpine'
-        uses: docker/build-push-action@v7.2.0
+        uses: docker/build-push-action@v7.4.0
         with:
           context: .
           platforms: ${{ inputs.platforms }}

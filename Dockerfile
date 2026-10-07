@@ -53,7 +53,7 @@ ARG SQLITE_VERSION="3.53.4-r0"
 ARG UTIL_LINUX_VERSION="2.42.3-r1"
 
 # renovate: datasource=repology depName=alpine_3_24/zlib versioning=loose
-ARG ZLIB_VERSION="1.3.2-r0"
+ARG ZLIB_VERSION="1.3.2-r1"
 
 # Install required packages and apply fixes for vulnerabilities reported by Trivy
 RUN apk add --no-cache \

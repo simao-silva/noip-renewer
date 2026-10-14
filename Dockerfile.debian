@@ -56,7 +56,7 @@ SHELL ["/bin/bash", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive
 
 # renovate: datasource=repology depName=debian_13/curl versioning=loose
-ARG CURL_VERSION="8.14.1-2+deb13u5"
+ARG CURL_VERSION="8.14.1-2+deb13u7"
 
 # renovate: datasource=github-tags depName=mozilla/geckodriver
 ARG GECKODRIVER_VERSION="v0.37.1"

@@ -1,4 +1,4 @@
-FROM python:3.15.0-slim-trixie@sha256:d802f03223b9e00604cd54574bcac1a4638914c43683d3f0afd6ebee35f25313 AS builder
+FROM python:3.15.0-slim-trixie@sha256:2da676046630d7bf14c6764ae1143dc7fa0377a53f94bf5a642f0b214aca5bce AS builder
 
 SHELL ["/bin/bash", "-c"]
 
@@ -48,7 +48,7 @@ RUN python3 -m venv "${VIRTUAL_ENV}" && \
     pip install --no-cache-dir -r requirements.txt
 
 
-FROM python:3.15.0-slim-trixie@sha256:d802f03223b9e00604cd54574bcac1a4638914c43683d3f0afd6ebee35f25313 AS geckodriver
+FROM python:3.15.0-slim-trixie@sha256:2da676046630d7bf14c6764ae1143dc7fa0377a53f94bf5a642f0b214aca5bce AS geckodriver
 
 SHELL ["/bin/bash", "-c"]
 
@@ -79,7 +79,7 @@ RUN set -x && \
     tar zxf "geckodriver-${GECKODRIVER_VERSION}-${ARCH}.tar.gz"
 
 
-FROM python:3.15.0-slim-trixie@sha256:d802f03223b9e00604cd54574bcac1a4638914c43683d3f0afd6ebee35f25313
+FROM python:3.15.0-slim-trixie@sha256:2da676046630d7bf14c6764ae1143dc7fa0377a53f94bf5a642f0b214aca5bce
 
 # Disable any user interaction
 ENV DEBIAN_FRONTEND=noninteractive

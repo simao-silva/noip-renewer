@@ -16,7 +16,7 @@ ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # renovate: datasource=pypi depName=pip versioning=pep440
-ARG PIP_VERSION="26.1.2"
+ARG PIP_VERSION="26.2.2"
 
 # renovate: datasource=repology depName=debian_13/gcc versioning=loose
 ARG GCC_VERSION="4:12.2.0-3"
@@ -85,7 +85,7 @@ FROM python:3.15.1-slim-trixie@sha256:08275f764e022331c6d3e3ca55d8cce01fa4684b02
 ENV DEBIAN_FRONTEND=noninteractive
 
 # renovate: datasource=pypi depName=pip versioning=pep440
-ARG PIP_VERSION="26.1.2"
+ARG PIP_VERSION="26.2.2"
 
 # renovate: datasource=repology depName=debian_13/firefox-esr versioning=loose
 ARG FIREFOX_VERSION="153.5.1esr-1~deb13u1"

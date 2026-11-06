@@ -35,7 +35,7 @@ ARG PIP_VERSION="26.1.2"
 ARG FIREFOX_VERSION="151.0.3-r0"
 
 # renovate: datasource=repology depName=alpine_3_24/font-noto versioning=loose
-ARG FONT_MOTO_VERSION="2026.06.01-r0"
+ARG FONT_MOTO_VERSION="2026.11.01-r0"
 
 # renovate: datasource=repology depName=alpine_edge/geckodriver versioning=loose
 ARG GECKODRIVER_VERSION="0.37.1-r0"

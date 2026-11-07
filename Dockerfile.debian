@@ -16,25 +16,7 @@ ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # renovate: datasource=pypi depName=pip versioning=pep440
-ARG PIP_VERSION="26.1.2"
-
-# renovate: datasource=repology depName=debian_13/gcc versioning=loose
-ARG GCC_VERSION="4:12.2.0-3"
-
-# renovate: datasource=repology depName=debian_13/glibc versioning=loose
-ARG GLIBC_VERSION="2.41-12+deb13u4"
-
-# renovate: datasource=repology depName=debian_13/libffi versioning=loose
-ARG LIBFFI_VERSION="3.4.8-2"
-
-# renovate: datasource=repology depName=debian_13/rustc versioning=loose
-ARG RUSTC_VERSION="1.85.1+dfsg1-1+deb13u1"
-
-# renovate: datasource=repology depName=debian_13/cargo versioning=loose
-ARG CARGO_VERSION="0.66.0+ds1-1"
-
-# renovate: datasource=repology depName=debian_13/openssl versioning=loose
-ARG OPENSSL_VERSION="3.5.7-1~deb13u3"
+ARG PIP_VERSION="26.3"
 
 # Set the working directory
 WORKDIR /app
@@ -45,7 +27,8 @@ COPY requirements.txt .
 # Install requirements
 RUN python3 -m venv "${VIRTUAL_ENV}" && \
     pip install --no-cache-dir --upgrade pip=="${PIP_VERSION}" && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt && \
+    pip uninstall -y pip
 
 
 FROM python:3.15.2-slim-trixie@sha256:e97b88e416c3c01eb427b21fd8cd3ebf006e6ee38afcfcc3cae1c54ee2ab0a75 AS geckodriver
@@ -84,17 +67,17 @@ FROM python:3.15.2-slim-trixie@sha256:e97b88e416c3c01eb427b21fd8cd3ebf006e6ee38a
 # Disable any user interaction
 ENV DEBIAN_FRONTEND=noninteractive
 
-# renovate: datasource=pypi depName=pip versioning=pep440
-ARG PIP_VERSION="26.1.2"
-
 # renovate: datasource=repology depName=debian_13/firefox-esr versioning=loose
 ARG FIREFOX_VERSION="153.6.0esr-1~deb13u1"
+
+# renovate: datasource=repology depName=debian_13/zlib versioning=loose
+ARG ZLIB_VERSION="1:1.3.dfsg+really1.3.1-1+deb13u1"
 
 # Install required packages and apply fixes for vulnerabilities reported by Trivy
 RUN apt-get update && \
     apt-get install -y --no-install-recommends firefox-esr="${FIREFOX_VERSION}" && \
-    /usr/local/bin/pip install --upgrade pip=="${PIP_VERSION}" && \
-    apt-get upgrade -y libgnutls30 perl-base libexpat1 && \
+    pip uninstall -y pip && \
+    apt-get upgrade -y zlib1g="${ZLIB_VERSION}" && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/cache/apt/archives/* /var/tmp/* /usr/share/doc /usr/share/man

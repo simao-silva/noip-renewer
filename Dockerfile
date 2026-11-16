@@ -35,7 +35,7 @@ ARG FIREFOX_VERSION="151.0.3-r0"
 ARG FONT_MOTO_VERSION="2026.11.01-r0"
 
 # renovate: datasource=repology depName=alpine_edge/geckodriver versioning=loose
-ARG GECKODRIVER_VERSION="0.37.1-r0"
+ARG GECKODRIVER_VERSION="0.37.1-r1"
 
 # renovate: datasource=repology depName=alpine_3_24/openssl versioning=loose
 ARG OPENSSL_VERSION="3.5.9-r0"

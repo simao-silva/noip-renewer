@@ -29,7 +29,7 @@ RUN python3 -m venv ${VIRTUAL_ENV} && \
 FROM python:3.15.2-alpine@sha256:0f9552bb28711333da16915ec146f5e6bb44a7fdac9ced15dc17c2e0206346dd
 
 # renovate: datasource=repology depName=alpine_3_24/firefox versioning=loose
-ARG FIREFOX_VERSION="151.0.3-r0"
+ARG FIREFOX_VERSION="160.0-r0"
 
 # renovate: datasource=repology depName=alpine_3_24/font-noto versioning=loose
 ARG FONT_MOTO_VERSION="2026.11.01-r0"
